@@ -1,0 +1,36 @@
+{
+  "name": "tacs-tp-integrador-grupo-4-front",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "webpack --mode development && node server/index.js",
+    "build": "webpack --mode production",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fgiannotti/TACS-tp-Integrador-grupo-4-front.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fgiannotti/TACS-tp-Integrador-grupo-4-front/issues"
+  },
+  "homepage": "https://github.com/fgiannotti/TACS-tp-Integrador-grupo-4-front#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.13.16",
+    "@babel/preset-env": "^7.13.15",
+    "@babel/preset-react": "^7.13.13",
+    "babel-loader": "^8.2.2",
+    "html-webpack-plugin": "^5.3.1",
+    "webpack": "^5.35.1",
+    "webpack-cli": "^4.6.0"
+  }
+}
