@@ -7,10 +7,9 @@ import {createBrowserHistory} from 'history'
 
 ReactDOM.render(
     <Router history={createBrowserHistory()}>
-        <Redirect from="/" to="/login" />
-        <Route path="login" component={"Soy un login"}/>
-        <Route path="/"/>
-        <Route path="hello" component={App}/>
+        <Route path="/hello">
+                <App />
+        </Route>
     </Router>,
         document.getElementById('root')
 );
