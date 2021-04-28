@@ -11,7 +11,7 @@ function App() {
           Edit <code>src/App.js</code> and save to reload.
         </p>
         {/*test*/}
-        <GoogleSignIn></GoogleSignIn>
+        <GoogleSignIn/>
         <a
           className="App-link"
           href="https://reactjs.org"
