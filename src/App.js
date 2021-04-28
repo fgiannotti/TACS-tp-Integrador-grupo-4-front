@@ -1,6 +1,6 @@
-import logo from './logo.svg';
+import logo from '../public/logo.svg';
 import './App.css';
-import GoogleSignIn from './Google';
+import GoogleSignIn from './components/Google';
 
 function App() {
   return (
