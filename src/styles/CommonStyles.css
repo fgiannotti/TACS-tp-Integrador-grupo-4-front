@@ -18,3 +18,8 @@
     font-weight: bold;
     font-family: Lato, sans-serif;
 }
+
+.button-size-lg {
+    width: 36%;
+    height:18%;
+}
