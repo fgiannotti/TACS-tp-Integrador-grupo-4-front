@@ -16,7 +16,7 @@ class LoginScreen extends React.Component {
                         Juego de cartas Superamigos
                     </Typography>
                     <CardContent>
-                        <Typography variant="body2" color="textSecondary" component="p">
+                        <Typography variant="body1" color="textSecondary" component="p">
                             Juego de cartas para 2 jugadores de las viejas Cartas Cromy
                         </Typography>
                     </CardContent>
