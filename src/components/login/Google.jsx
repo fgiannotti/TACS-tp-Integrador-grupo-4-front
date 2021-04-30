@@ -1,22 +1,31 @@
 import GoogleLogin from 'react-google-login';
 import '../../styles/CommonStyles.css'
+import React from "react";
 
-const responseGoogle = (response) => {
-    console.log(response);
-}
+class GoogleSignIn extends React.Component {
 
-const GoogleSignIn = () => {
-    return (
-        <GoogleLogin
-            className="button-size-lg"
-            clientId='1058494963753-drauquf06tsu1jnbl7k13ptrp98s323d.apps.googleusercontent.com'
-            buttonText="Continua con Google"
-            onSuccess={responseGoogle}
-            onFailure={responseGoogle}
-            cookiePolicy={'single_host_origin'}
-            isSignedIn={true}
-        />
-    )
+    fail() {
+        console.log("Auth failed with google")
+    }
+
+    handleSignIn = () => {
+        console.log("executing")
+        this.props.handleSignIn()
+    }
+
+    render() {
+        return (
+            <GoogleLogin
+                className="button-size-lg"
+                clientId='1058494963753-drauquf06tsu1jnbl7k13ptrp98s323d.apps.googleusercontent.com'
+                buttonText="Continua con Google"
+                onSuccess={this.handleSignIn}
+                onFailure={this.fail}
+                cookiePolicy={'single_host_origin'}
+                isSignedIn={false}
+            />
+        )
+    }
 }
 
 export default GoogleSignIn;
