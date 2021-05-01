@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter, Redirect, Route } from "react-router-dom";
+import { BrowserRouter, Redirect, Route, Router } from "react-router-dom";
 import LoginScreen from "./components/login/LoginScreen";
 import React from "react";
 import {createBrowserHistory} from "history";
@@ -34,7 +34,10 @@ class App extends React.Component {
         return (
             <div className="App full-screen">
                 <BrowserRouter history={this.history}>
-                        <ProtectedLoginRoute exact path="/login" isSignedIn={this.state.isSignedIn} component={() => <LoginScreen handleSignIn={this.handleSignIn}/>}/>
+                        <Route exact path="/login" isSignedIn={this.state.isSignedIn} 
+                        render={() => {
+                            return this.state.isSignedIn ? <Redirect to="/" /> : <LoginScreen handleSignIn={this.handleSignIn}/>
+                            }}/>
                         <ProtectedRoute exact path="/" isSignedIn={this.state.isSignedIn} component={(Home)}/>
                         <Route exact path="/caca" isSignedIn={this.state.isSignedIn} component={(Home)}/>
                 </BrowserRouter>
