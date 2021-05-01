@@ -1,9 +1,16 @@
 import React from "react";
 import {Redirect, Route} from "react-router";
 
-const PrivateRoute = props => {
-    if (!props.isSignedIn) return <Redirect to={"/login"}/>
-    return <Route {...props}/>
-}
+const ProtectedRoute = ({ component: Comp, isSignedIn, path, ...rest }) => {
+    return (
+      <Route
+        path={path}
+        {...rest}
+        render={(props) => {
+          return isSignedIn ? <Comp {...props} /> : <Redirect to="/login" />;
+        }}
+      />
+    );
+};
 
-export default PrivateRoute
+export default ProtectedRoute;

@@ -1,6 +1,7 @@
 import GoogleLogin from 'react-google-login';
 import '../../styles/CommonStyles.css'
 import React from "react";
+import { withCookies } from 'react-cookie';
 
 class GoogleSignIn extends React.Component {
 
@@ -8,8 +9,10 @@ class GoogleSignIn extends React.Component {
         console.log("Auth failed with google")
     }
 
-    handleSignIn = () => {
+    handleSignIn = (response) => {
         console.log("executing")
+        //TODO: PEGARLE AL BACKEND
+        this.props.cookies.set("sessionId",response.profileObj.googleId,"/")
         this.props.handleSignIn()
     }
 
@@ -22,10 +25,10 @@ class GoogleSignIn extends React.Component {
                 onSuccess={this.handleSignIn}
                 onFailure={this.fail}
                 cookiePolicy={'single_host_origin'}
-                isSignedIn={false}
+                isSignedIn={true}
             />
         )
     }
 }
 
-export default GoogleSignIn;
+export default withCookies(GoogleSignIn);

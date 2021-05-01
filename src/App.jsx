@@ -1,10 +1,10 @@
 import './App.css';
-import {Route, Router} from "react-router-dom";
+import { Route, BrowserRouter } from "react-router-dom";
 import LoginScreen from "./components/login/LoginScreen";
 import React from "react";
 import {createBrowserHistory} from "history";
 import Home from './components/home/home'
-import PrivateRoute from './components/PrivateRoute'
+import ProtectedRoute from './components/PrivateRoute';
 
 class App extends React.Component {
     constructor(props) {
@@ -22,11 +22,10 @@ class App extends React.Component {
     render() {
         return (
             <div className="App full-screen">
-                <Router history={this.history}>
-                    <Route path="/login"
-                           component={() => <LoginScreen handleSignIn={this.handleSignIn}/>}/>
-                    <PrivateRoute isSignedIn={this.state.isSignedIn} path="/home" component={(Home)}/>
-                </Router>
+                <BrowserRouter history={this.history}>
+                        <Route exact path="/login" component={() => <LoginScreen handleSignIn={this.handleSignIn}/>}/>
+                        <ProtectedRoute exact path="/" isSignedIn={this.state.isSignedIn} component={(Home)}/>
+                </BrowserRouter>
             </div>
         );
     }
