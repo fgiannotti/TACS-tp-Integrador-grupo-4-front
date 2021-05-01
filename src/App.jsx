@@ -5,26 +5,27 @@ import React from "react";
 import {createBrowserHistory} from "history";
 import Home from './components/home/home'
 import ProtectedRoute from './components/ProtectedRoute';
-import ProtectedLoginRoute from './components/login/ProtectedLoginRoute';
 
 class App extends React.Component {
     constructor(props) {
         super(props);
 
-        var isSignedInFromOldState = false
+        var isAuthenticatedFromOldState = false
 
         let state = loadState()
         if (state !== undefined && state.isSignedIn !== undefined) {
-            isSignedInFromOldState = state.isSignedIn
+            isAuthenticatedFromOldState = state.isSignedIn
         }
 
-        this.state = { isSignedIn: isSignedInFromOldState }
+        this.state = { isAuthenticated: isAuthenticatedFromOldState }
         this.history = createBrowserHistory();
     }
 
-    handleSignIn = () => {
+    handleSignIn = (isAuthenticated,isAuthorized,isAdmin) => {
         this.setState({
-            isSignedIn: true
+            isAuthenticated: isAuthenticated,
+            isAuthorized: isAuthorized,
+            isAdmin:isAdmin
         })
         saveState(this.state)
         return <Redirect to="/caca"/>
@@ -39,7 +40,7 @@ class App extends React.Component {
                             return this.state.isSignedIn ? <Redirect to="/" /> : <LoginScreen handleSignIn={this.handleSignIn}/>
                             }}/>
                         <ProtectedRoute exact path="/" isSignedIn={this.state.isSignedIn} component={(Home)}/>
-                        <Route exact path="/caca" isSignedIn={this.state.isSignedIn} component={(Home)}/>
+                        <ProtectedRoute exact path="/caca" isSignedIn={this.state.isSignedIn} component={() => <Home {...this.state}/> }/>
                 </BrowserRouter>
             </div>
         );
