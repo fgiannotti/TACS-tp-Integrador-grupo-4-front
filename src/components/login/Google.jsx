@@ -1,7 +1,8 @@
 import GoogleLogin from 'react-google-login';
 import '../../styles/CommonStyles.css'
 import React from "react";
-import { withCookies } from 'react-cookie';
+import {withCookies} from 'react-cookie';
+
 const axios = require('axios').default;
 
 class GoogleSignIn extends React.Component {
@@ -10,21 +11,19 @@ class GoogleSignIn extends React.Component {
         console.log("Auth failed with google")
     }
 
-    onLoginSuccess = (response) => {
-            //TODO: PEGARLE AL BACKEND
-            const userInfo = response.profileObj;
-            const userInfoDto = {"name": userInfo.name, "email": userInfo.email, "image_url": userInfo.image_url,"google_id": userInfo.google_id}
-            axios.post("http://localhost:9000/login",userInfoDto).then(function (response) {
-                console.log(response);
-                const {isAuthenticated, isAuthorized, isAdmin} = response;
-                console.log(isAuthenticated);
-                this.props.cookies.set("sessionId",userInfo.googleId,"/")
-                this.props.handleSignIn(isAuthenticated,isAuthorized,isAdmin)
-              })
-              .catch(function (error) {
-                console.log(error);
-              });
+    onLoginSuccess = async (response) => {
+        const userInfo = response.profileObj;
+        const userInfoDto = {
+            "name": userInfo.name,
+            "email": userInfo.email,
+            "image_url": userInfo.imageUrl,
+            "google_id": userInfo.googleId
         }
+        const loginResponse = await axios.post("http://localhost:9000/login", userInfoDto)
+        const {is_authenticated, is_authorized, is_admin} = loginResponse.data;
+
+        this.props.handleSignIn(is_authenticated, is_authorized, is_admin)
+    }
 
     render() {
         return (
@@ -41,4 +40,4 @@ class GoogleSignIn extends React.Component {
     }
 }
 
-export default withCookies(GoogleSignIn);
+export default GoogleSignIn;

@@ -1,10 +1,11 @@
 import './App.css';
-import { BrowserRouter, Redirect, Route, Router } from "react-router-dom";
+import {BrowserRouter, Redirect, Route} from "react-router-dom";
 import LoginScreen from "./components/login/LoginScreen";
 import React from "react";
 import {createBrowserHistory} from "history";
 import Home from './components/home/home'
 import ProtectedRoute from './components/ProtectedRoute';
+import {withCookies} from "react-cookie";
 
 class App extends React.Component {
     constructor(props) {
@@ -27,20 +28,20 @@ class App extends React.Component {
             isAuthorized: isAuthorized,
             isAdmin:isAdmin
         })
-        saveState(this.state)
         return <Redirect to="/caca"/>
     }
 
     render() {
+
         return (
             <div className="App full-screen">
                 <BrowserRouter history={this.history}>
-                        <Route exact path="/login" isSignedIn={this.state.isSignedIn} 
+                        <Route exact path="/login"
                         render={() => {
-                            return this.state.isSignedIn ? <Redirect to="/" /> : <LoginScreen handleSignIn={this.handleSignIn}/>
+                            return this.state.isAuthenticated ? <Redirect to="/" /> : <LoginScreen handleSignIn={this.handleSignIn}/>
                             }}/>
-                        <ProtectedRoute exact path="/" isSignedIn={this.state.isSignedIn} component={(Home)}/>
-                        <ProtectedRoute exact path="/caca" isSignedIn={this.state.isSignedIn} component={() => <Home {...this.state}/> }/>
+                        <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/" component={(Home)}/>
+                        <ProtectedRoute  isSignedIn={this.state.isAuthenticated} exact path="/caca" component={() => <Home {...this.state}/> }/>
                 </BrowserRouter>
             </div>
         );
@@ -60,7 +61,7 @@ const loadState = () => {
         console.log(e)
     }
   };
-  
+
   const saveState = (state) => {
     try {
       const serializedState = JSON.stringify(state);
@@ -70,4 +71,4 @@ const loadState = () => {
     }
   };
 
-export default App;
+export default withCookies(App);
