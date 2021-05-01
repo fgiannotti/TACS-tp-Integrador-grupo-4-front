@@ -15,6 +15,7 @@ class LoginScreen extends React.Component {
                 backgroundRepeat: 'no-repeat',
                 backgroundImage: `url(${background})`
             }}>
+                        {console.log("loading login")}
                 <div className="card p1">
                     <Typography variant="h3" component="h3" className="m2 font">
                         Superamigos

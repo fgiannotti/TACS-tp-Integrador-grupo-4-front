@@ -9,12 +9,12 @@ class GoogleSignIn extends React.Component {
         console.log("Auth failed with google")
     }
 
-    handleSignIn = (response) => {
-        console.log("executing")
-        //TODO: PEGARLE AL BACKEND
-        this.props.cookies.set("sessionId",response.profileObj.googleId,"/")
-        this.props.handleSignIn()
-    }
+        handleSignIn = (response) => {
+            //TODO: PEGARLE AL BACKEND
+            this.props.cookies.set("sessionId",response.profileObj.googleId,"/")
+            this.props.handleSignIn()
+            
+        }
 
     render() {
         return (
@@ -25,7 +25,7 @@ class GoogleSignIn extends React.Component {
                 onSuccess={this.handleSignIn}
                 onFailure={this.fail}
                 cookiePolicy={'single_host_origin'}
-                isSignedIn={true}
+                isSignedIn={false}
             />
         )
     }
