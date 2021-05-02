@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.11.4",
+    "@material-ui/icons": "^4.11.2",
+    "@material/textfield": "^6.0.0",
     "@testing-library/jest-dom": "^5.12.0",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
@@ -42,6 +45,10 @@
     "@babel/core": "^7.13.16",
     "@babel/preset-env": "^7.13.15",
     "@babel/preset-react": "^7.13.13",
-    "react-router-dom": "^5.2.0"
+    "@material/card": "^11.0.0",
+    "material-components-web": "6.0.0",
+    "react-router-dom": "^5.2.0",
+    "sass": "1.25.0",
+    "svg-url-loader": "^7.1.1"
   }
 }
