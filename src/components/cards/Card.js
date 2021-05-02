@@ -5,15 +5,15 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
-import { ReactComponent as BrainIcon } from '../resources/images/brain.svg';
-import SvgIcon from '@material-ui/core/SvgIcon';
+
+import AttributeGrid from './AttributeGrid'
 
 var useStyles = makeStyles({
     root: {
-        maxWidth: 275,
+        maxWidth: 200,
     },
     media: {
-        height: 225,
+        height: 150,
     },
 });
 class Cards extends React.Component {
@@ -22,25 +22,25 @@ class Cards extends React.Component {
             <CardActionArea>
                 <CardMedia
                     className={this.props.style.media}
-                    image="https:\/\/www.superherodb.com\/pictures2\/portraits\/10\/100\/10441.jpg"
-                    title="Contemplative Reptile"
+                    image={this.props.data["image_url"]}
+                    title={this.props.data["name"]}
                 />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
-                        Batman
+                        {this.props.data["name"]}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
-                        <SvgIcon component={BrainIcon} viewBox="0 0 600 476.6" />
+                        < AttributeGrid data={this.props.data["power_stats"]}/>
                     </Typography>
                 </CardContent>
             </CardActionArea>
 
         </Card>);
-}
+    }
 }
 
 export default function MediaCard() {
     const classes = useStyles();
 
-    return (<Cards style={classes}/>);
+    return (<Cards style={classes} data={{"name": "Batman", "power_stats" : [{"name": "combat", "value": 60}, {"name": "intelligence", "value": 38}, {"name": "strength", "value": 100}, {"name": "power", "value": 24}, {"name": "speed", "value": 17}, {"name": "height", "value": 10}, {"name": "weight", "value": 20}], "image_url": "https:\\/\\/www.superherodb.com\\/pictures2\\/portraits\\/10\\/100\\/10441.jpg"}}/>);
 }
