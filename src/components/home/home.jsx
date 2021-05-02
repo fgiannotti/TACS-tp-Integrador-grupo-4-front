@@ -1,13 +1,13 @@
 import React from 'react';
-import GoogleSignOut from '../login/GoogleSignOut';
+import '../../styles/Home.css';
+import Header from  '../home/Header';
 
 class Home extends React.Component {
     render() {
         return (
-            <div style={{backgroundColor:'#ffcc80'}}>
-                <h1>Homeee</h1>
-                <GoogleSignOut/>
-                {this.props.isAdmin ? <div style={{backgroundColor:'#ffcc88',minHeight:'300px'}}/>: <React.Fragment/>}
+            <div>
+              <Header/>
+              {this.props.isAdmin ? console.log("admin"): <React.Fragment/>}
             </div>
         )
     }
