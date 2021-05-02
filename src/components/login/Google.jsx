@@ -40,4 +40,4 @@ class GoogleSignIn extends React.Component {
     }
 }
 
-export default GoogleSignIn;
+export default withCookies(GoogleSignIn);

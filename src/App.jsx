@@ -14,15 +14,20 @@ class App extends React.Component {
         var isAuthenticatedFromOldState = false
 
         let state = loadState()
-        if (state !== undefined && state.isSignedIn !== undefined) {
-            isAuthenticatedFromOldState = state.isSignedIn
+        if (state !== undefined && state.isAuthenticated !== undefined) {
+            isAuthenticatedFromOldState = state.isAuthenticated
         }
-
+        
         this.state = { isAuthenticated: isAuthenticatedFromOldState }
         this.history = createBrowserHistory();
     }
 
     handleSignIn = (isAuthenticated,isAuthorized,isAdmin) => {
+        saveState({
+            isAuthenticated: isAuthenticated,
+            isAuthorized: isAuthorized,
+            isAdmin:isAdmin
+        })
         this.setState({
             isAuthenticated: isAuthenticated,
             isAuthorized: isAuthorized,
