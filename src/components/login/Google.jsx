@@ -2,10 +2,11 @@ import GoogleLogin from 'react-google-login';
 import '../../styles/CommonStyles.css'
 import React from "react";
 import {withCookies} from 'react-cookie';
-
-const axios = require('axios').default;
+import SuperfriendsBackendClient from '../../SuperfriendsBackendClient'
 
 class GoogleSignIn extends React.Component {
+
+    superfriendsBackendClient = new SuperfriendsBackendClient()
 
     fail() {
         console.log("Auth failed with google")
@@ -19,8 +20,8 @@ class GoogleSignIn extends React.Component {
             "image_url": userInfo.imageUrl,
             "google_id": userInfo.googleId
         }
-        const loginResponse = await axios.post("http://localhost:9000/login", userInfoDto)
-        const {is_authenticated, is_authorized, is_admin} = loginResponse.data;
+        const loginResponse = await this.superfriendsBackendClient.postLogin(userInfoDto)
+        const {is_authenticated, is_authorized, is_admin} = loginResponse;
 
         this.props.handleSignIn(is_authenticated, is_authorized, is_admin)
     }
