@@ -1,0 +1,25 @@
+.p1 {
+    padding: 1%;
+}
+
+.p2 {
+    padding: 4%;
+}
+
+.m1 {
+    margin: 2%;
+}
+
+.m2 {
+    margin: 7%;
+}
+
+.font {
+    font-weight: bold;
+    font-family: Lato, sans-serif;
+}
+
+.button-size-lg {
+    width: 36%;
+    height:18%;
+}
