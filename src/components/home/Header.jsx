@@ -43,7 +43,7 @@ const Header = () => {
   const classes = useStyles();
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" color='secondary'>
       <Toolbar>
 
         <List
@@ -77,7 +77,7 @@ const Header = () => {
               <GoogleSignOut/>
               </ListItemText>
             </ListItem>
-            
+
         </List>
 
       </Toolbar>

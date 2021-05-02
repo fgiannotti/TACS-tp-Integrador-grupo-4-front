@@ -1,12 +1,15 @@
-import './App.css';
-import {BrowserRouter, Redirect, Route} from "react-router-dom";
-import LoginScreen from "./components/login/LoginScreen";
-import Header from "./components/home/Header";
 import React from "react";
-import {createBrowserHistory} from "history";
-import Home from './components/home/Home'
-import ProtectedRoute from './components/ProtectedRoute';
+import {BrowserRouter, Redirect, Route} from "react-router-dom";
 import {withCookies} from "react-cookie";
+import {createBrowserHistory} from "history";
+
+import Home from './components/home/Home';
+import Header from './components/home/Header';
+
+import LoginScreen from "./components/login/LoginScreen";
+import ProtectedRoute from './components/ProtectedRoute';
+import './App.css';
+
 
 class App extends React.Component {
 
