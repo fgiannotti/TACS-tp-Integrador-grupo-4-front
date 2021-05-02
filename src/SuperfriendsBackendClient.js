@@ -10,7 +10,7 @@ class SuperfriendsBackendClient {
     }
 
     getCardsByName = (name) => {
-        return axios.get(this.backendUrl + "/cards?name=" + name)
+        return axios.get(this.backendUrl + "/cards/" + name + "/name")
             .then((response) => response.data)
             .catch((e) => console.log("Error fetching cards by name: " + e))
     }
