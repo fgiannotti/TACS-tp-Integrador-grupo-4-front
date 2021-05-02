@@ -1,0 +1,14 @@
+.card {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: column;
+    width: 30%;
+    height: 40%;
+    border-radius: 20%;
+    background-color: #ffcc80;
+    box-shadow: 8px 8px 8px 8px rgba(0,0,0,0.2), 8px 8px 8px 8px rgba(0, 0, 0, 0.2);
+    border-width: medium;
+    border-style: solid;
+    border-color: #1a237e;
+}
