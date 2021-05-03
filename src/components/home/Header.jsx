@@ -33,7 +33,7 @@ const useStyles = makeStyles({
 });
 
 const navLinks = [
-  { title: `mazos`, path: `/product` },
+  { title: `mazos`, path: `/decks` },
   { title: `jugar`, path: `/blog` },
   { title: `partidas`, path: `/contact` },
   { title: `faq`, path: `/faq` }

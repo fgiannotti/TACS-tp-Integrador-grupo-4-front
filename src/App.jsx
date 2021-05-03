@@ -9,6 +9,7 @@ import Header from './components/home/Header';
 import LoginScreen from "./components/login/LoginScreen";
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
+import DeckHome from "./components/decks/DeckHome";
 
 
 class App extends React.Component {
@@ -34,7 +35,6 @@ class App extends React.Component {
             isAuthorized: isAuthorized,
             isAdmin:isAdmin
         })
-        return <Redirect to="/caca"/>
     }
 
     render() {
@@ -47,7 +47,8 @@ class App extends React.Component {
                             return this.state.isAuthenticated ? <Redirect to="/" /> : <LoginScreen handleSignIn={this.handleSignIn}/>
                             }}/>
                         <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/" component={() => <Home isAdmin={this.state.isAdmin} />}/>
-                        <Route isSignedIn={this.state.isAuthenticated} exact path="/test" render={() => <Header></Header>} />
+                        <Route isSignedIn={this.state.isAuthenticated} exact path="/test" render={() => <DeckHome isAdmin={this.state.isAdmin} />} />
+                        <Route exact path="/decks" component={ () => <DeckHome isAdmin={this.state.isAdmin} />} />
                 </BrowserRouter>
             </div>
         );
