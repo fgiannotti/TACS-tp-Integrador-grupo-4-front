@@ -1,0 +1,7 @@
+body {
+    background-color:'#ffcc80';
+}
+.bodyText {
+    text-align: justify;
+    text-justify: inter-word;
+}

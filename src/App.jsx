@@ -1,24 +1,25 @@
-import './App.css';
-import {BrowserRouter, Redirect, Route} from "react-router-dom";
-import LoginScreen from "./components/login/LoginScreen";
 import React from "react";
-import {createBrowserHistory} from "history";
-import Home from './components/home/Home'
-import ProtectedRoute from './components/ProtectedRoute';
+import {BrowserRouter, Redirect, Route} from "react-router-dom";
 import {withCookies} from "react-cookie";
+import {createBrowserHistory} from "history";
+
+import Home from './components/home/Home';
+import Header from './components/home/Header';
+
+import LoginScreen from "./components/login/LoginScreen";
+import ProtectedRoute from './components/ProtectedRoute';
+import './App.css';
+
 
 class App extends React.Component {
+
     constructor(props) {
         super(props);
 
-        var isAuthenticatedFromOldState = false
+        let isAuthenticated = validateAuthentication()
 
-        let state = loadState()
-        if (state !== undefined && state.isAuthenticated !== undefined) {
-            isAuthenticatedFromOldState = state.isAuthenticated
-        }
-        
-        this.state = { isAuthenticated: isAuthenticatedFromOldState }
+
+        this.state = { isAuthenticated: isAuthenticated }
         this.history = createBrowserHistory();
     }
 
@@ -45,7 +46,8 @@ class App extends React.Component {
                         render={() => {
                             return this.state.isAuthenticated ? <Redirect to="/" /> : <LoginScreen handleSignIn={this.handleSignIn}/>
                             }}/>
-                        <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/" component={(Home)}/>
+                        <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/" component={() => <Home isAdmin={this.state.isAdmin} />}/>
+                        <Route isSignedIn={this.state.isAuthenticated} exact path="/test" render={() => <Header></Header>} />
                 </BrowserRouter>
             </div>
         );
@@ -53,6 +55,15 @@ class App extends React.Component {
 
 }
 
+const validateAuthentication = () => {
+  let isAuthenticatedFromOldState = false
+
+  let state = loadState()
+  if (state !== undefined && state.isAuthenticated !== undefined) {
+      isAuthenticatedFromOldState = state.isAuthenticated
+  }
+  return isAuthenticatedFromOldState
+}
 const loadState = () => {
     try {
       const serializedState = localStorage.getItem('state');
