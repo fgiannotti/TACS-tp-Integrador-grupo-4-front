@@ -51,7 +51,7 @@ class Home extends React.Component {
                     <br/>En caso de que los dos participantes tengan una cantidad igual de cartas se declarará el empate.
                 </Typography>
             </div>
-
+            <img src='../../styles/cardExample.png' alt='card'/>
 
               {this.props.isAdmin ? console.log("admin"): <React.Fragment/>}
             </div>
