@@ -11,11 +11,10 @@ import AttributeGrid from './AttributeGrid'
 var useStyles = makeStyles({
     root: {
         maxWidth: 200,
-        maxHeight: 300,
         marginTop: 10,
     },
     media: {
-        maxHeight: 100,
+        height: 150,
         paddingTop: "56.25%",
     },
     content: {
