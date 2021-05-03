@@ -22,7 +22,6 @@ class DeckHome extends React.Component {
         document.body.style.backgroundColor = '#ffcc80'
         this.getDecks().then((decksResponse) => {
             this.setState({decks: decksResponse})
-            console.log(decksResponse)
         })
     }
 
@@ -37,11 +36,9 @@ class DeckHome extends React.Component {
     }
 
     onClickDelete = (deckId) => {
-        console.log(deckId);
         this.deckClient.deleteDeck(deckId).then(r => console.log(r))
         this.getDecks().then((decksResponse) => {
             this.setState({decks: decksResponse})
-            console.log(decksResponse)
         })
     }
 
