@@ -2,6 +2,7 @@ import { Card, Typography } from '@material-ui/core';
 import React from 'react';
 import '../../styles/Home.css';
 import Header from  '../home/Header';
+import CardImage from './cardExample.png'
 
 class Home extends React.Component {
 
@@ -51,8 +52,7 @@ class Home extends React.Component {
                     <br/>En caso de que los dos participantes tengan una cantidad igual de cartas se declarará el empate.
                 </Typography>
             </div>
-            <img src='cardExample.png' alt='card'/>
-
+            <img src={CardImage} alt='card' width={'20%'}/>
               {this.props.isAdmin ? console.log("admin"): <React.Fragment/>}
             </div>
         )

@@ -1,8 +1,15 @@
 import React from "react";
 import List from '@material-ui/core/List';
-import {Divider, ListItem, ListItemText, Paper} from "@material-ui/core";
+import {Divider, ListItem, ListItemText, Paper, TextField} from "@material-ui/core";
 import SuperfriendsBackendClient from "../../SuperfriendsBackendClient";
-import Header from  '../home/Header';
+import Header from '../home/Header';
+import Icon from '@material-ui/core/Icon';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import IconButton from '@material-ui/core/IconButton';
+import AddIcon from '@material-ui/icons/Add';
+import '../../styles/DeckHome.css'
 
 class DeckHome extends React.Component {
     constructor(props) {
@@ -26,33 +33,67 @@ class DeckHome extends React.Component {
         return this.deckClient.getDecks()
     }
 
-    onClick = (cosas)=> {
-        console.log(cosas);
-        //TODO: VER COMO TRAERSE LA INFO DEL COMP (deck) para pasarselo a la siguiente vista
+    onClick = (deckId) => {
+        console.log(deckId);
+    }
+
+    onClickDelete = (deckId) => {
+        console.log(deckId);
+        this.deckClient.deleteDeck(deckId).then(r => console.log(r))
+        this.getDecks().then((decksResponse) => {
+            this.setState({decks: decksResponse})
+            console.log(decksResponse)
+        })
     }
 
     render() {
         return (
             <React.Fragment>
-            <Header/>
-            <div style={{display: "flex", placeContent: "center", padding:'16px'}}>
-                <Paper className="container">
-                    <List component="nav" aria-label="main mailbox folders">
-                        {this.state.decks.map((s, i) => (
-                            <React.Fragment key={i}>
-                                <ListItem button key={s.id} onClick={this.onClick}>
-                                    <ListItemText primary={s.name}/>
-                                    <ListItemText style={{textAlign:'end'}} primary={s.card_ids.length+'/'+s.card_ids.length}/>
-                                </ListItem>
-                                <Divider/>
-                            </React.Fragment>
-                        ))
-                        }
-                    </List>
-                </Paper>
-            </div>
+                <Header/>
+                <div className="deck-home">
+                    <div className="search-deck-bar">
+                            <Autocomplete
+                                freeSolo
+                                style={{width: '60vh'}}
+                                id="free-solo-2-demo"
+                                disableClearable
+                                options={this.state.decks.map((deck) => deck.name)}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        label="Search input"
+                                        margin="normal"
+                                        variant="outlined"
+                                        InputProps={{...params.InputProps, type: 'search'}}
+                                    />)}
+                            />
+                        <IconButton edge="end" aria-label="add">
+                            <AddIcon/>
+                        </IconButton>
+                    </div>
+                    <Paper className="container">
+                        <List component="nav" aria-label="main mailbox folders">
+                            {this.state.decks.map((deck, i) => (
+                                <React.Fragment key={i}>
+                                    <ListItem button dense key={deck.id} onClick={() => this.onClick(deck.id)}>
+                                        <ListItemText primary={deck.name}/>
+                                        <ListItemText style={{textAlign: 'end'}}
+                                                      primary={deck.card_ids.length + '/' + deck.card_ids.length}/>
+                                        <ListItemSecondaryAction>
+                                            <IconButton onClick={()=> this.onClickDelete(deck.id)} edge="end" aria-label="delete">
+                                                <DeleteOutlineIcon/>
+                                            </IconButton>
+                                        </ListItemSecondaryAction>
+                                    </ListItem>
+                                    <Divider/>
+                                </React.Fragment>
+                            ))
+                            }
+                        </List>
+                    </Paper>
+                </div>
             </React.Fragment>
-            
+
         )
     }
 }
