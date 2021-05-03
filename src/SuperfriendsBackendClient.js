@@ -16,9 +16,11 @@ class SuperfriendsBackendClient {
     }
 
     getDecks = () => {
-        return axios.get(this.backendUrl + "/decks")
-            .then((response) => response.data)
+        let responseData
+        axios.get(this.backendUrl + "/decks")
+            .then((response) => responseData = response.data)
             .catch((e) => console.log("Error fetching decks: " + e))
+        return  responseData
     }
 
     createDeck = (createDeckDTO) => {
