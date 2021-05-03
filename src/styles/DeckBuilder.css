@@ -1,0 +1,11 @@
+.decks-grid {
+    background-color: #292479;
+    border-radius: 1vw;
+    width: 70vw;
+    min-height: 80vh;
+}
+
+.search-container {
+    padding: 1%;
+    width: 37vw;
+}

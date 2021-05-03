@@ -6,3 +6,10 @@
     justify-content: center;
     height: 100vh;
 }
+
+.flex-row-center {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+}

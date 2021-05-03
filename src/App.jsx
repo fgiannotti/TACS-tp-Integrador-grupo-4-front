@@ -8,6 +8,7 @@ import Header from './components/home/Header';
 import LoginScreen from "./components/login/LoginScreen";
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
+import DeckBuilder from "./components/deck_builder/DeckBuilder";
 
 class App extends React.Component {
 
@@ -47,6 +48,7 @@ class App extends React.Component {
                             }}/>
                         <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/" component={() => <Home isAdmin={this.state.isAdmin} />}/>
                         <Route isSignedIn={this.state.isAuthenticated} exact path="/test" render={() => <Header></Header>} />
+                        <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/deck-builder" component={(DeckBuilder)}/>
                 </BrowserRouter>
             </div>
         );
