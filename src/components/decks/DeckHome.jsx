@@ -4,14 +4,26 @@ import {Divider, ListItem, ListItemText, Paper} from "@material-ui/core";
 import SuperfriendsBackendClient from "../../SuperfriendsBackendClient";
 
 class DeckHome extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            decks: []
+        }
+    }
+
     componentDidMount() {
         document.body.style.backgroundColor = '#ffcc80'
+        this.getDecks().then((decksResponse) => {
+            this.setState({decks: decksResponse})
+            console.log(decksResponse)
+        })
     }
 
     deckClient = new SuperfriendsBackendClient()
 
-    getDecks = () => {
-       return this.deckClient.getDecks()
+    getDecks = async () => {
+        let response = await this.deckClient.getDecks()
+        return response.data
     }
 
     render() {
@@ -19,24 +31,15 @@ class DeckHome extends React.Component {
             <div style={{display: "flex", placeContent: "center"}}>
                 <Paper className="container">
                     <List component="nav" aria-label="main mailbox folders">
-                        {this.getDecks().map(s =>
-                            <ListItem button>
-                            <ListItemText primary={s.name}/>
-                            </ListItem>,
-                            <Divider/>
-                            )
+                        {this.state.decks.map((s, i) => (
+                            <React.Fragment>
+                                <ListItem button key={i}>
+                                    <ListItemText primary={s.name}/>
+                                </ListItem>
+                                <Divider/>
+                            </React.Fragment>
+                        ))
                         }
-                        <ListItem button>
-                            <ListItemText primary="Drafts"/>
-                        </ListItem>
-                        <Divider/>
-                        <ListItem button>
-                            <ListItemText primary="Trash"/>
-                        </ListItem>
-                        <Divider/>
-                        <ListItem button component="a" href="#simple-list">
-                            <ListItemText primary="Spam"/>
-                        </ListItem>
                     </List>
                 </Paper>
             </div>
