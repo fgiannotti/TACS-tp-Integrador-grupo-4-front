@@ -1,4 +1,7 @@
 body {
     background-color:'#ffcc80';
-    font-family:'Open Sans'
+}
+.bodyText {
+    text-align: justify;
+    text-justify: inter-word;
 }
