@@ -44,7 +44,13 @@ class DeckNameAndSave extends React.Component {
                         <EditIcon color='primary'/>
                     </Grid>
                     <Grid item>
-                        <TextField helperText={this.state.helperText} error={this.state.error} label='Nombre del mazo' size='small' variant='outlined' onChange={this.handleDeckNameChange}/>
+                        <TextField
+                        helperText={this.state.helperText} 
+                        error={this.state.error} 
+                        label='Nombre del mazo' 
+                        size='small' 
+                        variant='outlined' 
+                        onChange={this.handleDeckNameChange}/>
                     </Grid>
                 </Grid>
                 <Fab variant="extended" color='primary' onClick={this.props.saveDeckAction}>
