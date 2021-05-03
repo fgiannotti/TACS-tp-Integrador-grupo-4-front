@@ -9,15 +9,15 @@ class SuperfriendsBackendClient {
             .catch((e) => console.log("Error fetching user information in login: " + e))
     }
 
-    getCardsByName = (name) => {
-        return axios.get(this.backendUrl + "/cards/" + name + "/name")
-            .then((response) => response.data)
+    getCardsByName = async (name) => {
+        let response = await axios.get(this.backendUrl + "/cards/" + name + "/name")
             .catch((e) => console.log("Error fetching cards by name: " + e))
+        return response.data
     }
 
-    getDecks = () => {
-        return axios.get(this.backendUrl + "/decks")
-            .catch((e) => console.log("Error fetching decks: " + e))
+    getDecks = async () => {
+        let response = await axios.get(this.backendUrl + "/decks").catch((e) => console.log("Error fetching decks: " + e))
+        return response.data
     }
 
     createDeck = (createDeckDTO) => {

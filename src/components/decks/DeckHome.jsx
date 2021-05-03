@@ -21,9 +21,8 @@ class DeckHome extends React.Component {
 
     deckClient = new SuperfriendsBackendClient()
 
-    getDecks = async () => {
-        let response = await this.deckClient.getDecks()
-        return response.data
+    getDecks = () => {
+        return this.deckClient.getDecks()
     }
 
     render() {
@@ -32,8 +31,8 @@ class DeckHome extends React.Component {
                 <Paper className="container">
                     <List component="nav" aria-label="main mailbox folders">
                         {this.state.decks.map((s, i) => (
-                            <React.Fragment>
-                                <ListItem button key={i}>
+                            <React.Fragment key={i}>
+                                <ListItem button>
                                     <ListItemText primary={s.name}/>
                                 </ListItem>
                                 <Divider/>
