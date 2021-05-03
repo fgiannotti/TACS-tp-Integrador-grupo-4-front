@@ -77,6 +77,8 @@ class DeckBuilder extends React.Component {
         const deckName = this.state.deckName
         const deckHeroesIds = this.state.selectedHeroList.map(hero => hero["id"])
 
+        console.log(deckHeroesIds)
+
         this.setState({
             redirect: true
         })
