@@ -1,4 +1,4 @@
-import GoogleLogin from 'react-google-login';
+import { GoogleLogin } from 'react-google-login';
 import '../../styles/CommonStyles.css'
 import React from "react";
 import {withCookies} from 'react-cookie';

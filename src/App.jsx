@@ -3,7 +3,7 @@ import {BrowserRouter, Redirect, Route} from "react-router-dom";
 import LoginScreen from "./components/login/LoginScreen";
 import React from "react";
 import {createBrowserHistory} from "history";
-import Home from './components/home/home'
+import Home from './components/home/Home'
 import ProtectedRoute from './components/ProtectedRoute';
 import {withCookies} from "react-cookie";
 
@@ -46,7 +46,6 @@ class App extends React.Component {
                             return this.state.isAuthenticated ? <Redirect to="/" /> : <LoginScreen handleSignIn={this.handleSignIn}/>
                             }}/>
                         <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/" component={(Home)}/>
-                        <ProtectedRoute  isSignedIn={this.state.isAuthenticated} exact path="/caca" component={() => <Home {...this.state}/> }/>
                 </BrowserRouter>
             </div>
         );
