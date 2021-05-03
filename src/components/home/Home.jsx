@@ -14,7 +14,7 @@ class Home extends React.Component {
             <div>
               <Header/>
 
-              <div style={{display:'flex',margin:'16px',placeContent: 'center'}}>
+              <div style={{display:'flex',margin:'16px', placeContent: 'center'}}>
                 <Card style={{ padding: '4px',backgroundColor: '#ffbe5c'}}>
 
                     <Typography variant="h3" component="h3">
@@ -26,7 +26,7 @@ class Home extends React.Component {
             <Typography align={'left'} className="bodyText" component="p" paragraph={true} style={{padding:'32px',fontWeight: 'bold'}}>
                 ¿Cómo jugar?
             </Typography>
-            <div className='container' style={{width: '80%'}}>
+            <div style={{width: '80%'}}>
                 <Typography align={'justify'} className="bodyText" component="p" paragraph={true} style={{paddingLeft:'32px'}}>
 
                     La partida se desarrolla entre 2 jugadores en modalidad uno contra uno.
@@ -51,7 +51,7 @@ class Home extends React.Component {
                     <br/>En caso de que los dos participantes tengan una cantidad igual de cartas se declarará el empate.
                 </Typography>
             </div>
-            <img src='../../styles/cardExample.png' alt='card'/>
+            <img src='cardExample.png' alt='card'/>
 
               {this.props.isAdmin ? console.log("admin"): <React.Fragment/>}
             </div>
