@@ -14,6 +14,7 @@ var useStyles = makeStyles({
     },
     media: {
         height: 150,
+        paddingTop: "56.25%",
     },
 });
 class Cards extends React.Component {
@@ -39,8 +40,7 @@ class Cards extends React.Component {
     }
 }
 
-export default function MediaCard() {
+export default function MediaCard(props) {
     const classes = useStyles();
-
-    return (<Cards style={classes} data={{"name": "Batman", "power_stats" : [{"name": "combat", "value": 60}, {"name": "intelligence", "value": 38}, {"name": "strength", "value": 100}, {"name": "power", "value": 24}, {"name": "speed", "value": 17}, {"name": "height", "value": 10}, {"name": "weight", "value": 20}], "image_url": "https:\\/\\/www.superherodb.com\\/pictures2\\/portraits\\/10\\/100\\/10441.jpg"}}/>);
+    return (<Cards style={classes} data={props.data}/>);
 }

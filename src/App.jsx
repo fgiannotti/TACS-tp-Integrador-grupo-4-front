@@ -3,9 +3,10 @@ import {BrowserRouter, Redirect, Route} from "react-router-dom";
 import LoginScreen from "./components/login/LoginScreen";
 import React from "react";
 import {createBrowserHistory} from "history";
-import Home from './components/home/Home'
+import Home from './components/home/home'
 import ProtectedRoute from './components/ProtectedRoute';
 import {withCookies} from "react-cookie";
+import CardSearch from "./components/card_finder/CardSearch";
 
 class App extends React.Component {
     constructor(props) {
@@ -41,6 +42,7 @@ class App extends React.Component {
         return (
             <div className="App full-screen">
                 <BrowserRouter history={this.history}>
+                        <Route exact path="/test" component={(CardSearch)}/>
                         <Route exact path="/login"
                         render={() => {
                             return this.state.isAuthenticated ? <Redirect to="/" /> : <LoginScreen handleSignIn={this.handleSignIn}/>
