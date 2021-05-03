@@ -1,24 +1,23 @@
-import './App.css';
-import {BrowserRouter, Redirect, Route} from "react-router-dom";
-import LoginScreen from "./components/login/LoginScreen";
 import React from "react";
+import {BrowserRouter, Redirect, Route} from "react-router-dom";
 import {createBrowserHistory} from "history";
-import Home from './components/home/home'
-import ProtectedRoute from './components/ProtectedRoute';
 import {withCookies} from "react-cookie";
+import CardSearch from "./components/card_finder/CardSearch";
+import Home from './components/home/Home';
+import Header from './components/home/Header';
+import LoginScreen from "./components/login/LoginScreen";
+import ProtectedRoute from './components/ProtectedRoute';
+import './App.css';
 
 class App extends React.Component {
+
     constructor(props) {
         super(props);
 
-        var isAuthenticatedFromOldState = false
+        let isAuthenticated = validateAuthentication()
 
-        let state = loadState()
-        if (state !== undefined && state.isAuthenticated !== undefined) {
-            isAuthenticatedFromOldState = state.isAuthenticated
-        }
-        
-        this.state = { isAuthenticated: isAuthenticatedFromOldState }
+
+        this.state = { isAuthenticated: isAuthenticated }
         this.history = createBrowserHistory();
     }
 
@@ -41,12 +40,13 @@ class App extends React.Component {
         return (
             <div className="App full-screen">
                 <BrowserRouter history={this.history}>
+                        <Route exact path="/cards" component={(CardSearch)}/>
                         <Route exact path="/login"
                         render={() => {
                             return this.state.isAuthenticated ? <Redirect to="/" /> : <LoginScreen handleSignIn={this.handleSignIn}/>
                             }}/>
-                        <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/" component={(Home)}/>
-                        <ProtectedRoute  isSignedIn={this.state.isAuthenticated} exact path="/caca" component={() => <Home {...this.state}/> }/>
+                        <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/" component={() => <Home isAdmin={this.state.isAdmin} />}/>
+                        <Route isSignedIn={this.state.isAuthenticated} exact path="/test" render={() => <Header></Header>} />
                 </BrowserRouter>
             </div>
         );
@@ -54,6 +54,15 @@ class App extends React.Component {
 
 }
 
+const validateAuthentication = () => {
+  let isAuthenticatedFromOldState = false
+
+  let state = loadState()
+  if (state !== undefined && state.isAuthenticated !== undefined) {
+      isAuthenticatedFromOldState = state.isAuthenticated
+  }
+  return isAuthenticatedFromOldState
+}
 const loadState = () => {
     try {
       const serializedState = localStorage.getItem('state');

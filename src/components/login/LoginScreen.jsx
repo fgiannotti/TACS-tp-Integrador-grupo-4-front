@@ -1,5 +1,5 @@
 import React from 'react';
-import GoogleSignIn from './Google';
+import GoogleSignIn from './GoogleSignIn';
 import {Typography} from "@material-ui/core";
 import '../../styles/CommonLayoutsFlex.css'
 import '../../styles/CommonStyles.css'
