@@ -17,7 +17,7 @@ var useStyles = makeStyles({
         paddingTop: "56.25%",
     },
 });
-class Cards extends React.Component {
+class HeroCard extends React.Component {
     render() {
         return (<Card className={this.props.style.root}>
             <CardActionArea>
@@ -42,5 +42,5 @@ class Cards extends React.Component {
 
 export default function MediaCard(props) {
     const classes = useStyles();
-    return (<Cards style={classes} data={props.data}/>);
+    return (<HeroCard style={classes} data={props.data}/>);
 }
