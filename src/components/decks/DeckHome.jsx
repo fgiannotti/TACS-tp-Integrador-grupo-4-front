@@ -35,8 +35,8 @@ class DeckHome extends React.Component {
         console.log(deckId);
     }
 
-    onClickDelete = (deckId) => {
-        this.deckClient.deleteDeck(deckId).then(r => console.log(r))
+    onClickDelete = async (deckId) => {
+        await this.deckClient.deleteDeck(deckId).then(r => console.log(r))
         this.getDecks().then((decksResponse) => {
             this.setState({decks: decksResponse})
         })
