@@ -145,7 +145,7 @@ class DeckBuilder extends React.Component {
             return <Redirect to="/decks"/>
         }
         return (
-            <>
+            <React.Fragment>
                 <div className='flex-row-center'>
                     <div className='search-container'>
                         <CardSearch onClickBuilder={this.addSelectedHero}/>
@@ -178,7 +178,7 @@ class DeckBuilder extends React.Component {
                         </Button>
                     </DialogActions>
                 </Dialog>
-            </>
+        </React.Fragment>
         );
     }
 

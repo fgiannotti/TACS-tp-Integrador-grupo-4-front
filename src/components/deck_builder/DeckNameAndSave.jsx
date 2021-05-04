@@ -14,12 +14,11 @@ class DeckNameAndSave extends React.Component {
             error: true,
             helperText: 'Debe ingresar el nombre del mazo'
         }
-        this.handleDeckNameChange = this.handleDeckNameChange.bind(true);
     }
 
     handleDeckNameChange = (event) => {
         const deckName = event.target.value;
-        if(deckName.length) {
+        if (deckName.length) {
             this.setState({
                 error: false,
                 helperText: ''
@@ -49,7 +48,7 @@ class DeckNameAndSave extends React.Component {
                         error={this.state.error} 
                         label='Nombre del mazo' 
                         size='small' 
-                        value={this.props.deckName}
+                        value={this.props.deckName ?? ''}
                         variant='outlined' 
                         onChange={this.handleDeckNameChange}/>
                     </Grid>
