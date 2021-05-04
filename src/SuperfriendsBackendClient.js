@@ -9,16 +9,28 @@ class SuperfriendsBackendClient {
             .catch((e) => console.log("Error fetching user information in login: " + e))
     }
 
-    getCardsByName = (name) => {
-        return axios.get(this.backendUrl + "/cards/" + name + "/name")
-            .then((response) => response.data)
-            .catch((e) => console.log("Error fetching cards by name: " + e))
+    getCardById = async (id) => {
+        let response = await axios.get(this.backendUrl + "/cards/" + id + "/id")
+            .catch((e) => console.log("Error fetching cards by id: " + e))
+        return response.data
     }
 
-    getDecks = () => {
-        return axios.get(this.backendUrl + "/decks")
-            .then((response) => response.data)
-            .catch((e) => console.log("Error fetching decks: " + e))
+
+    getHerosByCardIds = async (cardIds) => {
+        const promises = cardIds.map(cardId => this.getCardById(cardId));
+        const cards = await Promise.all(promises);
+
+        return cards.filter(card => card);
+    }
+
+    getCardsByName = async (name) => {
+        let response = await axios.get(this.backendUrl + "/cards/" + name + "/name").catch((e) => console.log("Error fetching cards by name: " + e))
+        return response.data
+    }
+
+    getDecks = async () => {
+        let response = await axios.get(this.backendUrl + "/decks").catch((e) => console.log("Error fetching decks: " + e))
+        return response.data
     }
 
     createDeck = (createDeckDTO) => {
@@ -29,7 +41,6 @@ class SuperfriendsBackendClient {
 
     updateDeck = (deckId, updateDeckDTO) => {
         return axios.put(this.backendUrl + "/decks/" + deckId, updateDeckDTO)
-            .then((response) => console.log(response))
             .catch((e) => console.log("Error updating deck with id :" + deckId + "   " + e))
     }
 

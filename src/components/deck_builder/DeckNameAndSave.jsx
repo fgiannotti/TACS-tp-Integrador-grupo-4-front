@@ -1,6 +1,6 @@
 import React from 'react';
 import EditIcon from '@material-ui/icons/Edit';
-import AddIcon from '@material-ui/icons/Add';
+import SaveIcon from '@material-ui/icons/Save';
 import {Grid, TextField, Fab } from '@material-ui/core';
 import '../../styles/CommonLayoutsFlex.css';
 import '../../styles/CommonStyles.css';
@@ -49,12 +49,13 @@ class DeckNameAndSave extends React.Component {
                         error={this.state.error} 
                         label='Nombre del mazo' 
                         size='small' 
+                        value={this.props.deckName}
                         variant='outlined' 
                         onChange={this.handleDeckNameChange}/>
                     </Grid>
                 </Grid>
                 <Fab variant="extended" color='primary' onClick={this.props.saveDeckAction}>
-                    <AddIcon />
+                    <SaveIcon />
                 </Fab>
             </div>
         )

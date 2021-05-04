@@ -4,10 +4,10 @@ import {createBrowserHistory} from "history";
 import {withCookies} from "react-cookie";
 import CardSearch from "./components/card_finder/CardSearch";
 import Home from './components/home/Home';
-import Header from './components/home/Header';
 import LoginScreen from "./components/login/LoginScreen";
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
+import DeckHome from "./components/decks/DeckHome";
 import DeckBuilder from "./components/deck_builder/DeckBuilder";
 
 class App extends React.Component {
@@ -33,7 +33,6 @@ class App extends React.Component {
             isAuthorized: isAuthorized,
             isAdmin:isAdmin
         })
-        return <Redirect to="/caca"/>
     }
 
     render() {
@@ -47,7 +46,8 @@ class App extends React.Component {
                             return this.state.isAuthenticated ? <Redirect to="/" /> : <LoginScreen handleSignIn={this.handleSignIn}/>
                             }}/>
                         <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/" component={() => <Home isAdmin={this.state.isAdmin} />}/>
-                        <Route isSignedIn={this.state.isAuthenticated} exact path="/test" render={() => <Header></Header>} />
+                        <Route isSignedIn={this.state.isAuthenticated} exact path="/test" render={() => <DeckHome isAdmin={this.state.isAdmin} />} />
+                        <ProtectedRoute  isSignedIn={this.state.isAuthenticated} exact path="/decks" component={ () => <DeckHome isAdmin={this.state.isAdmin} />} />
                         <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/deck-builder" component={(DeckBuilder)}/>
                 </BrowserRouter>
             </div>

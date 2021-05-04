@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
@@ -21,34 +21,32 @@ var useStyles = makeStyles({
         padding: "5%",
     },
 });
+
 class HeroCard extends React.Component {
 
     onClickCard = () => {
-        if(this.props.onClickBuilder) {
+        if (this.props.onClickBuilder) {
             this.props.onClickBuilder(this.props.data)
         }
     }
 
     render() {
         return (
-        <Card className={this.props.style.root} onClick={this.onClickCard}>
-            <CardActionArea>
-                <CardMedia
-                    className={this.props.style.media}
-                    image={this.props.data["image_url"]}
-                    title={this.props.data["name"]}
-                />
-                <CardContent className={this.props.style.content}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                        {this.props.data["name"]}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        < AttributeGrid data={this.props.data["power_stats"]}/>
-                    </Typography>
-                </CardContent>
-            </CardActionArea>
-
-        </Card>);
+            <Card className={this.props.style.root} onClick={this.onClickCard}>
+                <CardActionArea>
+                    <CardMedia
+                        className={this.props.style.media}
+                        image={this.props.data["image_url"]}
+                        title={this.props.data["name"]}
+                    />
+                    <CardContent className={this.props.style.content}>
+                        <Typography gutterBottom variant="h6" component="h2">
+                            {this.props.data["name"]}
+                        </Typography>
+                        <AttributeGrid data={this.props.data["power_stats"]}/>
+                    </CardContent>
+                </CardActionArea>
+            </Card>);
     }
 }
 
