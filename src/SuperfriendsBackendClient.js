@@ -19,7 +19,7 @@ class SuperfriendsBackendClient {
     getHerosByCardIds = async (cardIds) => {
         const promises = cardIds.map( cardId => this.getCardById(cardId));
         const cards = await Promise.all(promises);
-
+        
         return cards.filter(card => card);
     }
 

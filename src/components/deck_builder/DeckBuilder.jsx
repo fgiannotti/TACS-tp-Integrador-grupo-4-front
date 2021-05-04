@@ -130,7 +130,7 @@ class DeckBuilder extends React.Component {
 
     render() {
         if(this.state.redirect) {
-            return <Redirect to="/product" />
+            return <Redirect to="/decks" />
         }
         return(
             <>
