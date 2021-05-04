@@ -2,11 +2,11 @@
 .deck-home {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    margin-right: 25%;
+    margin-left: 25%;
 }
 
 .search-deck-bar {
     display: flex;
-    width: 68vh;
     justify-content: space-between;
 }
