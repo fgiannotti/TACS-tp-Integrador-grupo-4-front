@@ -34,7 +34,7 @@ class DeckHome extends React.Component {
     onClickView = (deck) => {
         console.log(deck);
         //todo: saltar a la vista del builder con este deck como prop
-        window.location.href = "/deck-builder?deckName="+deck.name+"&isSaved=true&cardIds="+deck.card_ids.join(",");
+        window.location.href = "/deck-builder?deckId=" + deck.id + "&deckName=" + deck.name + "&isSaved=true&cardIds=" + deck.card_ids.join(",");
     }
 
     onClickAdd = () => {
@@ -87,12 +87,12 @@ class DeckHome extends React.Component {
                                                           primary={deck.card_ids.length + '/' + deck.card_ids.length}/>
                                             {this.props.isAdmin ?
                                                 <ListItemSecondaryAction>
-                                                <IconButton onClick={() => this.onClickDelete(deck.id)} edge="end"
-                                                            aria-label="delete">
-                                                    <DeleteOutlineIcon/>
-                                                </IconButton>
-                                            </ListItemSecondaryAction>
-                                                : <React.Fragment />}
+                                                    <IconButton onClick={() => this.onClickDelete(deck.id)} edge="end"
+                                                                aria-label="delete">
+                                                        <DeleteOutlineIcon/>
+                                                    </IconButton>
+                                                </ListItemSecondaryAction>
+                                                : <React.Fragment/>}
                                         </ListItem>
                                         <Divider/>
                                     </React.Fragment>

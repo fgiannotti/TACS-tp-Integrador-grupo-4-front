@@ -10,11 +10,11 @@ import '../../styles/CommonStyles.css';
 import SuperfriendsBackendClient from "../../SuperfriendsBackendClient";
 import DeckNameAndSave from './DeckNameAndSave';
 import CardGrid from '../cards/CardGrid';
-import { Redirect } from "react-router-dom";
+import {Redirect} from "react-router-dom";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
-}); 
+});
 const deckClient = new SuperfriendsBackendClient();
 
 class DeckBuilder extends React.Component {
@@ -45,7 +45,7 @@ class DeckBuilder extends React.Component {
         this.removeSelectedHero = this.removeSelectedHero.bind(this);
     }
 
-    async componentDidMount(){
+    async componentDidMount() {
         document.body.style.backgroundColor = '#ffcc80';
 
         const urlParams = new URLSearchParams(window.location.search);
@@ -59,7 +59,7 @@ class DeckBuilder extends React.Component {
             console.log(heroList)
         }
 
-        this.setState({deckId: deckId, deckName: deckName, selectedHeroList: heroList })
+        this.setState({deckId: deckId, deckName: deckName, selectedHeroList: heroList})
     }
 
     changeDeckNameIsValid = (booleanValue) => {
@@ -74,7 +74,7 @@ class DeckBuilder extends React.Component {
         })
     }
     showSaveDeckAlert = () => {
-        if(this.state.selectedHeroList.length && this.state.deckNameIsValid) {
+        if (this.state.selectedHeroList.length && this.state.deckNameIsValid) {
             this.setSaveDeckAlert(true);
         } else {
             //INDICAR QUE FALTA CARGAR CARTAS (opcional)
@@ -95,23 +95,35 @@ class DeckBuilder extends React.Component {
         this.setSaveDeckAlert(false);
 
         //HACER LA PARTE DE GUARDAR LOS IDS DEL MAZO EN ALGUN LADO CON EL NOMBRE
+        const deckId = this.state.deckId
         const deckName = this.state.deckName
         const cardIds = this.state.selectedHeroList.map(hero => hero["id"])
-        if (this.state.isSaved){
-            deckClient.updateDeck(deckName,cardIds)
-        }else{
-            deckClient.createDeck({name:deckName,cardIds:cardIds})
+        const updateDeckDTO = {
+            "name" : deckName,
+            "card_ids" : cardIds
         }
-        console.log(cardIds)
 
-        this.setState({
-            redirect: true
-        })
+        if (this.state.isSaved) {
+            deckClient.updateDeck(deckId, updateDeckDTO)
+                .then((response) => {
+                    this.setState({
+                        redirect: true
+                    })
+                })
+        } else {
+            deckClient.createDeck({name: deckName, cardIds: cardIds})
+                .then((response) => {
+                    this.setState({
+                        redirect: true
+                    })
+                })
+        }
+
     }
 
     addSelectedHero = (newHero) => {
 
-        if(!this.state.selectedHeroList.length || this.state.selectedHeroList.find( hero => hero["id"] === newHero["id"] ) === undefined) {
+        if (!this.state.selectedHeroList.length || this.state.selectedHeroList.find(hero => hero["id"] === newHero["id"]) === undefined) {
             this.state.selectedHeroList.push(newHero);
             this.setState({
                 selectedHeroList: this.state.selectedHeroList
@@ -120,26 +132,28 @@ class DeckBuilder extends React.Component {
     }
 
     removeSelectedHero = (deletedHero) => {
-        const heroIndex = this.state.selectedHeroList.findIndex( hero => hero["id"] === deletedHero["id"] );
+        const heroIndex = this.state.selectedHeroList.findIndex(hero => hero["id"] === deletedHero["id"]);
         this.state.selectedHeroList.splice(heroIndex, 1);
-        
+
         this.setState({
             selectedHeroList: this.state.selectedHeroList
         })
     }
 
     render() {
-        if(this.state.redirect) {
-            return <Redirect to="/decks" />
+        if (this.state.redirect) {
+            return <Redirect to="/decks"/>
         }
-        return(
+        return (
             <>
                 <div className='flex-row-center'>
                     <div className='search-container'>
                         <CardSearch onClickBuilder={this.addSelectedHero}/>
                     </div>
                     <div className='decks-grid m1'>
-                        <DeckNameAndSave changeDeckNameIsValid={this.changeDeckNameIsValid} deckName={this.state.deckName} changeDeckName={this.changeDeckName} saveDeckAction={this.showSaveDeckAlert}/>
+                        <DeckNameAndSave changeDeckNameIsValid={this.changeDeckNameIsValid}
+                                         deckName={this.state.deckName} changeDeckName={this.changeDeckName}
+                                         saveDeckAction={this.showSaveDeckAlert}/>
                         <div className='p2' style={{paddingTop: '0'}}>
                             <CardGrid cards={this.state.selectedHeroList} onClickBuilder={this.removeSelectedHero}/>
                         </div>
@@ -153,7 +167,8 @@ class DeckBuilder extends React.Component {
                     aria-labelledby="alert-dialog-slide-title"
                     aria-describedby="alert-dialog-slide-description"
                 >
-                    <DialogTitle id="alert-dialog-slide-title">Desea guardar el mazo "{this.state.deckName}" en la lista de mazos?</DialogTitle>
+                    <DialogTitle id="alert-dialog-slide-title">Desea guardar el mazo "{this.state.deckName}" en la lista
+                        de mazos?</DialogTitle>
                     <DialogActions>
                         <Button onClick={this.handleAlertClose}>
                             Cancelar
@@ -168,4 +183,5 @@ class DeckBuilder extends React.Component {
     }
 
 }
+
 export default DeckBuilder;
