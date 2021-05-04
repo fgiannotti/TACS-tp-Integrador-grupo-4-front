@@ -7,25 +7,34 @@ import Slide from '@material-ui/core/Slide';
 import CardSearch from '../card_finder/CardSearch';
 import '../../styles/DeckBuilder.css';
 import '../../styles/CommonStyles.css';
+import SuperfriendsBackendClient from "../../SuperfriendsBackendClient";
 import DeckNameAndSave from './DeckNameAndSave';
 import CardGrid from '../cards/CardGrid';
 import { Redirect } from "react-router-dom";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
-});
+}); 
+const deckClient = new SuperfriendsBackendClient();
 
 class DeckBuilder extends React.Component {
 
+
     constructor(props) {
         super(props);
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const isSaved = !!urlParams.get('isSaved');
+
         this.state = {
             redirect: false,
             deckNameIsValid: false,
             saveDeckAlert: false,
             deckName: '',
+            isSaved: isSaved,
             selectedHeroList: []
         }
+
         this.changeDeckNameIsValid = this.changeDeckNameIsValid.bind(this);
         this.changeDeckName = this.changeDeckName.bind(this);
         this.showSaveDeckAlert = this.showSaveDeckAlert.bind(this);
@@ -36,8 +45,21 @@ class DeckBuilder extends React.Component {
         this.removeSelectedHero = this.removeSelectedHero.bind(this);
     }
 
-    componentDidMount(){
-        document.body.style.backgroundColor = '#ffcc80'
+    async componentDidMount(){
+        document.body.style.backgroundColor = '#ffcc80';
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const deckName = urlParams.get('deckName');
+        const deckId = urlParams.get('deckId');
+        const cardIds = urlParams.get('cardIds') ? urlParams.get('cardIds').split(",") : [];
+
+        let heroList = []
+        if (cardIds.length > 0) {
+            heroList = await deckClient.getHerosByCardIds(cardIds);
+            console.log(heroList)
+        }
+
+        this.setState({deckId: deckId, deckName: deckName, selectedHeroList: heroList })
     }
 
     changeDeckNameIsValid = (booleanValue) => {
@@ -51,7 +73,6 @@ class DeckBuilder extends React.Component {
             deckName: newName
         })
     }
-
     showSaveDeckAlert = () => {
         if(this.state.selectedHeroList.length && this.state.deckNameIsValid) {
             this.setSaveDeckAlert(true);
@@ -75,9 +96,13 @@ class DeckBuilder extends React.Component {
 
         //HACER LA PARTE DE GUARDAR LOS IDS DEL MAZO EN ALGUN LADO CON EL NOMBRE
         const deckName = this.state.deckName
-        const deckHeroesIds = this.state.selectedHeroList.map(hero => hero["id"])
-
-        console.log(deckHeroesIds)
+        const cardIds = this.state.selectedHeroList.map(hero => hero["id"])
+        if (this.state.isSaved){
+            deckClient.updateDeck(deckName,cardIds)
+        }else{
+            deckClient.createDeck({name:deckName,cardIds:cardIds})
+        }
+        console.log(cardIds)
 
         this.setState({
             redirect: true
@@ -114,7 +139,7 @@ class DeckBuilder extends React.Component {
                         <CardSearch onClickBuilder={this.addSelectedHero}/>
                     </div>
                     <div className='decks-grid m1'>
-                        <DeckNameAndSave changeDeckNameIsValid={this.changeDeckNameIsValid} changeDeckName={this.changeDeckName} saveDeckAction={this.showSaveDeckAlert}/>
+                        <DeckNameAndSave changeDeckNameIsValid={this.changeDeckNameIsValid} deckName={this.state.deckName} changeDeckName={this.changeDeckName} saveDeckAction={this.showSaveDeckAlert}/>
                         <div className='p2' style={{paddingTop: '0'}}>
                             <CardGrid cards={this.state.selectedHeroList} onClickBuilder={this.removeSelectedHero}/>
                         </div>

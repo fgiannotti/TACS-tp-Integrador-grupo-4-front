@@ -9,6 +9,20 @@ class SuperfriendsBackendClient {
             .catch((e) => console.log("Error fetching user information in login: " + e))
     }
 
+    getCardById = async (id) => {
+        let response = await axios.get(this.backendUrl + "/cards/" + id + "/id")
+            .catch((e) => console.log("Error fetching cards by id: " + e))
+        return response.data
+    }
+
+
+    getHerosByCardIds = async (cardIds) => {
+        const promises = cardIds.map( cardId => this.getCardById(cardId));
+        const cards = await Promise.all(promises);
+
+        return cards.filter(card => card);
+    }
+
     getCardsByName = async (name) => {
         let response = await axios.get(this.backendUrl + "/cards/" + name + "/name")
             .catch((e) => console.log("Error fetching cards by name: " + e))

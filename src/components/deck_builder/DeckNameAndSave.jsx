@@ -49,6 +49,7 @@ class DeckNameAndSave extends React.Component {
                         error={this.state.error} 
                         label='Nombre del mazo' 
                         size='small' 
+                        value={this.props.deckName}
                         variant='outlined' 
                         onChange={this.handleDeckNameChange}/>
                     </Grid>

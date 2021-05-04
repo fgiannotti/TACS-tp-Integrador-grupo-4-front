@@ -9,6 +9,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import '../../styles/DeckHome.css'
+import DeckBuilder from "../deck_builder/DeckBuilder";
 
 class DeckHome extends React.Component {
     constructor(props) {
@@ -31,8 +32,15 @@ class DeckHome extends React.Component {
         return this.deckClient.getDecks()
     }
 
-    onClick = (deckId) => {
-        console.log(deckId);
+    onClickView = (deck) => {
+        console.log(deck);
+        //todo: saltar a la vista del builder con este deck como prop
+        window.location.href = "/deck-builder?deckName="+deck.name+"&isSaved=true&cardIds="+deck.card_ids.join(",");
+    }
+
+    onClickAdd = () => {
+        console.log();
+        window.location.href = "/deck-builder"
     }
 
     onClickDelete = async (deckId) => {
@@ -64,7 +72,7 @@ class DeckHome extends React.Component {
                                 />)}
                         />
                         {this.props.isAdmin ?
-                            <IconButton edge="end" aria-label="add">
+                            <IconButton edge="end" aria-label="add" onClick={() => this.onClickAdd()}>
                                 <AddIcon/>
                             </IconButton>
                             : <React.Fragment/>}
@@ -74,7 +82,7 @@ class DeckHome extends React.Component {
                             <List component="nav" aria-label="main mailbox folders">
                                 {this.state.decks.map((deck, i) => (
                                     <React.Fragment key={i}>
-                                        <ListItem button dense key={deck.id} onClick={() => this.onClick(deck.id)}>
+                                        <ListItem button dense key={deck.id} onClick={() => this.onClickView(deck)}>
                                             <ListItemText primary={deck.name}/>
                                             <ListItemText style={{textAlign: 'end'}}
                                                           primary={deck.card_ids.length + '/' + deck.card_ids.length}/>

@@ -47,7 +47,7 @@ class App extends React.Component {
                             }}/>
                         <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/" component={() => <Home isAdmin={this.state.isAdmin} />}/>
                         <Route isSignedIn={this.state.isAuthenticated} exact path="/test" render={() => <DeckHome isAdmin={this.state.isAdmin} />} />
-                        <ProtectedRoute exact path="/decks" component={ () => <DeckHome isAdmin={this.state.isAdmin} />} />
+                        <ProtectedRoute  isSignedIn={this.state.isAuthenticated} exact path="/decks" component={ () => <DeckHome isAdmin={this.state.isAdmin} />} />
                         <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/deck-builder" component={(DeckBuilder)}/>
                 </BrowserRouter>
             </div>
