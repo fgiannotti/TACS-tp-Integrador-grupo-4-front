@@ -11,21 +11,34 @@ import AttributeGrid from './AttributeGrid'
 var useStyles = makeStyles({
     root: {
         maxWidth: 200,
+        marginTop: 10,
     },
     media: {
         height: 150,
+        paddingTop: "56.25%",
+    },
+    content: {
+        padding: "5%",
     },
 });
-class Cards extends React.Component {
+class HeroCard extends React.Component {
+
+    onClickCard = () => {
+        if(this.props.onClickBuilder) {
+            this.props.onClickBuilder(this.props.data)
+        }
+    }
+
     render() {
-        return (<Card className={this.props.style.root}>
+        return (
+        <Card className={this.props.style.root} onClick={this.onClickCard}>
             <CardActionArea>
                 <CardMedia
                     className={this.props.style.media}
                     image={this.props.data["image_url"]}
                     title={this.props.data["name"]}
                 />
-                <CardContent>
+                <CardContent className={this.props.style.content}>
                     <Typography gutterBottom variant="h5" component="h2">
                         {this.props.data["name"]}
                     </Typography>
@@ -39,8 +52,7 @@ class Cards extends React.Component {
     }
 }
 
-export default function MediaCard() {
+export default function MediaCard(props) {
     const classes = useStyles();
-
-    return (<Cards style={classes} data={{"name": "Batman", "power_stats" : [{"name": "combat", "value": 60}, {"name": "intelligence", "value": 38}, {"name": "strength", "value": 100}, {"name": "power", "value": 24}, {"name": "speed", "value": 17}, {"name": "height", "value": 10}, {"name": "weight", "value": 20}], "image_url": "https:\\/\\/www.superherodb.com\\/pictures2\\/portraits\\/10\\/100\\/10441.jpg"}}/>);
+    return (<HeroCard style={classes} data={props.data} onClickBuilder={props.onClickBuilder}/>);
 }

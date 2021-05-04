@@ -1,16 +1,14 @@
 import React from "react";
 import {BrowserRouter, Redirect, Route} from "react-router-dom";
-import {withCookies} from "react-cookie";
 import {createBrowserHistory} from "history";
-
+import {withCookies} from "react-cookie";
+import CardSearch from "./components/card_finder/CardSearch";
 import Home from './components/home/Home';
-import Header from './components/home/Header';
-
 import LoginScreen from "./components/login/LoginScreen";
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 import DeckHome from "./components/decks/DeckHome";
-
+import DeckBuilder from "./components/deck_builder/DeckBuilder";
 
 class App extends React.Component {
 
@@ -42,13 +40,15 @@ class App extends React.Component {
         return (
             <div className="App full-screen">
                 <BrowserRouter history={this.history}>
+                        <Route exact path="/cards" component={(CardSearch)}/>
                         <Route exact path="/login"
                         render={() => {
                             return this.state.isAuthenticated ? <Redirect to="/" /> : <LoginScreen handleSignIn={this.handleSignIn}/>
                             }}/>
                         <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/" component={() => <Home isAdmin={this.state.isAdmin} />}/>
                         <Route isSignedIn={this.state.isAuthenticated} exact path="/test" render={() => <DeckHome isAdmin={this.state.isAdmin} />} />
-                        <Route exact path="/decks" component={ () => <DeckHome isAdmin={this.state.isAdmin} />} />
+                        <ProtectedRoute exact path="/decks" component={ () => <DeckHome isAdmin={this.state.isAdmin} />} />
+                        <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/deck-builder" component={(DeckBuilder)}/>
                 </BrowserRouter>
             </div>
         );
