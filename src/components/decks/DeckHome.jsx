@@ -63,9 +63,11 @@ class DeckHome extends React.Component {
                                     InputProps={{...params.InputProps, type: 'search'}}
                                 />)}
                         />
-                        <IconButton edge="end" aria-label="add">
-                            <AddIcon/>
-                        </IconButton>
+                        {this.props.isAdmin ?
+                            <IconButton edge="end" aria-label="add">
+                                <AddIcon/>
+                            </IconButton>
+                            : <React.Fragment/>}
                     </div>
                     <div>
                         <Paper className="container">
@@ -76,12 +78,14 @@ class DeckHome extends React.Component {
                                             <ListItemText primary={deck.name}/>
                                             <ListItemText style={{textAlign: 'end'}}
                                                           primary={deck.card_ids.length + '/' + deck.card_ids.length}/>
-                                            <ListItemSecondaryAction>
+                                            {this.props.isAdmin ?
+                                                <ListItemSecondaryAction>
                                                 <IconButton onClick={() => this.onClickDelete(deck.id)} edge="end"
                                                             aria-label="delete">
                                                     <DeleteOutlineIcon/>
                                                 </IconButton>
                                             </ListItemSecondaryAction>
+                                                : <React.Fragment />}
                                         </ListItem>
                                         <Divider/>
                                     </React.Fragment>
