@@ -1,3 +1,6 @@
+## Start Up Script for Docker
+- docker pull fgiannotti/tacs-tp-integrador-grupo-4-front
+- docker run -p 3000:3000 fgiannotti/tacs-tp-integrador-grupo-4-front
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
