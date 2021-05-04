@@ -19,8 +19,11 @@ export default class CardGrid extends React.Component{
            <Grid container spacing={3}>
             {this.props.cards.map(card => (
                 <Grid item >
-                <MediaCard data = {card}/>
-                    </Grid>
+                    <MediaCard 
+                        data={card} 
+                        onClickBuilder={this.props.onClickBuilder}
+                    />
+                </Grid>
             ))}
         </Grid>
        );
