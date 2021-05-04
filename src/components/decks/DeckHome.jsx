@@ -9,7 +9,6 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import '../../styles/DeckHome.css'
-import DeckBuilder from "../deck_builder/DeckBuilder";
 
 class DeckHome extends React.Component {
     constructor(props) {
