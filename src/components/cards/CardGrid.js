@@ -17,8 +17,8 @@ export default class CardGrid extends React.Component{
     render() {
        return(
            <Grid container spacing={3}>
-            {this.props.cards.map(card => (
-                <Grid item >
+            {this.props.cards.map((card, i) => (
+                <Grid item key={i}>
                     <MediaCard 
                         data={card} 
                         onClickBuilder={this.props.onClickBuilder}

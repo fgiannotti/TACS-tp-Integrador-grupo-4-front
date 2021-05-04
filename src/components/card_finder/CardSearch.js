@@ -25,7 +25,7 @@ export default class CardSearch extends React.Component {
 
     render() {
         return (
-            <>
+            <React.Fragment>
                 <h1>Buscador de Heroes</h1>
                 <CardSearchBar
                     onRequestSearch={this.search_by_name}
@@ -34,7 +34,7 @@ export default class CardSearch extends React.Component {
                     cards={this.state.hero_list}
                     onClickBuilder={this.props.onClickBuilder}
                 />
-            </>
+            </React.Fragment>
         );
     }
 }
