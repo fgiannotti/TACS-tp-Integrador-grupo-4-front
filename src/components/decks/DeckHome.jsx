@@ -91,7 +91,7 @@ class DeckHome extends React.Component {
                                                 </ListItemSecondaryAction>
                                                 : <React.Fragment/>}
                                         </ListItem>
-                                        <Divider/>
+                                        {i !== (this.state.decks.length -1) ? <Divider/> : <React.Fragment/>}
                                     </React.Fragment>
                                 ))
                                 }
