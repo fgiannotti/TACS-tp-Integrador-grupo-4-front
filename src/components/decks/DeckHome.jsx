@@ -1,14 +1,14 @@
 import React from "react";
 import List from '@material-ui/core/List';
-import {Divider, ListItem, ListItemText, Paper, TextField} from "@material-ui/core";
+import {Divider, ListItem, ListItemText, Paper} from "@material-ui/core";
 import SuperfriendsBackendClient from "../../SuperfriendsBackendClient";
 import Header from '../home/Header';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import '../../styles/DeckHome.css'
+import SearchBar from "material-ui-search-bar";
 
 class DeckHome extends React.Component {
     constructor(props) {
@@ -20,15 +20,15 @@ class DeckHome extends React.Component {
 
     componentDidMount() {
         document.body.style.backgroundColor = '#ffcc80'
-        this.getDecks().then((decksResponse) => {
-            this.setState({decks: decksResponse})
-        })
+        this.getDecksAndSetState()
     }
 
     deckClient = new SuperfriendsBackendClient()
 
-    getDecks = () => {
-        return this.deckClient.getDecks()
+    getDecksAndSetState = () => {
+        return this.deckClient.getDecks().then((decksResponse) => {
+            this.setState({decks: decksResponse})
+        })
     }
 
     onClickView = (deck) => {
@@ -44,9 +44,19 @@ class DeckHome extends React.Component {
 
     onClickDelete = async (deckId) => {
         await this.deckClient.deleteDeck(deckId).then(r => console.log(r))
-        this.getDecks().then((decksResponse) => {
-            this.setState({decks: decksResponse})
-        })
+        await this.getDecksAndSetState()
+    }
+
+    async searchByDeckName(value) {
+        if (value) {
+            let filteredDecks = this.state.decks.filter((d) => d.name.toUpperCase().includes(value.toUpperCase()))
+            !filteredDecks.isEmpty ?
+                this.setState({decks: filteredDecks})
+                :
+                await this.getDecksAndSetState()
+        } else {
+            await this.getDecksAndSetState()
+        }
     }
 
     render() {
@@ -55,21 +65,8 @@ class DeckHome extends React.Component {
                 <Header/>
                 <div className="deck-home">
                     <div className="search-deck-bar">
-                        <Autocomplete
-                            freeSolo
-                            style={{minWidth: '50%'}}
-                            id="free-solo-2-demo"
-                            disableClearable
-                            options={this.state.decks.map((deck) => deck.name)}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    label="Busca un mazo"
-                                    margin="normal"
-                                    variant="outlined"
-                                    InputProps={{...params.InputProps, type: 'search'}}
-                                />)}
-                        />
+                        <SearchBar placeholder={"Busca un mazo"} style={{minWidth: '50%'}}
+                                   onChange={(value) => this.searchByDeckName(value)}/>
                         {this.props.isAdmin ?
                             <IconButton edge="end" aria-label="add" onClick={() => this.onClickAdd()}>
                                 <AddIcon/>
@@ -106,6 +103,7 @@ class DeckHome extends React.Component {
 
         )
     }
+
 }
 
 export default DeckHome

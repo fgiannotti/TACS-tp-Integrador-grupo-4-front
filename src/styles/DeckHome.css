@@ -9,4 +9,6 @@
 .search-deck-bar {
     display: flex;
     justify-content: space-between;
+    margin-top: 5%;
+    margin-bottom: 5%;
 }
