@@ -4,12 +4,12 @@ import {Typography} from "@material-ui/core";
 import '../../styles/CommonLayoutsFlex.css'
 import '../../styles/CommonStyles.css'
 import '../../styles/Card.css'
-import background from "../../superfriends.jpg";
+import background from "../../resources/images/superfriends.jpg";
 
 class LoginScreen extends React.Component {
     render() {
         return (
-            <div className="flex-column-center" style={{
+            <div className="flex-column-center full-height" style={{
                 backgroundPosition: 'center',
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',

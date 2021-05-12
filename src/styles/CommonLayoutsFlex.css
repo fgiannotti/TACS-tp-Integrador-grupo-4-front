@@ -4,12 +4,29 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
 }
 
 .flex-row-center {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
+    justify-content: center;
+}
+
+.flex-column-space-around {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+.flex-row {
+    display: flex;
+}
+
+.justify-content-center {
     justify-content: center;
 }
