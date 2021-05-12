@@ -1,11 +1,12 @@
-import { Card, Typography } from '@material-ui/core';
+import {Card, Typography} from '@material-ui/core';
 import React from 'react';
 import '../../styles/Home.css';
-import Header from  '../home/Header';
+import Header from '../home/Header';
 import CardImage from './cardExample.png'
 import CreateMatchScreen from "../play/CreateMatchScreen";
 import Batman from "../../resources/images/batman.png"
 import SuperfriendsBackendClient from "../../SuperfriendsBackendClient";
+import '../../styles/CommonStyles.css'
 
 class Home extends React.Component {
     constructor(props) {
@@ -14,7 +15,6 @@ class Home extends React.Component {
             decks: []
         }
     }
-
     decksClient = new SuperfriendsBackendClient()
 
     componentDidMount() {
@@ -38,12 +38,12 @@ class Home extends React.Component {
 
                 <CreateMatchScreen decks={this.state.decks} />
 
-            <Typography align={'center'} className="bodyText" component="p" paragraph={true} style={{padding:'32px',fontWeight: 'bold'}}>
+            <span className="m2" style={{padding:'32px', fontWeight: 'bold'}}>
                 ¿Cómo jugar?
-            </Typography>
+            </span>
             <div align="center">
                 <div className="flex-row justify-content-center">
-                <Typography align={'justify'} className="bodyText" component="p" paragraph={true} style={{paddingLeft:'32px'}}>
+                <p align={'justify'} style={{paddingLeft:'32px'}}>
 
                     La partida se desarrolla entre 2 jugadores en modalidad uno contra uno.
                     <br/>Se toma la baraja, se mezcla y se reparten en cantidades iguales a cada jugador quedando las cartas boca abajo.
@@ -54,18 +54,18 @@ class Home extends React.Component {
                     <br/>Ambos jugadores cantarán el valor de su carta para ese atributo y el ganador se llevará ambas cartas.
                     <br/>En caso de empate cada uno se llevará su carta.
                     Las cartas ganadas se colocarán en el mazo de premios.
-                </Typography>
+                </p>
                     <img src={Batman}  alt={'Batman'}/>
                 </div>
-                <Typography align={'center'} className="bodyText" component="p" paragraph={true} style={{padding:'32px',fontWeight: 'bold'}}>
+                <span style={{padding:'32px',fontWeight: 'bold'}}>
                     Fin de la partida
-                </Typography>
+                </span>
 
-                <Typography align={'justify'} className="bodyText"  component="p" paragraph={true} style={{paddingLeft:'32px'}}>
+                <p align={'justify'} className="bodyText" style={{paddingLeft:'32px'}}>
                     Al finalizar las cartas de ambos mazos se preocederá al conteo de cartas ganadas.
                     <br/>El jugador que tenga más cartas ganadas será declarado ganador.
                     <br/>En caso de que los dos participantes tengan una cantidad igual de cartas se declarará el empate.
-                </Typography>
+                </p>
             </div>
             <img src={CardImage} alt='card' width={'20%'}/>
               {this.props.isAdmin ? console.log("admin"): <React.Fragment/>}
