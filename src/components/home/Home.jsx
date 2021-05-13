@@ -15,11 +15,12 @@ class Home extends React.Component {
             decks: []
         }
     }
-    decksClient = new SuperfriendsBackendClient()
+    backendClient = new SuperfriendsBackendClient()
 
     componentDidMount() {
         document.body.style.backgroundColor = '#ffcc80'
-        this.decksClient.getDecks().then((decks) => this.setState({decks: decks}))
+
+        this.backendClient.getDecks().then((decks) => this.setState({decks: decks}))
     }
 
     render() {

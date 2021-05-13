@@ -1,5 +1,5 @@
 import React from 'react';
-import {Paper, TextField} from "@material-ui/core";
+import {List, ListItem, Paper, TextField} from "@material-ui/core";
 import '../../styles/CommonStyles.css';
 import '../../styles/CommonLayoutsFlex.css';
 import Button from "@material-ui/core/Button";
@@ -23,7 +23,7 @@ class CreateMatchScreen extends React.Component {
                 <Paper className="container align-items-center flex-column-space-around p1"
                        style={{minWidth: '25%', minHeight: '40%', backgroundColor: '#B3C0A4', borderRadius: '10%'}}>
                         <span className="m1" style={{fontSize: "x-large", fontWeight: "bold"}}>
-                            Elegi un mazo y crea una nueva sala
+                            Elegi un mazo y desafia a otro usuario
                         </span>
                     <Autocomplete
                         className="m1"
@@ -36,9 +36,18 @@ class CreateMatchScreen extends React.Component {
                         )}
                         onInputChange={(deckEvent) => this.setState({chosenDeck: deckEvent.target.outerText})}
                     />
+
+                    <Paper>
+                    <List>
+                        {["a","b","c","d"].map((userName, i) =>
+                            <ListItem>{userName}</ListItem>
+                        )}
+                    </List>
+                    </Paper>
+
                     <Button disabled={!this.state.chosenDeck} className="m2" variant="contained" color="primary"
                             style={{fontWeight: 'bold'}}
-                            onClick={() => this.sendToLobby()}> Crear sala </Button>
+                            onClick={() => this.sendToLobby()}> JUGAR </Button>
                 </Paper>
             </div>
         );
