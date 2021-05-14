@@ -7,21 +7,38 @@ import CreateMatchScreen from "../play/CreateMatchScreen";
 import Batman from "../../resources/images/batman.png"
 import SuperfriendsBackendClient from "../../SuperfriendsBackendClient";
 import '../../styles/CommonStyles.css'
+import SocketConnection from "../../socketEvents";
 
 class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            decks: []
+            decks: [],
+            connectedUsers: []
         }
     }
-    backendClient = new SuperfriendsBackendClient()
 
+    backendClient = new SuperfriendsBackendClient()
+    socket;
+
+    sendUserId = () => {
+        this.socket.send("userId")
+    }
     componentDidMount() {
         document.body.style.backgroundColor = '#ffcc80'
+            this.socket = new WebSocket("ws://localhost:9000");
+            SocketConnection.setInstance(this.socket)
+            this.socket.onopen = () => {
+                this.sendUserId()
+            }
+            SocketConnection.socket.onmessage = function(event) {
+                console.log(event.data)
+            }
 
         this.backendClient.getDecks().then((decks) => this.setState({decks: decks}))
     }
+
+
 
     render() {
         return (
@@ -69,7 +86,6 @@ class Home extends React.Component {
                 </p>
             </div>
             <img src={CardImage} alt='card' width={'20%'}/>
-              {this.props.isAdmin ? console.log("admin"): <React.Fragment/>}
             </div>
         )
     }

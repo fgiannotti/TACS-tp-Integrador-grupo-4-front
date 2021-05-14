@@ -9,7 +9,6 @@ import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 import DeckHome from "./components/decks/DeckHome";
 import DeckBuilder from "./components/deck_builder/DeckBuilder";
-import CreateMatchScreen from "./components/play/CreateMatchScreen";
 
 class App extends React.Component {
 
