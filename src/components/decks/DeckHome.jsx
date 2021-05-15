@@ -74,7 +74,7 @@ class DeckHome extends React.Component {
                             : <React.Fragment/>}
                     </div>
                     <div>
-                        <Paper className="container">
+                        <Paper className="container" style={{minWidth: '50%'}}>
                             <List component="nav" aria-label="main mailbox folders">
                                 {this.state.decks.map((deck, i) => (
                                     <React.Fragment key={i}>
