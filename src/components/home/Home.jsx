@@ -11,6 +11,7 @@ class Home extends React.Component {
     }
 
     render() {
+        console.table(this.props)
         return (
             <div>
               <Header/>
