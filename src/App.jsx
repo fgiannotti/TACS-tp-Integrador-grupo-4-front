@@ -1,7 +1,8 @@
 import React from "react";
-import {BrowserRouter, Redirect, Route} from "react-router-dom";
+import { instanceOf } from 'prop-types';
+import {BrowserRouter, Route} from "react-router-dom";
 import {createBrowserHistory} from "history";
-import {withCookies} from "react-cookie";
+import { withCookies, Cookies } from "react-cookie";
 import CardSearch from "./components/card_finder/CardSearch";
 import Home from './components/home/Home';
 import LoginScreen from "./components/login/LoginScreen";
@@ -11,28 +12,38 @@ import DeckHome from "./components/decks/DeckHome";
 import DeckBuilder from "./components/deck_builder/DeckBuilder";
 
 class App extends React.Component {
-
+    static propTypes = {
+      cookies: instanceOf(Cookies).isRequired
+    };
+    
     constructor(props) {
+        console.log("App constructor...")
         super(props);
+        const { cookies } = props;
+        const session = cookies.get('SESSIONID')
 
-        let isAuthenticated = validateAuthentication()
-
-
-        this.state = { isAuthenticated: isAuthenticated }
+        this.state = {isAuthenticated: session !== undefined, loginError: false}
         this.history = createBrowserHistory();
     }
 
-    handleSignIn = (isAuthenticated,isAuthorized,isAdmin) => {
-        saveState({
-            isAuthenticated: isAuthenticated,
-            isAuthorized: isAuthorized,
-            isAdmin:isAdmin
-        })
+    handleSignIn = (isAuthenticated,isAuthorized,isAdmin,googleId,tokenId) => {
+        console.log("Handling Sign In....")
+        const { cookies } = this.props;
+
+
         this.setState({
             isAuthenticated: isAuthenticated,
             isAuthorized: isAuthorized,
             isAdmin:isAdmin
         })
+
+        if (isAuthenticated && isAuthorized) {
+          cookies.set('GOOGLEID',googleId)
+          cookies.set('SESSIONID',tokenId)
+          window.location.href = "/"
+        }else{
+          this.setState({loginError:true})
+        }
     }
 
     render() {
@@ -41,10 +52,7 @@ class App extends React.Component {
             <div className="App full-screen">
                 <BrowserRouter history={this.history}>
                         <Route exact path="/cards" component={(CardSearch)}/>
-                        <Route exact path="/login"
-                        render={() => {
-                            return this.state.isAuthenticated ? <Redirect to="/" /> : <LoginScreen handleSignIn={this.handleSignIn}/>
-                            }}/>
+                        <Route exact path="/login" component={()=> <LoginScreen error={this.state.loginError} handleSignIn={this.handleSignIn}/>}/>
                         <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/" component={() => <Home isAdmin={this.state.isAdmin} />}/>
                         <Route isSignedIn={this.state.isAuthenticated} exact path="/test" render={() => <DeckHome isAdmin={this.state.isAdmin} />} />
                         <ProtectedRoute  isSignedIn={this.state.isAuthenticated} exact path="/decks" component={ () => <DeckHome isAdmin={this.state.isAdmin} />} />
@@ -56,6 +64,10 @@ class App extends React.Component {
 
 }
 
+
+
+
+/* LOCAL STORAGE AUTH
 const validateAuthentication = () => {
   let isAuthenticatedFromOldState = false
 
@@ -85,6 +97,6 @@ const loadState = () => {
     } catch (e) {
       console.log(e)
     }
-  };
+  };*/
 
 export default withCookies(App);

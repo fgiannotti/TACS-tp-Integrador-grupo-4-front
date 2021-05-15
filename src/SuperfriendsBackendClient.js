@@ -3,10 +3,9 @@ import axios from "axios";
 class SuperfriendsBackendClient {
     backendUrl = "http://localhost:9000"
 
-    postLogin = (userInfoDTO) => {
-        return axios.post(this.backendUrl + "/login", userInfoDTO)
-            .then((response) => response.data)
-            .catch((e) => console.log("Error fetching user information in login: " + e))
+    postLogin = async (userInfoDTO) => {
+        let response = await axios.post(this.backendUrl + "/login", userInfoDTO)
+        return response.data
     }
 
     getCardById = async (id) => {

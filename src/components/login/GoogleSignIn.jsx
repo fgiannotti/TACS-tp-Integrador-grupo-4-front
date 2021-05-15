@@ -8,22 +8,25 @@ class GoogleSignIn extends React.Component {
 
     superfriendsBackendClient = new SuperfriendsBackendClient()
 
-    fail() {
-        console.log("Auth failed with google")
+    fail =  () => {
+        alert("Auth failed with google")
     }
-
+    
     onLoginSuccess = async (response) => {
+        console.log("google response:"+response);
         const userInfo = response.profileObj;
         const userInfoDto = {
             "name": userInfo.name,
             "email": userInfo.email,
             "image_url": userInfo.imageUrl,
-            "google_id": userInfo.googleId
+            "google_id": userInfo.googleId,
+            "token_id": response.tokenId
         }
-        const loginResponse = await this.superfriendsBackendClient.postLogin(userInfoDto)
-        const {is_authenticated, is_authorized, is_admin} = loginResponse;
 
-        this.props.handleSignIn(is_authenticated, is_authorized, is_admin)
+        const loginResponse = await this.superfriendsBackendClient.postLogin(userInfoDto);
+
+        const {is_authenticated, is_authorized, is_admin} = loginResponse;
+        this.props.handleSignIn(is_authenticated, is_authorized, is_admin, userInfoDto.google_id,userInfoDto.token_id);
     }
 
     render() {
@@ -34,7 +37,7 @@ class GoogleSignIn extends React.Component {
                 buttonText="Continua con Google"
                 onSuccess={this.onLoginSuccess}
                 onFailure={this.fail}
-                cookiePolicy={'single_host_origin'}
+                cookiePolicy={'http://localhost:9000'}
                 isSignedIn={false}
             />
         )
