@@ -27,6 +27,8 @@ class LoginScreen extends React.Component {
                     </Typography>
                     <GoogleSignIn handleSignIn={this.props.handleSignIn}/>
                 </div>
+                { this.props.error && <p color='red'> Error al registrarse, intente de nuevo.</p>}
+
             </div>
         )
     }
