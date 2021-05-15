@@ -39,7 +39,7 @@ class CreateMatchScreen extends React.Component {
 
                     <Paper>
                     <List>
-                        {["a","b","c","d"].map((userName, i) =>
+                        {this.props.connectedUsers.map((userName, i) =>
                             <ListItem key={i} >{userName}</ListItem>
                         )}
                     </List>

@@ -20,24 +20,27 @@ class Home extends React.Component {
 
     backendClient = new SuperfriendsBackendClient()
     socket;
+    userId = Math.random()
 
-    sendUserId = () => {
-        this.socket.send("userId")
+    changeState = (connectedUsers) => {
+        this.setState({
+            connectedUsers: Array(connectedUsers.substring(4, connectedUsers.length -1))
+        })
     }
+
     componentDidMount() {
         document.body.style.backgroundColor = '#ffcc80'
-            this.socket = new WebSocket("ws://localhost:9000");
-            SocketConnection.setInstance(this.socket)
-            this.socket.onopen = () => {
-                this.sendUserId()
-            }
-            SocketConnection.socket.onmessage = function(event) {
-                console.log(event.data)
-            }
+        this.socket = new WebSocket("ws://localhost:9000/?name=" + this.userId);
+        SocketConnection.setInstance(this.socket)
+        this.socket.onopen = () => {
+            console.log("connected to server")
+        }
+        SocketConnection.socket.onmessage = (event) => {
+            this.changeState(event.data)
+        }
 
         this.backendClient.getDecks().then((decks) => this.setState({decks: decks}))
     }
-
 
 
     render() {
@@ -54,7 +57,7 @@ class Home extends React.Component {
                 </Card>
               </div>
 
-                <CreateMatchScreen decks={this.state.decks} />
+                <CreateMatchScreen decks={this.state.decks} connectedUsers={this.state.connectedUsers} />
 
             <span className="m2" style={{padding:'32px', fontWeight: 'bold'}}>
                 ¿Cómo jugar?
