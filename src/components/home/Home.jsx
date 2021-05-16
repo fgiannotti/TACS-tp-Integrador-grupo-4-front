@@ -42,6 +42,7 @@ class Home extends React.Component {
             try {
                 connectedUsers = JSON.parse(event.data)
                 //parse items as objects too
+                //FIX THIS, ELEMENTS ARE NOT GETTING PARSED 
                 connectedUsers.map(userString => JSON.parse(userString))
 
                 console.log(connectedUsers)
