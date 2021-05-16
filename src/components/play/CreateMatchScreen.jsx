@@ -38,11 +38,11 @@ class CreateMatchScreen extends React.Component {
                     />
 
                     <Paper>
-                    <List>
-                        {this.props.connectedUsers.map((userName, i) =>
-                            <ListItem key={i} >{userName}</ListItem>
-                        )}
-                    </List>
+                        <List>
+                            {this.props.connectedUsers.map((user, i) =>
+                                <ListItem key={i}>{user.user_name}</ListItem>
+                            )}
+                        </List>
                     </Paper>
 
                     <Button disabled={!this.state.chosenDeck} variant="contained" color="primary"

@@ -31,25 +31,24 @@ class Home extends React.Component {
 
     componentDidMount() {
         document.body.style.backgroundColor = '#ffcc80'
-        this.socket = new WebSocket("ws://localhost:9000/?userId=" + this.props.userId);
+        this.socket = new WebSocket("ws://localhost:9000/home?userId=" + this.props.userId);
         SocketConnection.setInstance(this.socket)
         this.socket.onopen = () => {
             console.log("connected to server")
         }
         SocketConnection.socket.onmessage = (event) => {
-            console.log(event)
             let connectedUsers = []
             try {
                 connectedUsers = JSON.parse(event.data)
-                //parse items as objects too
-                //FIX THIS, ELEMENTS ARE NOT GETTING PARSED 
-                connectedUsers.map(userString => JSON.parse(userString))
-
-                console.log(connectedUsers)
+                connectedUsers = connectedUsers.map(userString => JSON.parse(userString))
             }catch(err) {
                 console.log(err)
             }
             this.updateConnectedUsers(connectedUsers)
+        }
+
+        SocketConnection.socket.onclose = () => {
+            alert("You've been disconnected from server")
         }
 
         this.backendClient.getDecks().then((decks) => this.setState({decks: decks}))
