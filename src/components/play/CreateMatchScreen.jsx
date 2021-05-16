@@ -1,5 +1,5 @@
 import React from 'react';
-import {List, ListItem, Paper, TextField} from "@material-ui/core";
+import {Divider, FormControl, FormControlLabel, Paper, Radio, RadioGroup, TextField} from "@material-ui/core";
 import '../../styles/CommonStyles.css';
 import '../../styles/CommonLayoutsFlex.css';
 import Button from "@material-ui/core/Button";
@@ -9,8 +9,13 @@ class CreateMatchScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            chosenDeck: ''
+            chosenDeck: '',
+            chosenOpponent: ''
         }
+    }
+
+    setOpponent = (opponent) => {
+        this.setState({chosenOpponent: opponent.target.defaultValue})
     }
 
     sendToLobby() {
@@ -37,15 +42,31 @@ class CreateMatchScreen extends React.Component {
                         onInputChange={(deckEvent) => this.setState({chosenDeck: deckEvent.target.outerText})}
                     />
 
-                    <Paper>
-                        <List>
+                    <Paper style={{minWidth: '70%', backgroundColor: "lightgray"}}>
+                        <FormControl fullWidth={true} component="fieldset">
+                            <RadioGroup>
                             {this.props.connectedUsers.map((user, i) =>
-                                <ListItem key={i}>{user.user_name}</ListItem>
+                                <React.Fragment key={i}>
+                                    <FormControlLabel key={i}
+                                                      value={user.user_name}
+                                                      control={<Radio color="primary"/>}
+                                                      label={user.user_name}
+                                                      labelPlacement="start"
+                                                      style={{
+                                                          display: 'flex',
+                                                          justifyContent: 'space-between',
+                                                          padding: '3%'
+                                                      }}
+                                                      onChange={this.setOpponent}
+                                    />
+                                    {i !== (this.props.connectedUsers.length - 1) ? <Divider/> : <React.Fragment/>}
+                                </React.Fragment>
                             )}
-                        </List>
+                            </RadioGroup>
+                        </FormControl>
                     </Paper>
 
-                    <Button disabled={!this.state.chosenDeck} variant="contained" color="primary"
+                    <Button disabled={!this.state.chosenDeck || !this.state.chosenOpponent} variant="contained" color="primary"
                             style={{margin:'16px',fontWeight: 'bold'}}
                             onClick={() => this.sendToLobby()}> JUGAR </Button>
                 </Paper>
