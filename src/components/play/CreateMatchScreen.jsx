@@ -45,8 +45,8 @@ class CreateMatchScreen extends React.Component {
                     </List>
                     </Paper>
 
-                    <Button disabled={!this.state.chosenDeck} className="m2" variant="contained" color="primary"
-                            style={{fontWeight: 'bold'}}
+                    <Button disabled={!this.state.chosenDeck} variant="contained" color="primary"
+                            style={{margin:'16px',fontWeight: 'bold'}}
                             onClick={() => this.sendToLobby()}> JUGAR </Button>
                 </Paper>
             </div>

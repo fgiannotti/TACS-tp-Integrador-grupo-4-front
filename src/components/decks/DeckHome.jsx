@@ -2,7 +2,7 @@ import React from "react";
 import List from '@material-ui/core/List';
 import {Divider, ListItem, ListItemText, Paper} from "@material-ui/core";
 import SuperfriendsBackendClient from "../../SuperfriendsBackendClient";
-import Header from '../home/Header';
+import Header from '../Header';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';

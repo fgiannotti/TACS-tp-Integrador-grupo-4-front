@@ -26,7 +26,7 @@ class GoogleSignIn extends React.Component {
         const loginResponse = await this.superfriendsBackendClient.postLogin(userInfoDto);
 
         const {is_authenticated, is_authorized, is_admin} = loginResponse;
-        this.props.handleSignIn(is_authenticated, is_authorized, is_admin, userInfoDto.google_id,userInfoDto.token_id);
+        this.props.handleSignIn(userInfoDto,is_authenticated, is_authorized, is_admin);
     }
 
     render() {

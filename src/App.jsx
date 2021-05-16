@@ -1,6 +1,6 @@
 import React from "react";
 import { instanceOf } from 'prop-types';
-import {BrowserRouter, Route} from "react-router-dom";
+import {BrowserRouter, Redirect, Route} from "react-router-dom";
 import {createBrowserHistory} from "history";
 import { withCookies, Cookies } from "react-cookie";
 import CardSearch from "./components/card_finder/CardSearch";
@@ -10,6 +10,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 import DeckHome from "./components/decks/DeckHome";
 import DeckBuilder from "./components/deck_builder/DeckBuilder";
+import Faq from "./components/faq/Faq";
 
 class App extends React.Component {
     static propTypes = {
@@ -22,25 +23,26 @@ class App extends React.Component {
         const { cookies } = props;
         const session = cookies.get('SESSIONID')
 
-        this.state = {isAuthenticated: session !== undefined, loginError: false}
+        this.state = {isAuthenticated: session !== undefined, loginError: false, homeRedirect: false}
         this.history = createBrowserHistory();
     }
 
-    handleSignIn = (isAuthenticated,isAuthorized,isAdmin,googleId,tokenId) => {
+    handleSignIn = (userInfo,isAuthenticated,isAuthorized,isAdmin) => {
         console.log("Handling Sign In....")
         const { cookies } = this.props;
-
-
+        
         this.setState({
             isAuthenticated: isAuthenticated,
             isAuthorized: isAuthorized,
-            isAdmin:isAdmin
+            isAdmin: isAdmin,
         })
 
         if (isAuthenticated && isAuthorized) {
-          cookies.set('GOOGLEID',googleId)
-          cookies.set('SESSIONID',tokenId)
-          window.location.href = "/"
+          cookies.set('GOOGLEID',userInfo.google_id)
+          cookies.set('SESSIONID',userInfo.token_id)
+          //mala practica, con el ID (algo que se valida constantemente) deberias obtener el nombre, pero **practicidad**
+          cookies.set('USERNAME',userInfo.name)
+          this.setState({homeRedirect: true})
         }else{
           this.setState({loginError:true})
         }
@@ -51,12 +53,14 @@ class App extends React.Component {
         return (
             <div className="App full-screen">
                 <BrowserRouter history={this.history}>
-                        <Route exact path="/cards" component={(CardSearch)}/>
-                        <Route exact path="/login" component={()=> <LoginScreen error={this.state.loginError} handleSignIn={this.handleSignIn}/>}/>
-                        <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/" component={() => <Home isAdmin={this.state.isAdmin} />}/>
-                        <Route isSignedIn={this.state.isAuthenticated} exact path="/test" render={() => <DeckHome isAdmin={this.state.isAdmin} />} />
-                        <ProtectedRoute  isSignedIn={this.state.isAuthenticated} exact path="/decks" component={ () => <DeckHome isAdmin={this.state.isAdmin} />} />
-                        <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/deck-builder" component={(DeckBuilder)}/>
+                  {this.state.homeRedirect ? <Redirect to="/"/> : <React.Fragment/>}
+                  <Route exact path="/cards" component={(CardSearch)}/>
+                  <Route exact path="/login" component={()=> <LoginScreen error={this.state.loginError} handleSignIn={this.handleSignIn}/>}/>
+                  <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/" component={() => <Home userName={this.props.cookies.get('USERNAME')} userId={this.props.cookies.get('GOOGLEID')} isAdmin={this.state.isAdmin} />}/>
+                  <Route isSignedIn={this.state.isAuthenticated} exact path="/test" render={() => <DeckHome isAdmin={this.state.isAdmin} />} />
+                  <ProtectedRoute  isSignedIn={this.state.isAuthenticated} exact path="/decks" component={ () => <DeckHome isAdmin={this.state.isAdmin} />} />
+                  <ProtectedRoute  isSignedIn={this.state.isAuthenticated} exact path="/faq" component={ () => <Faq/>} />
+                  <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/deck-builder" component={(DeckBuilder)}/>
                 </BrowserRouter>
             </div>
         );
