@@ -12,19 +12,20 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
         console.log(this.props)
+
+        const user = {userName: this.props.userName, userId: this.props.userId}
         this.state = {
             decks: [],
-            connectedUsers: [this.props.userId],
-            userName: this.props.userName
+            connectedUsers: [JSON.stringify(user)]
         }
     }
 
     backendClient = new SuperfriendsBackendClient()
     socket;
 
-    changeState = (connectedUsers) => {
+    updateConnectedUsers = (connectedUsers) => {
         this.setState({
-            connectedUsers: Array(connectedUsers.substring(4, connectedUsers.length -1))
+            connectedUsers: connectedUsers
         })
     }
 
@@ -37,7 +38,17 @@ class Home extends React.Component {
         }
         SocketConnection.socket.onmessage = (event) => {
             console.log(event)
-            this.changeState(event.data)
+            let connectedUsers = []
+            try {
+                connectedUsers = JSON.parse(event.data)
+                //parse items as objects too
+                connectedUsers.map(userString => JSON.parse(userString))
+
+                console.log(connectedUsers)
+            }catch(err) {
+                console.log(err)
+            }
+            this.updateConnectedUsers(connectedUsers)
         }
 
         this.backendClient.getDecks().then((decks) => this.setState({decks: decks}))
@@ -50,7 +61,7 @@ class Home extends React.Component {
               <Header/>
                 <HomeTitle/>
                 <div className='flex-evenly'>
-                    <img src={Batman} style={{maxHeight:'250px'}}  alt={'Batman'}/>
+                    <img src={Batman} style={{maxHeight:'250px',alignSelf:'center'}}  alt={'Batman'}/>
                     <CreateMatchScreen decks={this.state.decks} connectedUsers={this.state.connectedUsers} />
                 </div>
 
