@@ -11,6 +11,7 @@ import './App.css';
 import DeckHome from "./components/decks/DeckHome";
 import DeckBuilder from "./components/deck_builder/DeckBuilder";
 import Faq from "./components/faq/Faq";
+import SocketConnection from "./socketEvents";
 
 class App extends React.Component {
     static propTypes = {
@@ -23,12 +24,34 @@ class App extends React.Component {
         const { cookies } = props;
         const session = cookies.get('SESSIONID')
 
-        this.state = {isAuthenticated: session !== undefined, loginError: false, homeRedirect: false}
+        this.state = {isAuthenticated: session !== undefined, loginError: false, homeRedirect: false, connectedUsers: []}
         this.history = createBrowserHistory();
     }
 
+    connectToBackendWithSockets = (userInfo) => {
+        let socket = new WebSocket("ws://localhost:9000/home?userId=" + userInfo.google_id);
+        SocketConnection.setInstance(socket)
+        SocketConnection.socket.onopen = () => {
+            console.log("connected to server")
+        }
+
+        SocketConnection.socket.onmessage = (event) => {
+            let connectedUsers = []
+            try {
+                connectedUsers = JSON.parse(event.data)
+                connectedUsers = connectedUsers.map(userString => JSON.parse(userString))
+            }catch(err) {
+                console.log(err)
+            }
+            this.setState({connectedUsers: connectedUsers})
+        }
+
+        SocketConnection.socket.onclose = () => {
+            alert("You've been disconnected from server")
+        }
+    }
+
     handleSignIn = (userInfo,isAuthenticated,isAuthorized,isAdmin) => {
-        console.log("Handling Sign In....")
         const { cookies } = this.props;
         
         this.setState({
@@ -38,13 +61,15 @@ class App extends React.Component {
         })
 
         if (isAuthenticated && isAuthorized) {
-          cookies.set('GOOGLEID',userInfo.google_id)
-          cookies.set('SESSIONID',userInfo.token_id)
-          //mala practica, con el ID (algo que se valida constantemente) deberias obtener el nombre, pero **practicidad**
-          cookies.set('USERNAME',userInfo.name)
-          this.setState({homeRedirect: true})
-        }else{
-          this.setState({loginError:true})
+            cookies.set('GOOGLEID', userInfo.google_id)
+            cookies.set('SESSIONID', userInfo.token_id)
+            cookies.set('USERNAME', userInfo.name)
+
+            this.connectToBackendWithSockets(userInfo)
+
+            this.setState({homeRedirect: true})
+        } else {
+            this.setState({loginError: true})
         }
     }
 
@@ -56,7 +81,7 @@ class App extends React.Component {
                   {this.state.homeRedirect ? <Redirect to="/"/> : <React.Fragment/>}
                   <Route exact path="/cards" component={(CardSearch)}/>
                   <Route exact path="/login" component={()=> <LoginScreen error={this.state.loginError} handleSignIn={this.handleSignIn}/>}/>
-                  <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/" component={() => <Home userName={this.props.cookies.get('USERNAME')} userId={this.props.cookies.get('GOOGLEID')} isAdmin={this.state.isAdmin} />}/>
+                  <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/" component={() => <Home userName={this.props.cookies.get('USERNAME')} userId={this.props.cookies.get('GOOGLEID')} isAdmin={this.state.isAdmin} connectedUsers={this.state.connectedUsers}/>}/>
                   <Route isSignedIn={this.state.isAuthenticated} exact path="/test" render={() => <DeckHome isAdmin={this.state.isAdmin} />} />
                   <ProtectedRoute  isSignedIn={this.state.isAuthenticated} exact path="/decks" component={ () => <DeckHome isAdmin={this.state.isAdmin} />} />
                   <ProtectedRoute  isSignedIn={this.state.isAuthenticated} exact path="/faq" component={ () => <Faq/>} />
@@ -67,40 +92,5 @@ class App extends React.Component {
     }
 
 }
-
-
-
-
-/* LOCAL STORAGE AUTH
-const validateAuthentication = () => {
-  let isAuthenticatedFromOldState = false
-
-  let state = loadState()
-  if (state !== undefined && state.isAuthenticated !== undefined) {
-      isAuthenticatedFromOldState = state.isAuthenticated
-  }
-  return isAuthenticatedFromOldState
-}
-const loadState = () => {
-    try {
-      const serializedState = localStorage.getItem('state');
-      if(serializedState === null) {
-        return undefined;
-      }
-      return JSON.parse(serializedState);
-    } catch (e) {
-        //logciño
-        console.log(e)
-    }
-  };
-
-  const saveState = (state) => {
-    try {
-      const serializedState = JSON.stringify(state);
-      localStorage.setItem('state', serializedState);
-    } catch (e) {
-      console.log(e)
-    }
-  };*/
 
 export default withCookies(App);
