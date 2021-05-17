@@ -57,16 +57,14 @@ class Home extends React.Component {
 
     render() {
         return (
-            <div>
+            <React.Fragment>
               <Header/>
                 <HomeTitle/>
                 <div className='flex-evenly'>
                     <img src={Batman} style={{maxHeight:'250px',alignSelf:'center'}}  alt={'Batman'}/>
                     <CreateMatchScreen decks={this.state.decks} connectedUsers={this.state.connectedUsers} />
                 </div>
-
-
-            </div>
+            </React.Fragment>
         )
     }
 
