@@ -4,6 +4,7 @@ import '../../styles/CommonStyles.css';
 import '../../styles/CommonLayoutsFlex.css';
 import Button from "@material-ui/core/Button";
 import {Autocomplete} from "@material-ui/lab";
+import SuperfriendsBackendClient from "../../SuperfriendsBackendClient";
 
 class CreateMatchScreen extends React.Component {
     constructor(props) {
@@ -14,12 +15,28 @@ class CreateMatchScreen extends React.Component {
         }
     }
 
+    createMatchClient = new SuperfriendsBackendClient()
+
     setOpponent = (opponent) => {
         this.setState({chosenOpponent: opponent.target.defaultValue})
     }
 
-    sendToLobby() {
-        window.location.href = "/lobby?deckName=" + this.state.chosenDeck
+    async sendToLobby() {
+
+        const matchCreationDTO = {
+            deck_id: this.props.decks.find((d) => d.name === (this.state.chosenDeck)).id,
+            match_creator_id: this.props.userId,
+            challenged_player_id: this.state.chosenOpponent
+        }
+        console.log(matchCreationDTO)
+        this.createMatchClient.createMatch(matchCreationDTO)
+        .then((matchResponse) => {
+            if (matchResponse) {
+                window.location.href = "/lobby?matchId=" + matchResponse
+            } else {
+                console.log("An error occurred in post")
+            }
+        })
     }
 
     render() {

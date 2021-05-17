@@ -49,6 +49,13 @@ class SuperfriendsBackendClient {
             .catch((e) => console.log("Error deleting deck with id :" + deckId + "   " + e))
     }
 
+    createMatch = (matchCreationDTO) => {
+        return axios.post(this.backendUrl + "/matches", matchCreationDTO)
+            .then((response) => response.data)
+            .catch((error) => console.log(error))
+
+    }
+
 }
 
 export default SuperfriendsBackendClient;
