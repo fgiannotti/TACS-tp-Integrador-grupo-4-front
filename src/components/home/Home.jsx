@@ -21,7 +21,6 @@ class Home extends React.Component {
     backendClient = new SuperfriendsBackendClient()
 
     componentDidMount() {
-        document.body.style.backgroundColor = '#ffcc80'
         this.backendClient.getDecks().then((decks) => this.setState({decks: decks}))
     }
 

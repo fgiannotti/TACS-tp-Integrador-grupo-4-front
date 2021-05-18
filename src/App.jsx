@@ -12,6 +12,7 @@ import DeckHome from "./components/decks/DeckHome";
 import DeckBuilder from "./components/deck_builder/DeckBuilder";
 import Faq from "./components/faq/Faq";
 import SocketConnection from "./socketEvents";
+import Lobby from "./components/play/Lobby";
 
 class App extends React.Component {
     static propTypes = {
@@ -64,6 +65,7 @@ class App extends React.Component {
             cookies.set('GOOGLEID', userInfo.google_id)
             cookies.set('SESSIONID', userInfo.token_id)
             cookies.set('USERNAME', userInfo.name)
+            cookies.set('USERIMAGE', userInfo.image_url)
 
             this.connectToBackendWithSockets(userInfo)
 
@@ -86,6 +88,7 @@ class App extends React.Component {
                   <ProtectedRoute  isSignedIn={this.state.isAuthenticated} exact path="/decks" component={ () => <DeckHome isAdmin={this.state.isAdmin} />} />
                   <ProtectedRoute  isSignedIn={this.state.isAuthenticated} exact path="/faq" component={ () => <Faq/>} />
                   <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/deck-builder" component={(DeckBuilder)}/>
+                  <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/lobby" component={() => <Lobby loggedUser={this.props.cookies.get('GOOGLEID')} loggedUserImage={this.props.cookies.get('USERIMAGE')} />} />
                 </BrowserRouter>
             </div>
         );

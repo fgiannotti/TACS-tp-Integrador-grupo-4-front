@@ -28,7 +28,7 @@ class CreateMatchScreen extends React.Component {
             match_creator_id: this.props.userId,
             challenged_player_id: this.state.chosenOpponent
         }
-        console.log(matchCreationDTO)
+
         this.createMatchClient.createMatch(matchCreationDTO)
         .then((matchResponse) => {
             if (matchResponse) {
