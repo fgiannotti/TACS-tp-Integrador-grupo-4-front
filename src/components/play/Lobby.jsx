@@ -1,4 +1,5 @@
 import React from 'react'
+import Loader from "../utils/Loader";
 
 
 class Lobby extends React.Component {
@@ -24,7 +25,7 @@ class Lobby extends React.Component {
             <div>
                 <span> Esperando al otro jugador </span>
                 <img style={{borderRadius: '50%'}} src={this.props.loggedUserImage} alt={'Usuario'}/>
-                {/*<Loader/>*/}
+                <Loader/>
             </div>
         );
     }

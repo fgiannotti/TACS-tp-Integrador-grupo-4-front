@@ -31,12 +31,11 @@ class App extends React.Component {
 
     connectToBackendWithSockets = (userInfo) => {
         let socket = new WebSocket("ws://localhost:9000/home?userId=" + userInfo.google_id);
-        SocketConnection.setInstance(socket)
-        SocketConnection.socket.onopen = () => {
+        socket.onopen = () => {
             console.log("connected to server")
         }
 
-        SocketConnection.socket.onmessage = (event) => {
+        socket.onmessage = (event) => {
             let connectedUsers = []
             try {
                 connectedUsers = JSON.parse(event.data)
@@ -47,7 +46,7 @@ class App extends React.Component {
             this.setState({connectedUsers: connectedUsers})
         }
 
-        SocketConnection.socket.onclose = () => {
+        socket.onclose = () => {
             alert("You've been disconnected from server")
         }
     }
