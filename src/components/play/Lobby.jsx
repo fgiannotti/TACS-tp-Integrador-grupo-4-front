@@ -15,8 +15,8 @@ class Lobby extends React.Component {
 
     componentDidMount() {
         let socket = new WebSocket("ws://localhost:9000/join-match/"+ this.state.matchId + "?userId=" + this.props.loggedUser);
-        socket.onopen = () => {
-            console.log("connected to server")
+        socket.onclose = () => {
+            setTimeout(this.connectToBackendWithSockets, 5000);
         }
     }
 

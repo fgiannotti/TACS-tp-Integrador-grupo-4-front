@@ -28,8 +28,8 @@ class App extends React.Component {
         this.history = createBrowserHistory();
     }
 
-    connectToBackendWithSockets = (userInfo) => {
-        let socket = new WebSocket("ws://localhost:9000/home?userId=" + userInfo.google_id);
+    connectToBackendWithSockets = (googleId) => {
+        let socket = new WebSocket("ws://localhost:9000/home?userId=" + googleId);
         socket.onopen = () => {
             console.log("connected to server")
         }
@@ -46,7 +46,7 @@ class App extends React.Component {
         }
 
         socket.onclose = () => {
-            alert("You've been disconnected from server")
+            setTimeout(() => this.connectToBackendWithSockets(googleId), 5000);
         }
     }
 
@@ -65,9 +65,9 @@ class App extends React.Component {
             cookies.set('USERNAME', userInfo.name)
             cookies.set('USERIMAGE', userInfo.image_url)
 
-            this.connectToBackendWithSockets(userInfo)
+            this.connectToBackendWithSockets(userInfo.google_id)
 
-            this.setState({homeRedirect: true})
+            this.setState({homeRedirect: true, loggedUser: userInfo.google_id})
         } else {
             this.setState({loginError: true})
         }
