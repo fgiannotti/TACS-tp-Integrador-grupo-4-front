@@ -22,11 +22,11 @@ class Lobby extends React.Component {
 
     render() {
         return (
-            <div>
+            <React.Fragment>
                 <span> Esperando al otro jugador </span>
                 <img style={{borderRadius: '50%'}} src={this.props.loggedUserImage} alt={'Usuario'}/>
                 <Loader/>
-            </div>
+            </React.Fragment>
         );
     }
 }
