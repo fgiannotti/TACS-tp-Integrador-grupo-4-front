@@ -11,7 +11,6 @@ import './App.css';
 import DeckHome from "./components/decks/DeckHome";
 import DeckBuilder from "./components/deck_builder/DeckBuilder";
 import Faq from "./components/faq/Faq";
-import SocketConnection from "./socketEvents";
 import Lobby from "./components/play/Lobby";
 
 class App extends React.Component {
