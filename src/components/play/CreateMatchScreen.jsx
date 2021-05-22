@@ -21,7 +21,7 @@ class CreateMatchScreen extends React.Component {
     createMatchClient = new SuperfriendsBackendClient()
 
     setOpponent = (opponent) => {
-        this.setState({chosenOpponent: opponent.target.defaultValue})
+        this.setState({chosenOpponent: opponent.target.id})
     }
 
     async sendToLobby() {
@@ -76,10 +76,12 @@ class CreateMatchScreen extends React.Component {
                                         {this.props.connectedUsers.map((user, i) =>
                                             <React.Fragment key={i}>
                                                 <FormControlLabel key={i}
+                                                                  id={user.user_id}
                                                                   value={user.user_name}
-                                                                  control={<Radio color="primary"/>}
+                                                                  control={<Radio color="primary" id={user.user_id}/>}
                                                                   label={user.user_name}
                                                                   labelPlacement="start"
+                                                                  disabled={user.user_id === this.props.cookies.get('GOOGLEID')}
                                                                   style={{
                                                                       display: 'flex',
                                                                       justifyContent: 'space-between',
