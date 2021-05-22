@@ -24,7 +24,7 @@ class CreateMatchScreen extends React.Component {
         this.setState({chosenOpponent: opponent.target.id})
     }
 
-    async sendToLobby() {
+    async createAndSendToLobby() {
 
         const matchCreationDTO = {
             deck_id: this.props.decks.find((d) => d.name === (this.state.chosenDeck)).id,
@@ -100,7 +100,7 @@ class CreateMatchScreen extends React.Component {
                             <Button disabled={!this.state.chosenDeck || !this.state.chosenOpponent} variant="contained"
                                     color="primary"
                                     style={{margin: '16px', fontWeight: 'bold'}}
-                                    onClick={() => this.sendToLobby()}> JUGAR </Button>
+                                    onClick={() => this.createAndSendToLobby()}> JUGAR </Button>
                         </Paper>
                     </div>
            )

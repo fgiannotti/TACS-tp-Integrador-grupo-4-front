@@ -16,7 +16,7 @@ class Home extends React.Component {
         this.state = {
             decks: [],
             connectedUsers: [],
-            userInvited: "0",
+            invitation: {userInvited:"0",matchId:"0"},
         }
 
         console.log(this.state);
@@ -37,18 +37,22 @@ class Home extends React.Component {
         }
 
         socket.onmessage = (event) => {
-            console.log("llego mensaje");
-            console.log(event.data);
-            let inviteMsgType = "INVITE FOR:"
+            //INVITE:PLAYERID:MATCHID
+            let inviteMsgType = "INVITE:"
             //localeCompare returns 0 if are equals
-            const isInviteMsgType = event.data.includes(inviteMsgType)
-
+            let isInviteMsgType = event.data.includes(inviteMsgType)
+            console.log(event.data)
             console.log(isInviteMsgType)
             switch (isInviteMsgType){
                 case true:
-                    console.log()
-
-                    this.setState({userInvited: event.data.split(":").slice(-1)[0]})
+                    const invitation = event.data.split(":")
+                    console.log(invitation)
+                    this.setState({
+                        invitation: {
+                            userInvited: invitation[1],
+                            matchId:     invitation[2]
+                        }
+                    })
                     break
 
                 default:
@@ -75,7 +79,7 @@ class Home extends React.Component {
             <React.Fragment>
               <Header/>
                 <HomeTitle/>
-                {this.state.userInvited === this.props.cookies.get('GOOGLEID') ? <Invitation/> : <React.Fragment/>}
+                {this.state.invitation.userInvited === this.props.cookies.get('GOOGLEID') ? <Invitation invitation={this.state.invitation}/> : <React.Fragment/>}
                 <div className='flex-evenly'>
                     <img src={Batman} style={{maxHeight:'250px',alignSelf:'center'}}  alt={'Batman'}/>
                     <CreateMatchScreen decks={this.state.decks} connectedUsers={this.state.connectedUsers} userId={this.props.cookies.get('GOOGLEID')}/>
