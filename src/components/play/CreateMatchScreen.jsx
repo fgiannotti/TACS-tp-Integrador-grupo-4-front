@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import {Autocomplete} from "@material-ui/lab";
 import SuperfriendsBackendClient from "../../SuperfriendsBackendClient";
 import {Redirect} from "react-router";
+import { withCookies } from "react-cookie";
 
 class CreateMatchScreen extends React.Component {
     constructor(props) {
@@ -34,6 +35,8 @@ class CreateMatchScreen extends React.Component {
         this.createMatchClient.createMatch(matchCreationDTO)
         .then((matchResponse) => {
             if (matchResponse) {
+                console.log("matchResponse");
+                console.log(matchResponse);
                 this.setState({matchId: matchResponse, redirectToLobby: true})
             } else {
                 console.log("An error occurred in post")
@@ -103,4 +106,4 @@ class CreateMatchScreen extends React.Component {
 
 }
 
-export default CreateMatchScreen;
+export default withCookies(CreateMatchScreen);

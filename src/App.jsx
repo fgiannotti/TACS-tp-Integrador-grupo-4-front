@@ -24,31 +24,10 @@ class App extends React.Component {
         const { cookies } = props;
         const session = cookies.get('SESSIONID')
 
-        this.state = {isAuthenticated: session !== undefined, loginError: false, homeRedirect: false, connectedUsers: []}
+        this.state = {isAuthenticated: session !== undefined, loginError: false, homeRedirect: false}
         this.history = createBrowserHistory();
     }
 
-    connectToBackendWithSockets = (googleId) => {
-        let socket = new WebSocket("ws://localhost:9000/home?userId=" + googleId);
-        socket.onopen = () => {
-            console.log("connected to server")
-        }
-
-        socket.onmessage = (event) => {
-            let connectedUsers = []
-            try {
-                connectedUsers = JSON.parse(event.data)
-                connectedUsers = connectedUsers.map(userString => JSON.parse(userString))
-            }catch(err) {
-                console.log(err)
-            }
-            this.setState({connectedUsers: connectedUsers})
-        }
-
-        socket.onclose = () => {
-            setTimeout(() => this.connectToBackendWithSockets(googleId), 5000);
-        }
-    }
 
     handleSignIn = (userInfo,isAuthenticated,isAuthorized,isAdmin) => {
         const { cookies } = this.props;
@@ -65,8 +44,6 @@ class App extends React.Component {
             cookies.set('USERNAME', userInfo.name)
             cookies.set('USERIMAGE', userInfo.image_url)
 
-            this.connectToBackendWithSockets(userInfo.google_id)
-
             this.setState({homeRedirect: true, loggedUser: userInfo.google_id})
         } else {
             this.setState({loginError: true})
@@ -81,8 +58,7 @@ class App extends React.Component {
                   {this.state.homeRedirect ? <Redirect to="/"/> : <React.Fragment/>}
                   <Route exact path="/cards" component={(CardSearch)}/>
                   <Route exact path="/login" component={()=> <LoginScreen error={this.state.loginError} handleSignIn={this.handleSignIn}/>}/>
-                  <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/" component={() => <Home userName={this.props.cookies.get('USERNAME')} userId={this.props.cookies.get('GOOGLEID')} isAdmin={this.state.isAdmin} connectedUsers={this.state.connectedUsers}/>}/>
-                  <Route isSignedIn={this.state.isAuthenticated} exact path="/test" render={() => <DeckHome isAdmin={this.state.isAdmin} />} />
+                  <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/" component={() => <Home userName={this.props.cookies.get('USERNAME')} userId={this.props.cookies.get('GOOGLEID')} isAdmin={this.state.isAdmin}/>}/>
                   <ProtectedRoute  isSignedIn={this.state.isAuthenticated} exact path="/decks" component={ () => <DeckHome isAdmin={this.state.isAdmin} />} />
                   <ProtectedRoute  isSignedIn={this.state.isAuthenticated} exact path="/faq" component={ () => <Faq/>} />
                   <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/deck-builder" component={(DeckBuilder)}/>

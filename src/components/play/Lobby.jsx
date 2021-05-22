@@ -1,5 +1,7 @@
 import React from 'react'
+import Header from '../Header';
 import Loader from "../utils/Loader";
+import { withCookies } from "react-cookie";
 
 
 class Lobby extends React.Component {
@@ -23,6 +25,7 @@ class Lobby extends React.Component {
     render() {
         return (
             <React.Fragment>
+                <Header/>
                 <span> Esperando al otro jugador </span>
                 <img style={{borderRadius: '50%'}} src={this.props.loggedUserImage} alt={'Usuario'}/>
                 <Loader/>
@@ -31,4 +34,4 @@ class Lobby extends React.Component {
     }
 }
 
-export default Lobby;
+export default withCookies(Lobby);
