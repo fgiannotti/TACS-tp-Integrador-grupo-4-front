@@ -63,7 +63,7 @@ class Home extends React.Component {
                     }catch(err) {
                         console.log(err)
                     }
-                    //localStorage.setItem('connectedUsers',JSON.stringify(connectedUsers))
+
                     this.setState({connectedUsers: connectedUsers})
             }
 

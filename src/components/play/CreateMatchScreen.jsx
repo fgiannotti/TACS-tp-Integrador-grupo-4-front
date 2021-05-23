@@ -67,7 +67,7 @@ class CreateMatchScreen extends React.Component {
                                 renderInput={(params) => (
                                     <TextField {...params} label="Busca un mazo" margin="normal" variant="outlined"/>
                                 )}
-                                onInputChange={(deckEvent) => this.setState({chosenDeck: deckEvent.target.outerText})}
+                                onInputChange={(deckEvent) => this.setState({chosenDeck: deckEvent.target.innerText})}
                             />
 
                             <Paper style={{minWidth: '70%', backgroundColor: "lightgray"}}>
@@ -97,7 +97,7 @@ class CreateMatchScreen extends React.Component {
                                 </FormControl>
                             </Paper>
 
-                            <Button disabled={!this.state.chosenDeck || !this.state.chosenOpponent} variant="contained"
+                            <Button disabled={!this.state.chosenOpponent || !this.state.chosenDeck} variant="contained"
                                     color="primary"
                                     style={{margin: '16px', fontWeight: 'bold'}}
                                     onClick={() => this.createAndSendToLobby()}> JUGAR </Button>
