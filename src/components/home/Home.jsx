@@ -70,7 +70,7 @@ class Home extends React.Component {
         }
 
         socket.onclose = () => {
-            setTimeout(() => this.connectToBackendWithSockets(googleId), 5000);
+            setTimeout(() => this.connectToBackendWithSockets(googleId), 100);
         }
     }
 
