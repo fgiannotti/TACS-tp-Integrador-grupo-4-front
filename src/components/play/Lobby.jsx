@@ -2,6 +2,8 @@ import React from 'react'
 import Header from '../Header';
 import Loader from "../utils/Loader";
 import { withCookies } from "react-cookie";
+import UserCard from "../cards/UserCard";
+import SuperfriendsBackendClient from "../../SuperfriendsBackendClient";
 
 
 class Lobby extends React.Component {
@@ -12,9 +14,11 @@ class Lobby extends React.Component {
 
         this.state = {
             matchId: matchId,
-            bothUsersInLobby: false
+            bothUsersInLobby: false,
         }
     }
+
+    backendClient = new SuperfriendsBackendClient()
 
     componentDidMount() {
         let socket = new WebSocket("ws://localhost:9000/join-match/"+ this.state.matchId + "?userId=" + this.props.loggedUser);
@@ -30,10 +34,16 @@ class Lobby extends React.Component {
                 const userId2 = msg[2]
                 const myId = this.props.cookies.get('GOOGLEID')
 
-                let opponentId = myId === userId1 ? userId1 : userId2
-
-                //fijarse desde acá como pedirle la imagen al backend 
-                this.setState({opponentId: opponentId, bothUsersInLobby:true})
+                let opponentId = myId !== userId1 ? userId1 : userId2
+                this.backendClient.getPlayerById(opponentId).then((opponentData) => {
+                        this.setState({
+                            opponentId: opponentId,
+                            bothUsersInLobby: true,
+                            opponentImage: opponentData.image_url,
+                            opponentUserName: opponentData.user_name
+                        })
+                    }
+                )
             }
         }
     }
@@ -42,18 +52,17 @@ class Lobby extends React.Component {
         return (
             <React.Fragment>
                 <Header/>
-                <img style={{borderRadius: '50%'}} src={this.props.loggedUserImage} alt={'Usuario'}/>
+                <div className="flex-row justify-content-space-evenly" style={{margin: '15%'}}>
+                <UserCard userName={this.props.cookies.get('USERNAME')} userImage={this.props.loggedUserImage} />
                 {this.state.bothUsersInLobby ? 
-                    //acá agregar imagen del otro gordo y su name
-                    <React.Fragment>
-                        <span>Oponente: {this.state.opponentId} </span>
-                    </React.Fragment>
+                    <UserCard userName={this.state.opponentUserName} userImage={this.state.opponentImage} />
                 :
                     <React.Fragment>                
                         <span style={{padding:'16px'}}> Esperando al otro jugador... </span>  
                         <Loader/>              
                     </React.Fragment>
                 }
+                </div>
             </React.Fragment>
         );
     }
