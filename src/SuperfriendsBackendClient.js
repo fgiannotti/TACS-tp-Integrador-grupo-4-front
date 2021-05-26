@@ -56,6 +56,12 @@ class SuperfriendsBackendClient {
 
     }
 
+    getPlayerById = (userId) => {
+        return axios.get(this.backendUrl + "/players/" + userId)
+            .then((response) => response.data)
+            .catch((error) => console.log(error))
+    }
+
 }
 
 export default SuperfriendsBackendClient;

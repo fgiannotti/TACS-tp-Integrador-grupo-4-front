@@ -21,10 +21,10 @@ class CreateMatchScreen extends React.Component {
     createMatchClient = new SuperfriendsBackendClient()
 
     setOpponent = (opponent) => {
-        this.setState({chosenOpponent: opponent.target.defaultValue})
+        this.setState({chosenOpponent: opponent.target.id})
     }
 
-    async sendToLobby() {
+    async createAndSendToLobby() {
 
         const matchCreationDTO = {
             deck_id: this.props.decks.find((d) => d.name === (this.state.chosenDeck)).id,
@@ -67,7 +67,7 @@ class CreateMatchScreen extends React.Component {
                                 renderInput={(params) => (
                                     <TextField {...params} label="Busca un mazo" margin="normal" variant="outlined"/>
                                 )}
-                                onInputChange={(deckEvent) => this.setState({chosenDeck: deckEvent.target.outerText})}
+                                onInputChange={(deckEvent) => this.setState({chosenDeck: deckEvent.target.innerText})}
                             />
 
                             <Paper style={{minWidth: '70%', backgroundColor: "lightgray"}}>
@@ -76,10 +76,12 @@ class CreateMatchScreen extends React.Component {
                                         {this.props.connectedUsers.map((user, i) =>
                                             <React.Fragment key={i}>
                                                 <FormControlLabel key={i}
+                                                                  id={user.user_id}
                                                                   value={user.user_name}
-                                                                  control={<Radio color="primary"/>}
+                                                                  control={<Radio color="primary" id={user.user_id}/>}
                                                                   label={user.user_name}
                                                                   labelPlacement="start"
+                                                                  disabled={user.user_id === this.props.cookies.get('GOOGLEID')}
                                                                   style={{
                                                                       display: 'flex',
                                                                       justifyContent: 'space-between',
@@ -95,10 +97,10 @@ class CreateMatchScreen extends React.Component {
                                 </FormControl>
                             </Paper>
 
-                            <Button disabled={!this.state.chosenDeck || !this.state.chosenOpponent} variant="contained"
+                            <Button disabled={!this.state.chosenOpponent || !this.state.chosenDeck} variant="contained"
                                     color="primary"
                                     style={{margin: '16px', fontWeight: 'bold'}}
-                                    onClick={() => this.sendToLobby()}> JUGAR </Button>
+                                    onClick={() => this.createAndSendToLobby()}> JUGAR </Button>
                         </Paper>
                     </div>
            )
