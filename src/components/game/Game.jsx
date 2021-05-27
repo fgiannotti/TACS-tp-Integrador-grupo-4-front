@@ -5,12 +5,11 @@ import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from '@material-ui/core/Button';
+import Avatar from '@material-ui/core/Avatar';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        flexGrow: 1,
-        title: "Board",
-        padding: 10,
+        padding:10,
         content:"center",
         justifyContent: "center",
         justifySelf: "canter"
@@ -27,27 +26,44 @@ const useStyles = makeStyles((theme) => ({
         textAlign: "center",
         justifySelf: "center",
     },
+    users: {
+        display: 'flex',
+        '& > *': {
+            margin: theme.spacing(1),
+        },
+        alignItems: "center",
+        justifyContent: "center",
+        justifySelf:"center",
+        content:"center",
+    },
+    deck: {
+        padding:10,
+        content:"center",
+        justifyContent: "center",
+        justifySelf: "canter"
+    },
 }));
 
 export default function Game() {
     const classes = useStyles();
 
-    function FormRow() {
+    function FormRow(props) {
         return (
             <React.Fragment>
-                <Grid title={"DeckWin"} item xs={12} className={classes.roots} >
-                    <Card className={classes.roots} >
-                        <CardActionArea className={classes.roots}>
+                <Grid container direction="row" justify="space-around"  item xs={8}>
+                <Grid title={"DeckWin"} item xs={3} className={classes.roots} >
+                    <Card className={classes.roots}>
+                        <CardActionArea>
                             <CardMedia
                                 className={classes.media}
                                 image={"https://retrocromy.com.ar/wp-content/uploads/2020/06/SuperAmigos40.jpg"}
                             />
                         </CardActionArea>
                     </Card>
-                    Cantidad de cartas ganadas X
+                    Puntaje: {props.score}
                 </Grid>
-                <Grid title={"CardUse"} item xs={12} className={classes.roots} >
-                    <Card className={classes.roots}  align={"center"}>
+                <Grid title={"CardUse"} item xs={3} className={classes.roots} >
+                    <Card className={classes.roots}>
                         <CardActionArea>
                             <CardMedia
                                 className={classes.media}
@@ -56,8 +72,8 @@ export default function Game() {
                         </CardActionArea>
                     </Card>
                 </Grid>
-                <Grid title={"Deck"} item xs={12} className={classes.roots} >
-                    <Card className={classes.roots}  align={"center"}>
+                <Grid title={"Deck"} item xs={3} className={classes.roots} >
+                    <Card className={classes.roots}>
                         <CardActionArea>
                             <CardMedia
                                 className={classes.media}
@@ -65,7 +81,8 @@ export default function Game() {
                             />
                         </CardActionArea>
                     </Card>
-                    Cantidad de cartas faltantes X
+                    Cartas restantes: {props.cards}
+                </Grid>
                 </Grid>
             </React.Fragment>
         );
@@ -73,16 +90,24 @@ export default function Game() {
 
     return (
         <div title="Game" className={classes.root}>
-            <Grid title="Board" container spacing={10} className={classes.root}>
-                <Grid title="Opponent" container item xs={"12"} spacing={10} className={classes.root}>
-                    <FormRow />
+            <Grid title="Board" container direction="column" justify="flex-start" alignItems="stretch" spacing={5} xs={12}>
+                <Grid title="Opponent" container spacing={1} direction="row" className={"padding:10"} item>
+                    <Grid item xs={2} className={classes.users}>
+                        <Avatar alt="Remy Sharp" src="https://i.pinimg.com/originals/19/87/90/198790eb7e08830027c1ae1686496c72.png" title={"Username"}/>
+                        Usernameadsfasdf
+                    </Grid>
+                    <FormRow score={5} cards={12}/>
                 </Grid>
-                <Grid title="MainUser" container item xs={"12"} spacing={10} className={classes.root}>
-                    <FormRow />
+                <Grid title="MainUser" container  spacing={1} direction="row" className={"padding:10"} item>
+                    <Grid item xs={2} className={classes.users}>
+                        <Avatar alt="Remy Sharp" src="https://i.pinimg.com/originals/19/87/90/198790eb7e08830027c1ae1686496c72.png" title={"Username"}/>
+                        Usernameadsfasdf
+                    </Grid>
+                    <FormRow score={10} cards={12}/>
                 </Grid>
             </Grid>
-            <Grid title="Configuration" container spacing={10} alignItems={"flex-end"}>
-                <Grid title="Prueba" container item xs={"12"} spacing={10}  justify={"flex-end"}>
+            <Grid title="Configuration" container alignItems={"flex-end"}>
+                <Grid title="Prueba" container item xs={"12"}  justify={"flex-end"}>
                     <Button variant="contained" >Abandonar</Button>
                 </Grid>
             </Grid>
