@@ -42,7 +42,7 @@ class MyMatches extends Component {
                                 ))}
                             </ListItem>
                             <Divider/>
-                            {this.state.matches.map((match, i) => (
+                            {this.state.matches.sort((a,b) => b.id - a.id).map((match, i) => (
                                 <React.Fragment key={i}>
                                     <ListItem style={{textAlign: 'center'}}  button dense key={match.id} onClick={() => {}}>
                                         <ListItemText style={{width: '25%'}} primary={match.match_creator.user_name} />
