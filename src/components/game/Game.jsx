@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Card from "@material-ui/core/Card";
@@ -44,9 +44,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Game() {
+export default function Game(props) {
     const classes = useStyles();
-
+    var userMain = props.data.usuarios.find((user)=>user.username=props.mainUser);
+    var userOpponent = props.data.usuarios.find((user)=>user.username!== props.mainUser);
+    const [card, setCard] = useState(userMain.cartaActual);
     function FormRow(props) {
         return (
             <React.Fragment>
@@ -93,17 +95,17 @@ export default function Game() {
             <Grid title="Board" container direction="column" justify="flex-start" alignItems="stretch" spacing={5} xs={12}>
                 <Grid title="Opponent" container spacing={1} direction="row" className={"padding:10"} item>
                     <Grid item xs={2} className={classes.users}>
-                        <Avatar alt="Remy Sharp" src="https://i.pinimg.com/originals/19/87/90/198790eb7e08830027c1ae1686496c72.png" title={"Username"}/>
-                        Usernameadsfasdf
+                        <Avatar alt="Remy Sharp" src={userOpponent.image} title={"Username"}/>
+                        {userOpponent.username}
                     </Grid>
-                    <FormRow score={5} cards={12}/>
+                    <FormRow score={userOpponent.ganadas} cards={userOpponent.carta}/>
                 </Grid>
                 <Grid title="MainUser" container  spacing={1} direction="row" className={"padding:10"} item>
                     <Grid item xs={2} className={classes.users}>
-                        <Avatar alt="Remy Sharp" src="https://i.pinimg.com/originals/19/87/90/198790eb7e08830027c1ae1686496c72.png" title={"Username"}/>
-                        Usernameadsfasdf
+                        <Avatar alt="Remy Sharp" src={userMain.image} title={"Username"}/>
+                        {userMain.username}
                     </Grid>
-                    <FormRow score={10} cards={12}/>
+                    <FormRow score={userMain.ganadas} cards={userMain.carta}/>
                 </Grid>
             </Grid>
             <Grid title="Configuration" container alignItems={"flex-end"}>
