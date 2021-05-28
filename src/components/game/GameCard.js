@@ -4,6 +4,7 @@ import {Box, ButtonGroup, Icon} from "@material-ui/core";
 import MediaCard from "../cards/HeroCard.js"
 import IconButton from "@material-ui/core/IconButton";
 import ReactCardFlip from 'react-card-flip';
+import { makeStyles } from '@material-ui/core/styles';
 import { ReactComponent as BrainIcon } from '../../resources/images/brain.svg';
 import { ReactComponent as HeightIcon } from '../../resources/images/height.svg';
 import { ReactComponent as WeightIcon } from '../../resources/images/weight.svg';
@@ -11,52 +12,68 @@ import { ReactComponent as StrongIcon } from '../../resources/images/strong.svg'
 import { ReactComponent as SpeedIcon } from '../../resources/images/speed.svg';
 import { ReactComponent as PowerIcon } from '../../resources/images/power.svg';
 import { ReactComponent as CombatIcon } from '../../resources/images/combat.svg';
-
-export default class GameCard extends React.Component{
-    constructor(props) {
-        super(props);
-        this.state = {selected_attribute: ""};
+import Grid from '@material-ui/core/Grid';
+import {red} from "@material-ui/core/colors";
+const useStyles = makeStyles((theme) => ({
+    root: {
+        display: 'flex',
+        '& > *': {
+            margin: theme.spacing(1),
+        },
+        height:500,
+        width: 750,
+    },
+    icon:{
+        height:"50%",
+        width: '50%',
+        color: red[500],
+        background: "green",
+        maxHeight:65
+    },
+    botones:{
+         maheight:500,
+        width: 30,
+        justify: "strech",
+        justifyItems: "stretch"
+    },
+    prueba: {
+        maxWidth:25,
+        maxHeight:450
     }
+}));
+export default function GameCard(props){
+    const classes = useStyles();
 
-
-    render() {
-        return(
-            <Box>
-                <ButtonGroup color="secondary" aria-label="outlined secondary button group">
-                    <IconButton aria-label="Altura">
-                        <Icon type={HeightIcon}>
-                        </Icon>
+    return(
+        <Grid container className={classes.root} xs={12}>
+                <ButtonGroup title="botones" variant="outlined" color="secondary" size="small" aria-label="outlined secondary button group" orientation="vertical" className={classes.prueba}>
+                    <IconButton aria-label="Altura" size={"small"} className={classes.icon}>
+                        <HeightIcon/>
                     </IconButton>
-                    <IconButton aria-label="Peso" disabled color="primary">
-                        <Icon type={WeightIcon}>
-                        </Icon>
+                    <IconButton aria-label="Peso"   size={"small"} className={classes.icon}>
+                        <WeightIcon />
                     </IconButton>
-                    <IconButton color="Fuerza" aria-label="add an alarm">
-                        <Icon type={StrongIcon}>
-                        </Icon>
+                    <IconButton aria-label="add an alarm" size={"small"} className={classes.icon}>
+                        <StrongIcon/>
                     </IconButton>
-                    <IconButton color="Inteligencia" aria-label="add to shopping cart">
-                        <Icon type={BrainIcon}>
-                        </Icon>
+                    <IconButton aria-label="add to shopping cart" size={"small"} className={classes.icon}>
+                        <BrainIcon/>
                     </IconButton>
-                    <IconButton aria-label="Velocidad" disabled color="primary">
-                        <Icon type={SpeedIcon}>
-                        </Icon>
+                    <IconButton aria-label="Velocidad"  size={"small"} className={classes.icon}>
+                        <SpeedIcon/>
                     </IconButton>
-                    <IconButton color="Poder" aria-label="add an alarm">
-                        <Icon type={PowerIcon}>
-                        </Icon>
+                    <IconButton aria-label="add an alarm" size={"small"} className={classes.icon}>
+                        <PowerIcon/>
                     </IconButton>
-                    <IconButton color="Combate" aria-label="add to shopping cart">
-                        <Icon type={CombatIcon}>
-                        </Icon>
+                    <IconButton  aria-label="add to shopping cart" size={"small"} className={classes.icon}>
+                        <CombatIcon/>
                     </IconButton>
                 </ButtonGroup>
+            <Grid item >
                 <MediaCard
-                    data={this.props.card}
-                    onClickBuilder={this.props.onClickBuilder}/>
-            </Box>);
-    }
+                data={props.card}
+            /></Grid>
+        </Grid>);
 
 }
 

@@ -107,7 +107,7 @@ export default function Game() {
                 </Grid>
             </Grid>
             <Grid title="Configuration" container alignItems={"flex-end"}>
-                <Grid title="Prueba" container item xs={"12"}  justify={"flex-end"}>
+                <Grid container item xs={"12"}  justify={"flex-end"}>
                     <Button variant="contained" >Abandonar</Button>
                 </Grid>
             </Grid>
