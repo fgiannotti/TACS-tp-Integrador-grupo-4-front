@@ -15,13 +15,13 @@ import { ReactComponent as CombatIcon } from '../../resources/images/combat.svg'
 import Grid from '@material-ui/core/Grid';
 import {red} from "@material-ui/core/colors";
 const useStyles = makeStyles((theme) => ({
-    root: {
+    dialog: {
         display: 'flex',
         '& > *': {
             margin: theme.spacing(1),
         },
-        height:500,
-        width: 750,
+        height:450,
+        width: 300,
     },
     icon:{
         height:"50%",
@@ -45,7 +45,7 @@ export default function GameCard(props){
     const classes = useStyles();
 
     return(
-        <Grid container className={classes.root} xs={12}>
+        <Grid container className={classes.dialog} xs={12}>
                 <ButtonGroup title="botones" variant="outlined" color="secondary" size="small" aria-label="outlined secondary button group" orientation="vertical" className={classes.prueba}>
                     <IconButton aria-label="Altura" size={"small"} className={classes.icon}>
                         <HeightIcon/>
