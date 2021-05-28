@@ -47,26 +47,26 @@ export default function GameCard(props){
     return(
         <Grid container className={classes.dialog} xs={12}>
                 <ButtonGroup title="botones" variant="outlined" color="secondary" size="small" aria-label="outlined secondary button group" orientation="vertical" className={classes.prueba}>
-                    <IconButton aria-label="Altura" size={"small"} className={classes.icon}>
-                        <HeightIcon/>
+                    <IconButton title="IconButton" aria-label="Altura" size={"small"} className={classes.icon}>
+                        <HeightIcon className={classes.icon}/>
                     </IconButton>
-                    <IconButton aria-label="Peso"   size={"small"} className={classes.icon}>
-                        <WeightIcon />
+                    <IconButton title="Icon" aria-label="Peso"   size={"small"} className={classes.icon}>
+                        <WeightIcon className={classes.icon}/>
                     </IconButton>
                     <IconButton aria-label="add an alarm" size={"small"} className={classes.icon}>
-                        <StrongIcon/>
+                        <StrongIcon className={classes.icon}/>
                     </IconButton>
                     <IconButton aria-label="add to shopping cart" size={"small"} className={classes.icon}>
-                        <BrainIcon/>
+                        <BrainIcon className={classes.icon}/>
                     </IconButton>
                     <IconButton aria-label="Velocidad"  size={"small"} className={classes.icon}>
-                        <SpeedIcon/>
+                        <SpeedIcon className={classes.icon}/>
                     </IconButton>
                     <IconButton aria-label="add an alarm" size={"small"} className={classes.icon}>
-                        <PowerIcon/>
+                        <PowerIcon className={classes.icon}/>
                     </IconButton>
                     <IconButton  aria-label="add to shopping cart" size={"small"} className={classes.icon}>
-                        <CombatIcon/>
+                        <CombatIcon className={classes.icon}/>
                     </IconButton>
                 </ButtonGroup>
             <Grid item >

@@ -165,25 +165,25 @@ export default function Game(props) {
                 <Grid container className={classes.dialog} xs={12}>
                     <ButtonGroup title="botones" variant="outlined" color="secondary" size="small" aria-label="outlined secondary button group" orientation="vertical" className={classes.prueba}>
                         <IconButton aria-label="Altura" size={"small"} className={classes.icon} onClick={() =>handleListAttributeClick("Altura")}>
-                            <HeightIcon/>
+                            <HeightIcon className={classes.icon}/>
                         </IconButton>
                         <IconButton aria-label="Peso"   size={"small"} className={classes.icon} onClick={() =>handleListAttributeClick("Peso")}>
-                            <WeightIcon />
+                            <WeightIcon className={classes.icon}/>
                         </IconButton>
                         <IconButton aria-label="Fuerza" size={"small"} className={classes.icon} onClick={() =>handleListAttributeClick("Fuerza")}>
-                            <StrongIcon/>
+                            <StrongIcon className={classes.icon}/>
                         </IconButton>
                         <IconButton aria-label="Inteligencia" size={"small"} className={classes.icon} onClick={() =>handleListAttributeClick("Inteligencia")}>
-                            <BrainIcon/>
+                            <BrainIcon className={classes.icon}/>
                         </IconButton>
                         <IconButton aria-label="Velocidad"  size={"small"} className={classes.icon} onClick={() =>handleListAttributeClick("Velocidad")}>
-                            <SpeedIcon/>
+                            <SpeedIcon className={classes.icon}/>
                         </IconButton>
                         <IconButton aria-label="Poder" size={"small"} className={classes.icon} onClick={() =>handleListAttributeClick("Poder")}>
-                            <PowerIcon/>
+                            <PowerIcon className={classes.icon}/>
                         </IconButton>
                         <IconButton  aria-label="Combate" size={"small"} className={classes.icon} onClick={() =>handleListAttributeClick("Combate")}>
-                            <CombatIcon/>
+                            <CombatIcon className={classes.icon}/>
                         </IconButton>
                     </ButtonGroup>
                     <Grid item >
