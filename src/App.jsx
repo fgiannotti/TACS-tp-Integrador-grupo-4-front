@@ -12,6 +12,7 @@ import DeckHome from "./components/decks/DeckHome";
 import DeckBuilder from "./components/deck_builder/DeckBuilder";
 import Faq from "./components/faq/Faq";
 import Lobby from "./components/play/Lobby";
+import MyMatches from "./components/MyMatches";
 
 class App extends React.Component {
     static propTypes = {
@@ -63,6 +64,7 @@ class App extends React.Component {
                   <ProtectedRoute  isSignedIn={this.state.isAuthenticated} exact path="/faq" component={ () => <Faq/>} />
                   <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/deck-builder" component={(DeckBuilder)}/>
                   <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/lobby" component={() => <Lobby loggedUser={this.props.cookies.get('GOOGLEID')} loggedUserImage={this.props.cookies.get('USERIMAGE')} />} />
+                  <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/matches" component={() => <MyMatches loggedUser={this.props.cookies.get('GOOGLEID')} />} />
                 </BrowserRouter>
             </div>
         );
