@@ -18,7 +18,8 @@ import {ReactComponent as SpeedIcon} from "../../resources/images/speed.svg";
 import {ReactComponent as PowerIcon} from "../../resources/images/power.svg";
 import {ReactComponent as CombatIcon} from "../../resources/images/combat.svg";
 import MediaCard from "../cards/HeroCard";
-import {red} from "@material-ui/core/colors";
+import { withSnackbar } from "./GameSnackBar";
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -93,7 +94,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function Game(props) {
+function Game(props) {
     const classes = useStyles();
     var userMain = props.data.usuarios.find((user)=>user.username=props.mainUser);
     var userOpponent = props.data.usuarios.find((user)=>user.username!== props.mainUser);
@@ -233,6 +234,7 @@ export default function Game(props) {
         const { onClose, open } = props;
         const handleCancel = () =>{
             onClose("");
+            props.snackbarShowMessage("Es turno de tu contrincante")
         };
         return (
             <Dialog onClose={handleCancel} aria-labelledby="simple-dialog-title" open={open}>
@@ -281,5 +283,8 @@ export default function Game(props) {
             </Grid>
             <SimpleDialogResult open={openResult} onClose={handleCloseResult} />
         </div>
-    );
+
+
+);
 }
+export default withSnackbar(Game);

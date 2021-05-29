@@ -1,14 +1,49 @@
-import React, {createContext} from 'react'
+import React, { useState } from "react";
+import Snackbar from "@material-ui/core/Snackbar";
+import Slide from "@material-ui/core/Slide";
+import Alert from "@material-ui/lab/Alert";
 
-export const SnackBarContext = createContext()
+export const withSnackbar = WrappedComponent => {
+    return props => {
+        const [open, setOpen] = useState(false);
+        const [message, setMessage] = useState("I'm a custom snackbar");
+        const [duration, setDuration] = useState(2000);
+        const [severity, setSeverity] = useState(
+            "info"
+        ); /** error | warning | info */
 
-export function SnackBarProvider({ children }) {
-    const [alerts, setAlerts] = useState([])
+        const showMessage = (message, severity = "info", duration = 2000) => {
+                setMessage(message);
+                setSeverity(severity);
+                setDuration(duration);
+                setOpen(true);
+            };
 
-    return (
-        <SnackBarContext.Provider value={{ setAlerts }}>
-            {children}
-            {alerts.map((alert) => <SnackBar key={alert}>{alert}</SnackBar>)}
-        </SnackBarContext.Provider>
-    )
-}
+        const handleClose = (event, reason) => {
+            if (reason === "clickaway") {
+                return;
+            }
+            setOpen(false);
+        };
+
+        return (
+            <>
+                <WrappedComponent {...props} snackbarShowMessage={showMessage} />
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "center"
+                    }}
+                    autoHideDuration={duration}
+                    open={open}
+                    onClose={handleClose}
+                    TransitionComponent={Slide}
+                >
+                    <Alert variant="filled" onClose={handleClose} severity={severity}>
+                        {message}
+                    </Alert>
+                </Snackbar>
+            </>
+        );
+    };
+};
