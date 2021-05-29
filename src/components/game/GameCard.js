@@ -1,9 +1,7 @@
 import React from 'react';
-import Button from "@material-ui/core/Button";
-import {Box, ButtonGroup, Icon} from "@material-ui/core";
+import { ButtonGroup} from "@material-ui/core";
 import MediaCard from "../cards/HeroCard.js"
 import IconButton from "@material-ui/core/IconButton";
-import ReactCardFlip from 'react-card-flip';
 import { makeStyles } from '@material-ui/core/styles';
 import { ReactComponent as BrainIcon } from '../../resources/images/brain.svg';
 import { ReactComponent as HeightIcon } from '../../resources/images/height.svg';
@@ -13,7 +11,7 @@ import { ReactComponent as SpeedIcon } from '../../resources/images/speed.svg';
 import { ReactComponent as PowerIcon } from '../../resources/images/power.svg';
 import { ReactComponent as CombatIcon } from '../../resources/images/combat.svg';
 import Grid from '@material-ui/core/Grid';
-import {red} from "@material-ui/core/colors";
+
 const useStyles = makeStyles((theme) => ({
     dialog: {
         display: 'flex',
@@ -26,8 +24,14 @@ const useStyles = makeStyles((theme) => ({
     icon:{
         height:"50%",
         width: '50%',
-        color: red[500],
-        background: "green",
+        maxHeight:65
+    },
+    focus:{
+        background:"grey"
+    },
+    image:{
+        height:"50%",
+        width: '50%',
         maxHeight:65
     },
     botones:{
@@ -43,17 +47,31 @@ const useStyles = makeStyles((theme) => ({
 }));
 export default function GameCard(props){
     const classes = useStyles();
+    const [attribute, setAttribute] = React.useState("Peso");
 
+
+    function atributo(attr){
+        if (attribute===attr){
+            return `${classes.image} ${classes.focus}`
+        }
+        else{
+            return `${classes.image}`
+        }
+    }
+
+    const handleClose = (value) => {
+        setAttribute(value);
+    };
     return(
         <Grid container className={classes.dialog} xs={12}>
-                <ButtonGroup title="botones" variant="outlined" color="secondary" size="small" aria-label="outlined secondary button group" orientation="vertical" className={classes.prueba}>
-                    <IconButton title="IconButton" aria-label="Altura" size={"small"} className={classes.icon}>
-                        <HeightIcon className={classes.icon}/>
+                <ButtonGroup title="botones" variant="outlined" color="secondary" size="small" aria-label="outlined secondary button group" orientation="vertical" className={classes.prueba} >
+                    <IconButton title="IconButton" value={"Altura"} aria-label="Altura" size={"small"} className={classes.icon} onClick={()=>handleClose("Altura")} >
+                        <HeightIcon className={atributo("Altura")} />
                     </IconButton>
-                    <IconButton title="Icon" aria-label="Peso"   size={"small"} className={classes.icon}>
-                        <WeightIcon className={classes.icon}/>
+                    <IconButton title="Icon" aria-label="Peso"   size={"small"} className={classes.icon} onClick={()=>handleClose("Peso")}>
+                        <WeightIcon className={atributo("Peso")}/>
                     </IconButton>
-                    <IconButton aria-label="add an alarm" size={"small"} className={classes.icon}>
+                    <IconButton aria-label="add an alarm" size={"small"} className={classes.icon} onClick={()=>handleClose("Altura")}>
                         <StrongIcon className={classes.icon}/>
                     </IconButton>
                     <IconButton aria-label="add to shopping cart" size={"small"} className={classes.icon}>

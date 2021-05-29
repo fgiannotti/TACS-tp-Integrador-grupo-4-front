@@ -66,9 +66,8 @@ const useStyles = makeStyles((theme) => ({
     icon:{
         height:"50%",
         width: '50%',
-        color: red[500],
-        background: "green",
-        maxHeight:65
+        maxHeight:65,
+        background:"#CACFD2"
     },
     botones:{
         maheight:500,
@@ -79,7 +78,16 @@ const useStyles = makeStyles((theme) => ({
     prueba: {
         maxWidth:25,
         maxHeight:450
-    }
+    },
+
+    focus:{
+        background:"#229954"
+    },
+    image:{
+        height:"50%",
+        width: '50%',
+        maxHeight:65
+    },
 }));
 
 export default function Game(props) {
@@ -150,40 +158,46 @@ export default function Game(props) {
     function SimpleDialog(props) {
         const classes = useStyles();
         const { onClose, selectedValue, open } = props;
-        var attribute = ""
+        const [attribute, setAttribute] = React.useState("");
         const handleClose = () => {
             onClose(attribute);
         };
-
         const handleListAttributeClick = (value) => {
-            attribute = value;
+            setAttribute(value);
         };
-
+        function estilo(attr){
+            if (attribute===attr){
+                return `${classes.image} ${classes.focus}`
+            }
+            else{
+                return `${classes.image}`
+            }
+        }
         return (
             <Dialog onClose={selectedValue} aria-labelledby="simple-dialog-title" open={open}>
                 <DialogTitle id="simple-dialog-title">Elegir un atributo</DialogTitle>
                 <Grid container className={classes.dialog} xs={12}>
                     <ButtonGroup title="botones" variant="outlined" color="secondary" size="small" aria-label="outlined secondary button group" orientation="vertical" className={classes.prueba}>
                         <IconButton aria-label="Altura" size={"small"} className={classes.icon} onClick={() =>handleListAttributeClick("Altura")}>
-                            <HeightIcon className={classes.icon}/>
+                            <HeightIcon className={estilo("Altura")}/>
                         </IconButton>
                         <IconButton aria-label="Peso"   size={"small"} className={classes.icon} onClick={() =>handleListAttributeClick("Peso")}>
-                            <WeightIcon className={classes.icon}/>
+                            <WeightIcon className={estilo("Peso")}/>
                         </IconButton>
                         <IconButton aria-label="Fuerza" size={"small"} className={classes.icon} onClick={() =>handleListAttributeClick("Fuerza")}>
-                            <StrongIcon className={classes.icon}/>
+                            <StrongIcon className={estilo("Fuerza")}/>
                         </IconButton>
                         <IconButton aria-label="Inteligencia" size={"small"} className={classes.icon} onClick={() =>handleListAttributeClick("Inteligencia")}>
-                            <BrainIcon className={classes.icon}/>
+                            <BrainIcon className={estilo("Inteligencia")}/>
                         </IconButton>
                         <IconButton aria-label="Velocidad"  size={"small"} className={classes.icon} onClick={() =>handleListAttributeClick("Velocidad")}>
-                            <SpeedIcon className={classes.icon}/>
+                            <SpeedIcon className={estilo("Velocidad")}/>
                         </IconButton>
                         <IconButton aria-label="Poder" size={"small"} className={classes.icon} onClick={() =>handleListAttributeClick("Poder")}>
-                            <PowerIcon className={classes.icon}/>
+                            <PowerIcon className={estilo("Poder")}/>
                         </IconButton>
                         <IconButton  aria-label="Combate" size={"small"} className={classes.icon} onClick={() =>handleListAttributeClick("Combate")}>
-                            <CombatIcon className={classes.icon}/>
+                            <CombatIcon className={estilo("Combate")}/>
                         </IconButton>
                     </ButtonGroup>
                     <Grid item >
