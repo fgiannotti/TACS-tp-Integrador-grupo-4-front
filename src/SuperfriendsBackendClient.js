@@ -67,6 +67,12 @@ class SuperfriendsBackendClient {
             .then((response) => response.data)
             .catch((error) => console.log(error))
     }
+
+    getMatchById = (matchId) => {
+        return axios.get(this.backendUrl + "/matches/" + matchId)
+            .then((response) => response.data)
+            .catch((error) => console.log(error))
+    }
 }
 
 export default SuperfriendsBackendClient;
