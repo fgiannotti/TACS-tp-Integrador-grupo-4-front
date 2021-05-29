@@ -162,6 +162,9 @@ export default function Game(props) {
         const handleClose = () => {
             onClose(attribute);
         };
+        const handleCancel = () =>{
+            onClose("");
+        };
         const handleListAttributeClick = (value) => {
             setAttribute(value);
         };
@@ -174,7 +177,7 @@ export default function Game(props) {
             }
         }
         return (
-            <Dialog onClose={selectedValue} aria-labelledby="simple-dialog-title" open={open}>
+            <Dialog onClose={handleCancel} aria-labelledby="simple-dialog-title" open={open}>
                 <DialogTitle id="simple-dialog-title">Elegir un atributo</DialogTitle>
                 <Grid container className={classes.dialog} xs={12}>
                     <ButtonGroup title="botones" variant="outlined" color="secondary" size="small" aria-label="outlined secondary button group" orientation="vertical" className={classes.prueba}>
