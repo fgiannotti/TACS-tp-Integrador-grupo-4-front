@@ -100,9 +100,7 @@ class App extends React.Component {
                   <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/deck-builder" component={(DeckBuilder)}/>
                   <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/lobby" component={() => <Lobby loggedUser={this.props.cookies.get('GOOGLEID')} loggedUserImage={this.props.cookies.get('USERIMAGE')} />} />
                     <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/game/board" component={() => <Game mainUser="username1" data={{"turno":"username1","usuarios":[{"username":"username1","image":"https://i.pinimg.com/originals/19/87/90/198790eb7e08830027c1ae1686496c72.png", "cartaActual":this.carta,"carta":1,"ganadas":10}, {"username":"username2", "image":"https://i.pinimg.com/originals/19/87/90/198790eb7e08830027c1ae1686496c72.png", "cartaActual":this.carta,"carta":10,"ganadas":11}]}}/> }/>
-                    <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/game/select" component={() => <Game mainUser={"USERNAME"} opponentUser = {"USERNAME_USER_OPPENENT"} deckID={"ID_DECK"}/>} />
                     <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/game/results" component={() => <Game mainUser={"USERNAME"} opponentUser = {"USERNAME_USER_OPPENENT"} deckID={"ID_DECK"}/>} />
-                    <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/game/espera" component={() => <Game mainUser={"USERNAME"} opponentUser = {"USERNAME_USER_OPPENENT"} deckID={"ID_DECK"}/>} />
                     <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/game/card" component={() => <GameCard card = {this.carta}/>} />
 
                 </BrowserRouter>

@@ -75,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
         justify: "strech",
         justifyItems: "stretch"
     },
-    prueba: {
+    buttonGroup: {
         maxWidth:25,
         maxHeight:450
     },
@@ -88,6 +88,9 @@ const useStyles = makeStyles((theme) => ({
         width: '50%',
         maxHeight:65
     },
+    prueba:{
+        paddingRight:150,
+    }
 }));
 
 export default function Game(props) {
@@ -96,14 +99,21 @@ export default function Game(props) {
     var userOpponent = props.data.usuarios.find((user)=>user.username!== props.mainUser);
     const card = userMain.cartaActual;
     const [openCard, setOpenCard] = React.useState(false);
+    const [openResult, setOpenResult] = React.useState(false);
     const [attribute, setAttribute] = React.useState("");
     const handleClickOpenCard = () => {
         setOpenCard(true);
     };
+    const handleCloseResult = (value) =>{
+        setOpenResult(false);
+    }
 
-    const handleClose = (value) => {
+    const handleCloseCard = (value) => {
         setAttribute(value);
         setOpenCard(false);
+        if (value !== "") {
+            setOpenResult(true);
+        }
         //setear atributo y llamar al back
     };
     function FormRow(props) {
@@ -151,11 +161,11 @@ export default function Game(props) {
             return (
                 <React.Fragment>
                     <Button variant="contained" onClick={handleClickOpenCard}>Seleccionar atributo</Button>
-                    <SimpleDialog selectedValue={attribute} open={openCard} onClose={handleClose} />
+                    <SimpleDialogCard selectedValue={attribute} open={openCard} onClose={handleCloseCard} />
                 </React.Fragment>);
         }
     }
-    function SimpleDialog(props) {
+    function SimpleDialogCard(props) {
         const classes = useStyles();
         const { onClose, selectedValue, open } = props;
         const [attribute, setAttribute] = React.useState("");
@@ -176,11 +186,16 @@ export default function Game(props) {
                 return `${classes.image}`
             }
         }
+        function playButton(attr){
+            if(attr!==""){
+                return (<Button variant="contained" onClick={handleClose} color={"secondary"}>Jugar</Button>);
+            }
+        }
         return (
             <Dialog onClose={handleCancel} aria-labelledby="simple-dialog-title" open={open}>
                 <DialogTitle id="simple-dialog-title">Elegir un atributo</DialogTitle>
                 <Grid container className={classes.dialog} xs={12}>
-                    <ButtonGroup title="botones" variant="outlined" color="secondary" size="small" aria-label="outlined secondary button group" orientation="vertical" className={classes.prueba}>
+                    <ButtonGroup title="botones" variant="outlined" color="secondary" size="small" aria-label="outlined secondary button group" orientation="vertical" className={classes.buttonGroup}>
                         <IconButton aria-label="Altura" size={"small"} className={classes.icon} onClick={() =>handleListAttributeClick("Altura")}>
                             <HeightIcon className={estilo("Altura")}/>
                         </IconButton>
@@ -208,7 +223,35 @@ export default function Game(props) {
                             data={card}
                         /></Grid>
                 </Grid>
-                <Button variant="contained" onClick={handleClose}>Jugar</Button>
+                {playButton(attribute)}
+            </Dialog>
+        );
+    }
+
+    function SimpleDialogResult(props) {
+        const classes = useStyles();
+        const { onClose, open } = props;
+        const handleCancel = () =>{
+            onClose("");
+        };
+        return (
+            <Dialog onClose={handleCancel} aria-labelledby="simple-dialog-title" open={open}>
+                <DialogTitle id="simple-dialog-title">Gano pepito</DialogTitle>
+
+                <Grid container xs={12} className={classes.root}>
+                <Grid item spacing={1} className={classes.prueba}>
+                    <DialogTitle id="simple-dialog-title">Username1</DialogTitle>
+                    Fuerza: 10
+                    <MediaCard
+                        data={card}
+                    /></Grid>
+                <Grid item >
+                    <DialogTitle id="simple-dialog-title">Username1</DialogTitle>
+                    Fuerza: 10
+                    <MediaCard
+                        data={card}
+                    /></Grid>
+                </Grid>
             </Dialog>
         );
     }
@@ -236,6 +279,7 @@ export default function Game(props) {
                     <Button variant="contained" >Abandonar</Button>
                 </Grid>
             </Grid>
+            <SimpleDialogResult open={openResult} onClose={handleCloseResult} />
         </div>
     );
 }
