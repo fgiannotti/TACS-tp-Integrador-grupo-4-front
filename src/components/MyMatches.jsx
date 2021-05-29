@@ -60,13 +60,14 @@ class MyMatches extends Component {
                     }}>
                         <h2 id="simple-modal-title">Enfrentamientos de la partida</h2>
                         <p id="simple-modal-description">
-                            {this.state.matchInfo.movements.map((m,i) =>(
-                                <span key={i}>
-                                    {m.attribute_name}
-                                </span>
-                            ))}
-                            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+                            Duis , est non commodo luctus, nisi erat porttitor ligula.
                         </p>
+
+                        {this.state.matchInfo.movements.map((m,i) =>(
+                            <span key={i}>
+                                {m.attribute_name}
+                            </span>
+                        ))}
                     </div>
                 </Modal>
                 <div className="deck-home m2">
