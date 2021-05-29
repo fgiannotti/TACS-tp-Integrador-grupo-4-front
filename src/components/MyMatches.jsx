@@ -4,6 +4,7 @@ import List from "@material-ui/core/List";
 import { withCookies } from "react-cookie";
 import {Divider, ListItem, ListItemText, Modal, Paper} from "@material-ui/core";
 import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import SuperfriendsBackendClient from "../SuperfriendsBackendClient";
 import Loader from "./utils/Loader";
 import Button from "@material-ui/core/Button";
@@ -74,15 +75,15 @@ class MyMatches extends Component {
                                     <ListItem style={{textAlign: 'center'}} dense key={movement.id}>
                                         <ListItemText style={{width: '25%'}} primary={i++}/>
 
-                                        <div style={{width: '25%',display:'flex'}}>
+                                        <div style={{width: '25%',display:'flex', alignItems: 'center'}}>
                                             <ListItemText primary={this.state.isUserMatchCreator ? movement.creator_card_id : movement.opponent_card_id} />
-                                            {movement.winner_card_id === movement.creator_card_id ? <EmojiEventsIcon /> : null}
+                                            {movement.winner_card_id === movement.creator_card_id ? <CheckCircleIcon style={{fontSize: 'small'}} /> : null}
                                             
                                         </div>
 
-                                        <div style={{width: '25%',display:'flex'}}>
+                                        <div style={{width: '25%',display:'flex', alignItems: 'center'}}>
                                             <ListItemText  primary={this.state.isUserMatchCreator ? movement.opponent_card_id : movement.creator_card_id} />
-                                            {movement.winner_card_id === movement.opponent_card_id ? <EmojiEventsIcon /> : null }
+                                            {movement.winner_card_id === movement.opponent_card_id ? <CheckCircleIcon style={{fontSize: 'small'}} /> : null }
                                         </div>
 
                                         <ListItemText style={{width: '25%'}} primary={movement.attribute_name === "STRENGTH" ? "Fuerza" 
@@ -94,7 +95,7 @@ class MyMatches extends Component {
                                             : (movement.attribute_name === "COMBAT")  ? "Combate" : ""
                                         }/>
                                     </ListItem>
-                                    {i !== (this.state.matchInfo.movements.length - 1) ? <Divider/> : <React.Fragment/>}
+                                    {i !== (this.state.matchInfo.movements.length ) ? <Divider/> : <React.Fragment/>}
                                 </React.Fragment>
                             ))
                             }
