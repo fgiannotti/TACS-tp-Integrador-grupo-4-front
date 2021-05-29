@@ -19,6 +19,8 @@ import {ReactComponent as PowerIcon} from "../../resources/images/power.svg";
 import {ReactComponent as CombatIcon} from "../../resources/images/combat.svg";
 import MediaCard from "../cards/HeroCard";
 import DialogContentText from '@material-ui/core/DialogContentText';
+import { withSnackbar } from "./GameSnackBar";
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -102,7 +104,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Game(props) {
+function Game(props) {
     const classes = useStyles();
     var userMain = props.data.usuarios.find((user)=>user.username=props.mainUser);
     var userOpponent = props.data.usuarios.find((user)=>user.username!== props.mainUser);
@@ -242,6 +244,7 @@ export default function Game(props) {
         const { onClose, open, data } = props;
         const handleCancel = () =>{
             onClose("");
+            props.snackbarShowMessage("Es turno de tu contrincante")
         };
         return (
             <Dialog onClose={handleCancel} aria-labelledby="simple-dialog-title" open={open} color="orange">
@@ -286,5 +289,8 @@ export default function Game(props) {
             </Grid>
             <SimpleDialogResult data={{"result":{"event":"Winner","user":"username1","attribute":"Fuerza"},"mainUser": {"username":"username1", "attribute": "5"},"opponent":{"username":"username2", "attribute": "10"}}} open={openResult} onClose={handleCloseResult} />
         </div>
-    );
+
+
+);
 }
+export default withSnackbar(Game);
