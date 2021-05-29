@@ -30,10 +30,16 @@ class Home extends React.Component {
 
     backendClient = new SuperfriendsBackendClient()
 
+    keepAlive = (socket) => {
+        socket.send(new Uint8Array([1]))
+        setTimeout(() => this.keepAlive(socket), 50000)
+    }
+
     connectToBackendWithSockets = (googleId) => {
         let socket = new WebSocket("ws://localhost:9000/home?userId=" + googleId);
         socket.onopen = () => {
-            console.log("on open: connected to server")
+            //send keep alive binary message
+            this.keepAlive(socket)
         }
 
         socket.onmessage = (event) => {
@@ -69,9 +75,14 @@ class Home extends React.Component {
 
         }
 
-        socket.onclose = () => {
-            setTimeout(() => this.connectToBackendWithSockets(googleId), 100);
+        socket.onclose = (event) => {
+            if(event.wasClean) {
+                console.log("EVENT WAS CLOSED CLEANLY")
+            } else {
+                console.log("CLOSED CONNECTION CODE IS " + event.code)
+            }
         }
+        socket.onerror = (ev => console.log("socket on error code: "+ ev.code))
     }
 
     render() {
