@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Header from "./Header";
 import List from "@material-ui/core/List";
+import { withCookies } from "react-cookie";
 import {Divider, ListItem, ListItemText, Modal, Paper} from "@material-ui/core";
 import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
 import SuperfriendsBackendClient from "../SuperfriendsBackendClient";
@@ -30,7 +31,8 @@ class MyMatches extends Component {
     handleOpen = (matchId) => {
         this.backendClient.getMatchById(matchId).then(response => {
                 console.log(response)
-                this.setState({open: true, matchInfo: response});
+                let isUserMatchCreator = response.match_creator.user_id === this.props.cookies.get('GOOGLEID')
+                this.setState({open: true, matchInfo: response, isUserMatchCreator: isUserMatchCreator});
             }
         )
     };
@@ -50,26 +52,57 @@ class MyMatches extends Component {
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                     className="flex-column-center">
+                <Paper className="container" style={{minWidth: '50%'}}>
+                    <List component="nav" aria-label="main mailbox folders">
+                            <ListItem style={{textAlign: 'center', backgroundColor: 'lightgray'}} dense key={"header"} onClick={() => {}}>
+                                {["Mov.","Tu carta", "Carta del Oponente", "Atributo elegido"].map((label, i) => (
+                                    <ListItemText key={i} style={{width: '25%'}} primary={label}/>
+                                ))}
+                            </ListItem>
+                            <Divider/>
+                            {/*} movements: Array(2)
+                                    0:
+                                    attribute_name: "STRENGTH"
+                                    creator_card_id: 2
+                                    id: 0
+                                    opponent_card_id: 4
+                                winner_card_id: 4*
+                                */}
+                            
+                            {this.state.matchInfo.movements.sort((a,b) => a.id - b.id).map((movement, i) => (
+                                <React.Fragment key={i}>
+                                    <ListItem style={{textAlign: 'center'}} dense key={movement.id}>
+                                        <ListItemText style={{width: '25%'}} primary={i++}/>
 
-                    <div style={{
-                        alignContent: 'center',
-                        width: 400,
-                        backgroundColor: "lightgray",
-                        border: '2px solid #000',
-                        padding: '2%'
-                    }}>
-                        <h2 id="simple-modal-title">Enfrentamientos de la partida</h2>
-                        <p id="simple-modal-description">
-                            Duis , est non commodo luctus, nisi erat porttitor ligula.
-                        </p>
+                                        <div style={{width: '25%',display:'flex'}}>
+                                            <ListItemText primary={this.state.isUserMatchCreator ? movement.creator_card_id : movement.opponent_card_id} />
+                                            {movement.winner_card_id === movement.creator_card_id ? <EmojiEventsIcon /> : null}
+                                            
+                                        </div>
 
-                        {this.state.matchInfo.movements.map((m,i) =>(
-                            <span key={i}>
-                                {m.attribute_name}
-                            </span>
-                        ))}
-                    </div>
+                                        <div style={{width: '25%',display:'flex'}}>
+                                            <ListItemText  primary={this.state.isUserMatchCreator ? movement.opponent_card_id : movement.creator_card_id} />
+                                            {movement.winner_card_id === movement.opponent_card_id ? <EmojiEventsIcon /> : null }
+                                        </div>
+
+                                        <ListItemText style={{width: '25%'}} primary={movement.attribute_name === "STRENGTH" ? "Fuerza" 
+                                            : (movement.attribute_name === "INTELLIGENCE") ? "Inteligencia"
+                                            : (movement.attribute_name === "HEIGHT") ? "Altura"
+                                            : (movement.attribute_name === "WEIGHT") ? "Peso"
+                                            : (movement.attribute_name === "SPEED")  ? "Velocidad"
+                                            : (movement.attribute_name === "POWER")  ? "Poder"
+                                            : (movement.attribute_name === "COMBAT")  ? "Combate" : ""
+                                        }/>
+                                    </ListItem>
+                                    {i !== (this.state.matchInfo.movements.length - 1) ? <Divider/> : <React.Fragment/>}
+                                </React.Fragment>
+                            ))
+                            }
+                        </List>
+
+                        </Paper>
                 </Modal>
+
                 <div className="deck-home m2">
                     {this.state.isLoading ?
                         <div style={{align: 'center'}}>
@@ -113,4 +146,4 @@ class MyMatches extends Component {
     }
 }
 
-export default MyMatches;
+export default withCookies(MyMatches);
