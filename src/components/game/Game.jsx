@@ -18,7 +18,7 @@ import {ReactComponent as SpeedIcon} from "../../resources/images/speed.svg";
 import {ReactComponent as PowerIcon} from "../../resources/images/power.svg";
 import {ReactComponent as CombatIcon} from "../../resources/images/combat.svg";
 import MediaCard from "../cards/HeroCard";
-import {red} from "@material-ui/core/colors";
+import DialogContentText from '@material-ui/core/DialogContentText';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -88,9 +88,18 @@ const useStyles = makeStyles((theme) => ({
         width: '50%',
         maxHeight:65
     },
-    prueba:{
-        paddingRight:150,
-    }
+    mainUserResult:{
+        padding:15,
+        paddingRight:75,
+    },
+    opponentUserResult:{
+        padding:15,
+        paddingLeft:75,
+    },
+    center:{
+        display: "flex",
+        justifyContent: "center"
+    },
 }));
 
 export default function Game(props) {
@@ -230,27 +239,23 @@ export default function Game(props) {
 
     function SimpleDialogResult(props) {
         const classes = useStyles();
-        const { onClose, open } = props;
+        const { onClose, open, data } = props;
         const handleCancel = () =>{
             onClose("");
         };
         return (
-            <Dialog onClose={handleCancel} aria-labelledby="simple-dialog-title" open={open}>
-                <DialogTitle id="simple-dialog-title">Gano pepito</DialogTitle>
+            <Dialog onClose={handleCancel} aria-labelledby="simple-dialog-title" open={open} color="orange">
+                <DialogTitle id="simple-dialog-title" className={classes.center}>{data.result.event} {data.result.user}</DialogTitle>
 
                 <Grid container xs={12} className={classes.root}>
-                <Grid item spacing={1} className={classes.prueba}>
-                    <DialogTitle id="simple-dialog-title">Username1</DialogTitle>
-                    Fuerza: 10
-                    <MediaCard
-                        data={card}
-                    /></Grid>
-                <Grid item >
-                    <DialogTitle id="simple-dialog-title">Username1</DialogTitle>
-                    Fuerza: 10
-                    <MediaCard
-                        data={card}
-                    /></Grid>
+                <Grid item spacing={1} className={classes.mainUserResult}>
+                    <DialogTitle id="simple-dialog-title" className={classes.center}>{data.mainUser.username}</DialogTitle>
+                    <DialogContentText className={classes.center}> {data.result.attribute} : {data.mainUser.attribute}</DialogContentText>
+                    <MediaCard data={card} /></Grid>
+                <Grid item  className={classes.opponentUserResult}>
+                    <DialogTitle id="simple-dialog-title" className={classes.center}>{data.opponent.username}</DialogTitle>
+                    <DialogContentText className={classes.center}> {data.result.attribute} : {data.opponent.attribute}</DialogContentText>
+                    <MediaCard data={card}/></Grid>
                 </Grid>
             </Dialog>
         );
@@ -279,7 +284,7 @@ export default function Game(props) {
                     <Button variant="contained" >Abandonar</Button>
                 </Grid>
             </Grid>
-            <SimpleDialogResult open={openResult} onClose={handleCloseResult} />
+            <SimpleDialogResult data={{"result":{"event":"Winner","user":"username1","attribute":"Fuerza"},"mainUser": {"username":"username1", "attribute": "5"},"opponent":{"username":"username2", "attribute": "10"}}} open={openResult} onClose={handleCloseResult} />
         </div>
     );
 }
