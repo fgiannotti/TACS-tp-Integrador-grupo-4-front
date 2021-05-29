@@ -106,7 +106,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Game(props) {
     const classes = useStyles();
-    var userMain = props.data.usuarios.find((user)=>user.username=props.mainUser);
+    var userMain = props.data.usuarios.find((user)=>user.username===props.mainUser);
     var userOpponent = props.data.usuarios.find((user)=>user.username!== props.mainUser);
     const card = userMain.cartaActual;
     const [openCard, setOpenCard] = React.useState(false);
@@ -239,9 +239,9 @@ function Game(props) {
         );
     }
 
-    function SimpleDialogResult(props) {
+    function SimpleDialogResult(variable) {
         const classes = useStyles();
-        const { onClose, open, data } = props;
+        const { onClose, open, data } = variable;
         const handleCancel = () =>{
             onClose("");
             props.snackbarShowMessage("Es turno de tu contrincante")
@@ -263,9 +263,17 @@ function Game(props) {
             </Dialog>
         );
     }
+    function turno(){
+        if(props.data.turno === props.mainUser){
+            return (<h3 className={classes.center}>Es tu turno</h3>);
+        }else{
+        return (<h3 className={classes.center}>Esperando oponente</h3>);
+        }
+    }
     return (
         <div title="Game" className={classes.root}>
-            <Grid title="Board" container direction="column" justify="flex-start" alignItems="stretch" spacing={5} xs={12}>
+            {turno()}
+            <Grid title="Board" container direction="column" justify="flex-start" alignItems="stretch" spacing={3} xs={12}>
                 <Grid title="Opponent" container spacing={1} direction="row" className={"padding:10"} item>
                     <Grid item xs={2} className={classes.users}>
                         <Avatar alt="Remy Sharp" src={userOpponent.image} title={"Username"}/>
