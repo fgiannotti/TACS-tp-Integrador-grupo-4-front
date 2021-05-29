@@ -14,7 +14,7 @@ import Faq from "./components/faq/Faq";
 import Lobby from "./components/play/Lobby";
 import Game from "./components/game/Game";
 import MyMatches from "./components/MyMatches";
-
+import ManagementSocket from "./components/managment_socket/ManagmenteSocket";
 class App extends React.Component {
     carta = {"name": "A-Bomb", "id": 1, "power_stats": [{
             "name": "combat",
@@ -80,6 +80,7 @@ class App extends React.Component {
             cookies.set('USERIMAGE', userInfo.image_url)
 
             this.setState({homeRedirect: true, loggedUser: userInfo.google_id})
+            ManagementSocket.setUser(userInfo.google_id)
         } else {
             this.setState({loginError: true})
         }
