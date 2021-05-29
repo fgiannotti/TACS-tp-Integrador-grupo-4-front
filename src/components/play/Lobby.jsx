@@ -34,11 +34,19 @@ class Lobby extends React.Component {
 
     backendClient = new SuperfriendsBackendClient()
 
+    keepAlive = (socket) => {
+        socket.send(new Uint8Array([1]))
+        setTimeout(() => this.keepAlive(socket), 50000)
+    }
+
     componentDidMount() {
         this.socket = new WebSocket("ws://localhost:9000/join-match/"+ this.state.matchId + "?userId=" + this.props.loggedUser);
-        this.socket.onclose = () => {
-            setTimeout(this.connectToBackendWithSockets, 5000);
+
+        this.socket.onopen = () => {
+            //send keep alive binary message
+            this.keepAlive(this.socket)
         }
+
         this.socket.onmessage = (event) => {
             console.log(event.data)
             if (event.data.includes("IN_LOBBY")) {
