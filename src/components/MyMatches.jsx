@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import Header from "./Header";
 import List from "@material-ui/core/List";
-import {Divider, Icon, ListItem, ListItemText, Paper} from "@material-ui/core";
+import { withCookies } from "react-cookie";
+import {Divider, ListItem, ListItemText, Modal, Paper} from "@material-ui/core";
 import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import SuperfriendsBackendClient from "../SuperfriendsBackendClient";
 import Loader from "./utils/Loader";
 import Button from "@material-ui/core/Button";
@@ -12,7 +14,9 @@ class MyMatches extends Component {
         super(props)
         this.state = {
             matches: [],
-            isLoading: true
+            isLoading: true,
+            open: false,
+            matchInfo: {movements:[]}
         }
     }
     backendClient = new SuperfriendsBackendClient()
@@ -25,10 +29,81 @@ class MyMatches extends Component {
             }))
     }
 
+    handleOpen = (matchId) => {
+        this.backendClient.getMatchById(matchId).then(response => {
+                console.log(response)
+                let isUserMatchCreator = response.match_creator.user_id === this.props.cookies.get('GOOGLEID')
+                this.setState({open: true, matchInfo: response, isUserMatchCreator: isUserMatchCreator});
+            }
+        )
+    };
+
+    handleClose = () => {
+        this.setState({ open: false });
+    };
+
+
     render() {
         return (
             <React.Fragment>
                 <Header />
+                <Modal
+                    open={this.state.open}
+                    onClose={this.handleClose}
+                    aria-labelledby="simple-modal-title"
+                    aria-describedby="simple-modal-description"
+                    className="flex-column-center">
+                <Paper className="container" style={{minWidth: '50%'}}>
+                    <List component="nav" aria-label="main mailbox folders">
+                            <ListItem style={{textAlign: 'center', backgroundColor: 'lightgray'}} dense key={"header"} onClick={() => {}}>
+                                {["Mov.","Tu carta", "Carta del Oponente", "Atributo elegido"].map((label, i) => (
+                                    <ListItemText key={i} style={{width: '25%'}} primary={label}/>
+                                ))}
+                            </ListItem>
+                            <Divider/>
+                            {/*} movements: Array(2)
+                                    0:
+                                    attribute_name: "STRENGTH"
+                                    creator_card_id: 2
+                                    id: 0
+                                    opponent_card_id: 4
+                                winner_card_id: 4*
+                                */}
+                            
+                            {this.state.matchInfo.movements.sort((a,b) => a.id - b.id).map((movement, i) => (
+                                <React.Fragment key={i}>
+                                    <ListItem style={{textAlign: 'center'}} dense key={movement.id}>
+                                        <ListItemText style={{width: '25%'}} primary={i++}/>
+
+                                        <div style={{width: '25%',display:'flex', alignItems: 'center'}}>
+                                            <ListItemText primary={this.state.isUserMatchCreator ? movement.creator_card_id : movement.opponent_card_id} />
+                                            {movement.winner_card_id === movement.creator_card_id ? <CheckCircleIcon style={{fontSize: 'small'}} /> : null}
+                                            
+                                        </div>
+
+                                        <div style={{width: '25%',display:'flex', alignItems: 'center'}}>
+                                            <ListItemText  primary={this.state.isUserMatchCreator ? movement.opponent_card_id : movement.creator_card_id} />
+                                            {movement.winner_card_id === movement.opponent_card_id ? <CheckCircleIcon style={{fontSize: 'small'}} /> : null }
+                                        </div>
+
+                                        <ListItemText style={{width: '25%'}} primary={movement.attribute_name === "STRENGTH" ? "Fuerza" 
+                                            : (movement.attribute_name === "INTELLIGENCE") ? "Inteligencia"
+                                            : (movement.attribute_name === "HEIGHT") ? "Altura"
+                                            : (movement.attribute_name === "WEIGHT") ? "Peso"
+                                            : (movement.attribute_name === "SPEED")  ? "Velocidad"
+                                            : (movement.attribute_name === "POWER")  ? "Poder"
+                                            : (movement.attribute_name === "COMBAT")  ? "Combate" : ""
+                                        }/>
+                                    </ListItem>
+                                    {i !== (this.state.matchInfo.movements.length ) ? <Divider/> : <React.Fragment/>}
+                                </React.Fragment>
+                            ))
+                            }
+                        </List>
+
+                        </Paper>
+                </Modal>
+
                 <div className="deck-home m2">
                     {this.state.isLoading ?
                         <div style={{align: 'center'}}>
@@ -44,7 +119,7 @@ class MyMatches extends Component {
                             <Divider/>
                             {this.state.matches.sort((a,b) => b.id - a.id).map((match, i) => (
                                 <React.Fragment key={i}>
-                                    <ListItem style={{textAlign: 'center'}}  button dense key={match.id} onClick={() => {}}>
+                                    <ListItem style={{textAlign: 'center'}}  button dense key={match.id} onClick={() => this.handleOpen(match.id)}>
                                         <ListItemText style={{width: '25%'}} primary={match.match_creator.user_name} />
                                         {match.winner_id ? (match.winner_id === match.match_creator.user_id) ? <EmojiEventsIcon /> : null : null}
                                         <ListItemText style={{width: '25%'}} primary={match.challenged_player.user_name} />
@@ -72,4 +147,4 @@ class MyMatches extends Component {
     }
 }
 
-export default MyMatches;
+export default withCookies(MyMatches);
