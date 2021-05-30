@@ -42,10 +42,10 @@ class Game extends React.Component {
     receiveMessage = (message) => {
         console.log(message)
         if(message.data.includes("INIT")){
-            let messagejson = JSON.parse(message.data)
-            let userMain = messagejson.creator
-            let userOpponent = messagejson.opponent
-            let deckCount = messagejson.deckCount
+            let messageJson = JSON.parse(message.data)
+            let userMain = messageJson.creator
+            let userOpponent = messageJson.opponent
+            let deckCount = messageJson.deckCount
             this.setState({creator: userMain, opponent: userOpponent, deckCount: deckCount})
         }
         console.log(message)
