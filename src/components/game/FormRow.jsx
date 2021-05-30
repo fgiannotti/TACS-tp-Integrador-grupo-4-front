@@ -4,10 +4,11 @@ import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardMedia from "@material-ui/core/CardMedia";
 import '../../styles/Game.css';
-import CardJpg from "../../resources/images/cardback.jpg";
-
+import defaultCardJpg from "../../resources/images/cardback.jpg";
+import MediaCard from "../cards/HeroCard";
 
 export default class FormRow extends React.Component {
+
     classes = {
         root: {
             padding:10,
@@ -37,7 +38,7 @@ export default class FormRow extends React.Component {
                             <CardActionArea>
                                 <CardMedia
                                     style={this.classes.media}
-                                    image={CardJpg}
+                                    image={defaultCardJpg}
                                 />
                             </CardActionArea>
                         </Card>
@@ -46,10 +47,11 @@ export default class FormRow extends React.Component {
                     <Grid title={"CardUse"} item xs={3} style={this.classes.roots} >
                         <Card style={this.classes.roots}>
                             <CardActionArea>
-                                <CardMedia
-                                    style={this.classes.media}
-                                    image={CardJpg}
-                                />
+                                {this.props.cardReceived ?
+                                    <MediaCard card={this.props.cardReceived}/>
+                                    :
+                                    <CardMedia style={this.classes.media} image={defaultCardJpg}/>
+                                }
                             </CardActionArea>
                         </Card>
                     </Grid>
@@ -58,7 +60,7 @@ export default class FormRow extends React.Component {
                             <CardActionArea>
                                 <CardMedia
                                     style={this.classes.media}
-                                    image={CardJpg}
+                                    image={defaultCardJpg}
                                 />
                             </CardActionArea>
                         </Card>

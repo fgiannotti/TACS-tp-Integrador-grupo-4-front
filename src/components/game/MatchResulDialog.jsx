@@ -8,7 +8,7 @@ import Button from "@material-ui/core/Button";
 import '../../styles/Game.css';
 
 
-export default class SimpleResultDialog extends Component {
+export default class MatchResultDialog extends Component {
 
     constructor(props) {
         super(props);

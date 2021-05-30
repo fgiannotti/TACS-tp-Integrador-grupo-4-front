@@ -1,28 +1,24 @@
 import React from 'react';
-import {makeStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
-
 import AttributeGrid from './AttributeGrid'
 
-var useStyles = makeStyles({
-    root: {
-        maxWidth: 200,
-        marginTop: 10,
-    },
-    media: {
-        height: 150,
-        paddingTop: "56.25%",
-    },
-    content: {
-        padding: "5%",
-    },
-});
-
 class HeroCard extends React.Component {
+    styles = {
+        root: {
+            maxWidth: 200,
+            marginTop: 10,
+        },
+        media: {
+            height: 150
+        },
+        content: {
+            padding: "5%",
+        },
+    }
 
     onClickCard = () => {
         if (this.props.onClickBuilder) {
@@ -32,14 +28,14 @@ class HeroCard extends React.Component {
 
     render() {
         return (
-            <Card className={this.props.style.root} onClick={this.onClickCard}>
+            <Card style={this.styles.root} onClick={this.onClickCard}>
                 <CardActionArea>
                     <CardMedia
-                        className={this.props.style.media}
+                        style={this.styles.media}
                         image={this.props.card["image_url"]}
                         title={this.props.card["name"]}
                     />
-                    <CardContent className={this.props.style.content}>
+                    <CardContent style={this.styles.content}>
                         <Typography gutterBottom variant="h6" component="h2">
                             {this.props.card["name"]}
                         </Typography>
@@ -51,6 +47,5 @@ class HeroCard extends React.Component {
 }
 
 export default function MediaCard(props) {
-    const classes = useStyles();
-    return (<HeroCard style={classes} card={props.card} onClickBuilder={props.onClickBuilder}/>);
+    return (<HeroCard card={props.card} onClickBuilder={props.onClickBuilder}/>);
 }

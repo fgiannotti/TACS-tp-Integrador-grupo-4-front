@@ -8,28 +8,30 @@ import ManagementSocket from "../management_socket/ManagementSocket";
 import styles from '../../styles/Game.css';
 import SimpleResultDialog from "./SimpleResultDialog"
 import FormRow from "./FormRow"
-import MatchResultDialog from "./MatchResulDialog"
+import {withCookies} from "react-cookie";
+import MatchResultDialog from "./MatchResulDialog.jsx"
 import SimpleCardDialog from "./SimpleCardDialog"
 import Loader from "../utils/Loader";
+import defaultCardJpg from "../../resources/images/cardback.jpg";
 
 class Game extends React.Component {
     constructor(props) {
         super(props);
-        let userMain = this.props.data.usuarios.find((user)=>user.userName === this.props.mainUser);
-        let userOpponent = this.props.data.usuarios.find((user)=>user.userName !== this.props.mainUser);
+    //    let userMain = this.props.data.usuarios.find((user)=>user.userName === this.props.mainUser);
+      //  let userOpponent = this.props.data.usuarios.find((user)=>user.userName !== this.props.mainUser);
 
-        const card = userMain.cartaActual;
+        //const card = userMain.cartaActual;
 
         this.state = {
-            card: card,
             openCard: false,
             openMatchResult: false,
             openResult: false,
             attribute: "",
-            opponent: userOpponent,
-            creator: userMain,
             deckCount: 0,
-            isLoading: true
+            isLoading: true,
+            loggedUser: this.props.cookies.get('GOOGLEID'),
+            isMainUserTurn: false,
+            mainUserCardUrl: defaultCardJpg
         }
     }
 
@@ -46,17 +48,24 @@ class Game extends React.Component {
             let messageJson = JSON.parse(message.data)
             let mainUser
             let opponent
-            if (messageJson.creator.userId === this.props.loggedUser) {
+            if (messageJson.creator.user_id === this.state.loggedUser) {
                 mainUser = messageJson.creator
                 opponent = messageJson.opponent
             } else {
                 mainUser = messageJson.opponent
                 opponent = messageJson.creator
             }
-            let deckCount = messageJson.deckCount
+            let deckCount = messageJson.deck_count
             this.setState({mainUser: mainUser, opponent: opponent, deckCount: deckCount, isLoading: false})
         }
+        if (message.data.includes("TURN")){
+            console.log("received turn:");
+            let messageJson = JSON.parse(message.data)
+            console.log(messageJson);
+            this.setState({cardReceived:messageJson.card, isMainUserTurn: messageJson.user_id_turn === this.state.loggedUser})
+        }
     }
+
     handleClickOpenCard = () => {
         this.setState({openCard: true});
     };
@@ -65,7 +74,7 @@ class Game extends React.Component {
     }
 
     handleCloseCard = (value) => {
-        let openResult = value !== "" ? true : false
+        let openResult = value !== ""
         this.setState({attribute: value, openCard: false, openResult: openResult});
         //setear atributo y llamar al back
     };
@@ -85,26 +94,18 @@ class Game extends React.Component {
         }
     }
 
-    turn() {
-        if (this.props.data.turno === this.props.mainUser) {
-            return (<h3 className={styles.center}>Es tu turno</h3>);
-        } else {
-            return (<h3 className={styles.center}>Esperando oponente</h3>);
-        }
-    }
-
 
     render() {
         return (
             (this.state.isLoading ? <Loader /> :
         <div title="Game" className={styles.root}>
-            {this.turn()}
+            <h3 className={styles.center}> {this.state.isMainUserTurn ? "Es tu turno" : "Esperando oponente"} </h3>
             <Grid title="Board" container direction="column" justify="flex-start" alignItems="stretch" spacing={3} xs={12} item={true}>
                 <Grid title="Opponent" container spacing={1} direction="row" style={{padding:16}} item={true}>
                     <Grid item={true} xs={2} className={styles.users}>
-                        <Avatar style={{height:'30%', width: '50%'}} alt="" src={this.state.opponent.imageUrl} title={"Username"}/>
+                        <Avatar style={{height:'30%', width: '50%'}} alt="" src={this.state.opponent.image_url} title={"Username"}/>
                         <span>
-                            {this.state.opponent.userName}
+                            {this.state.opponent.user_name}
                         </span>
                     </Grid>
                     <FormRow score={this.state.opponent.score} cardsLeft={this.state.deckCount}/>
@@ -112,10 +113,10 @@ class Game extends React.Component {
 
                 <Grid title="MainUser" container  spacing={1} direction="row" className={"padding:10"} item={true}>
                     <Grid item={true} xs={2} className={styles.users}>
-                        <Avatar style={{height:'30%', width: '50%'}} alt="" src={this.state.mainUser.imageUrl} title={"Username"}/>
-                        {this.state.mainUser.userName}
+                        <Avatar style={{height:'30%', width: '50%'}} alt="" src={this.state.mainUser.image_url} title={"Username"}/>
+                        {this.state.mainUser.user_name}
                     </Grid>
-                    <FormRow score={this.state.mainUser.score} cardsLeft={this.state.deckCount}/>
+                    <FormRow score={this.state.mainUser.score} cardReceived={this.state.cardReceived} cardsLeft={this.state.deckCount}/>
                 </Grid>
             </Grid>
 
@@ -131,10 +132,11 @@ class Game extends React.Component {
                                     "mainUser": {"username":"username1", "attribute": "5"},
                                     "opponent":{"username":"username2", "attribute": "10"}}} 
                 open={this.state.openResult} onClose={this.handleCloseResult} card={this.state.card} />
+
             <MatchResultDialog open={this.state.openMatchResult} onClose={this.handleCloseMatchResult} result_status="lose"/>
         </div>
         ));
     }
 
 }
-export default withSnackbar(Game);
+export default withCookies(withSnackbar(Game));
