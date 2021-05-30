@@ -1,18 +1,8 @@
-import React, {useEffect} from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React from 'react';
 import Grid from '@material-ui/core/Grid';
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardMedia from "@material-ui/core/CardMedia";
 import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Dialog from '@material-ui/core/Dialog';
-import {ButtonGroup} from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
-import MediaCard from "../cards/HeroCard";
-import DialogContentText from '@material-ui/core/DialogContentText';
-import { withSnackbar } from "./GameSnackBar";
+import {withSnackbar} from "./GameSnackBar";
 import {Redirect} from "react-router"
 import ManagementSocket from "../management_socket/ManagementSocket";
 import styles from '../../styles/Game.css';
@@ -52,10 +42,10 @@ class Game extends React.Component {
     receiveMessage = (message) => {
         console.log(message)
         if(message.data.includes("INIT")){
-            let messagejson = JSON.parse(message.data)
-            let userMain = messagejson.creator
-            let userOpponent = messagejson.opponent
-            let deckCount = messagejson.deckCount
+            let messageJson = JSON.parse(message.data)
+            let userMain = messageJson.creator
+            let userOpponent = messageJson.opponent
+            let deckCount = messageJson.deckCount
             this.setState({creator: userMain, opponent: userOpponent, deckCount: deckCount})
         }
         console.log(message)
