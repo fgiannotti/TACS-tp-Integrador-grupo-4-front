@@ -18,13 +18,13 @@ export default class SimpleResultDialog extends Component {
                 <Dialog onClose={this.handleCancel} aria-labelledby="simple-dialog-title" open={this.props.open} color="orange">
                     <DialogTitle id="simple-dialog-title" className={styles.center}>{this.props.data.result.event} {this.props.data.result.user}</DialogTitle>
 
-                    <Grid container xs={12} className={styles.root}>
-                        <Grid item spacing={1} className={styles.mainUserResult}>
+                    <Grid container item xs={12} className={styles.root}>
+                        <Grid item container spacing={1} className={styles.mainUserResult}>
                             <DialogTitle id="simple-dialog-title" className={styles.center}>{this.props.data.mainUser.username}</DialogTitle>
                             <DialogContentText className={styles.center}> {this.props.data.result.attribute} : {this.props.data.mainUser.attribute}</DialogContentText>
                             <MediaCard card={this.props.card}/>
                         </Grid>
-                        <Grid item  className={styles.opponentUserResult}>
+                        <Grid container className={styles.opponentUserResult}>
                             <DialogTitle id="simple-dialog-title" className={styles.center}>{this.props.data.opponent.username}</DialogTitle>
                             <DialogContentText className={styles.center}> {this.props.data.result.attribute} : {this.props.data.opponent.attribute}</DialogContentText>
                             <MediaCard card={this.props.card}/>
