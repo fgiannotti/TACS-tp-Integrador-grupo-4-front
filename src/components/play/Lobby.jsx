@@ -7,7 +7,7 @@ import SuperfriendsBackendClient from "../../SuperfriendsBackendClient";
 import {Button} from "@material-ui/core";
 import GreenCheck from "../utils/GreenCheck";
 import {Redirect} from "react-router";
-import ManagmenteSocket from "../management_socket/ManagementSocket";
+import ManagementSocket from "../management_socket/ManagementSocket";
 class Lobby extends React.Component {
     constructor(props) {
         super(props);
@@ -22,16 +22,17 @@ class Lobby extends React.Component {
             opponentReady: false,
             ready: false
         }
-        ManagmenteSocket.matchId = urlParams.get('matchId')
-        ManagmenteSocket.subscribeObserver(this)
-        ManagmenteSocket.createConnection()
+        ManagementSocket.setUser(this.props.cookies.get('GOOGLEID'))
+        ManagementSocket.matchId = urlParams.get('matchId')
+        ManagementSocket.subscribeObserver(this)
+        ManagementSocket.createConnection()
     }
 
     sendReadyToServer = () => {
         this.setState({
             ready: true
         })
-        ManagmenteSocket.sendMessage("READY:"+ this.props.loggedUser)
+        ManagementSocket.sendMessage("READY:"+ this.props.loggedUser)
     }
 
     backendClient = new SuperfriendsBackendClient()
