@@ -56,7 +56,6 @@ class DeckBuilder extends React.Component {
         let heroList = []
         if (cardIds.length > 0) {
             heroList = await deckClient.getHerosByCardIds(cardIds);
-            console.log(heroList)
         }
 
         this.setState({deckId: deckId, deckName: deckName, selectedHeroList: heroList})

@@ -29,7 +29,6 @@ class Game extends React.Component {
             creator: userMain,
             deckCount: 0,
         }
-        console.log(this.state)
     }
 
 
@@ -48,8 +47,6 @@ class Game extends React.Component {
             let deckCount = messageJson.deckCount
             this.setState({creator: userMain, opponent: userOpponent, deckCount: deckCount})
         }
-        console.log(message)
-
     }
     handleClickOpenCard = () => {
         this.setState({openCard: true});
@@ -93,17 +90,17 @@ class Game extends React.Component {
 
         <div title="Game" className={styles.root}>
             {this.turno()}
-            <Grid title="Board" container direction="column" justify="flex-start" alignItems="stretch" spacing={3} xs={12}>
-                <Grid title="Opponent" container spacing={1} direction="row" style={{padding:16}} item>
-                    <Grid item xs={2} className={styles.users}>
+            <Grid title="Board" container direction="column" justify="flex-start" alignItems="stretch" spacing={3} xs={12} item={true}>
+                <Grid title="Opponent" container spacing={1} direction="row" style={{padding:16}} item={true}>
+                    <Grid item={true} xs={2} className={styles.users}>
                         <Avatar alt="Remy Sharp" src={this.state.opponent.imageUrl} title={"Username"}/>
                         {this.state.opponent.userName}
                     </Grid>
                     <FormRow score={this.state.opponent.score} cardsLeft={this.state.deckCount}/>
                 </Grid>
 
-                <Grid title="MainUser" container  spacing={1} direction="row" className={"padding:10"} item>
-                    <Grid item xs={2} className={styles.users}>
+                <Grid title="MainUser" container  spacing={1} direction="row" className={"padding:10"} item={true}>
+                    <Grid item={true} xs={2} className={styles.users}>
                         <Avatar alt="Remy Sharp" src={this.state.creator.imageUrl} title={"Username"}/>
                         {this.state.creator.userName}
                     </Grid>
@@ -112,8 +109,8 @@ class Game extends React.Component {
             </Grid>
 
 
-            <Grid title="Configuration" container alignItems={"flex-end"}>
-                <Grid container item xs={12} justify={"flex-end"}>
+            <Grid title="Configuration" container alignItems={"flex-end"} item={true}>
+                <Grid container xs={12} justify={"flex-end"} item={true}>
                     {this.chooseAttributeButton()}
                     <Button variant="contained" >Abandonar</Button>
                 </Grid>

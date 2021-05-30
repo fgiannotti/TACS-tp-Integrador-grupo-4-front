@@ -31,7 +31,6 @@ class MyMatches extends Component {
 
     handleOpen = (matchId) => {
         this.backendClient.getMatchById(matchId).then(response => {
-                console.log(response)
                 let isUserMatchCreator = response.match_creator.user_id === this.props.cookies.get('GOOGLEID')
                 this.setState({open: true, matchInfo: response, isUserMatchCreator: isUserMatchCreator});
             }

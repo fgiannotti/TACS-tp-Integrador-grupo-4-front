@@ -1,9 +1,6 @@
-import React, { Component } from 'react'
-import Grid from '@material-ui/core/Grid';
+import React, {Component} from 'react'
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
-import MediaCard from "../cards/HeroCard";
-import DialogContentText from '@material-ui/core/DialogContentText';
 import LoseImage from "../../resources/images/losing.gif";
 import WinImage from "../../resources/images/winning.png";
 import TieImage from "../../resources/images/tie.png";

@@ -51,7 +51,6 @@ class HeroCard extends React.Component {
 }
 
 export default function MediaCard(props) {
-    console.log(props)
     const classes = useStyles();
     return (<HeroCard style={classes} card={props.card} onClickBuilder={props.onClickBuilder}/>);
 }

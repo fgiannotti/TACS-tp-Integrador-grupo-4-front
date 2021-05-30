@@ -47,12 +47,9 @@ class Home extends React.Component {
             let inviteMsgType = "INVITE:"
             //localeCompare returns 0 if are equals
             let isInviteMsgType = event.data.includes(inviteMsgType)
-            console.log(event.data)
-            console.log(isInviteMsgType)
             switch (isInviteMsgType){
                 case true:
                     const invitation = event.data.split(":")
-                    console.log(invitation)
                     this.setState({
                         invitation: {
                             userInvited: invitation[1],

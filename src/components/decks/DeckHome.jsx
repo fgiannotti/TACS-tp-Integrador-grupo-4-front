@@ -32,13 +32,10 @@ class DeckHome extends React.Component {
     }
 
     onClickView = (deck) => {
-        console.log(deck);
-        //todo: saltar a la vista del builder con este deck como prop
         window.location.href = "/deck-builder?deckId=" + deck.id + "&deckName=" + deck.name + "&isSaved=true&cardIds=" + deck.card_ids.join(",");
     }
 
     onClickAdd = () => {
-        console.log();
         window.location.href = "/deck-builder"
     }
 
