@@ -23,8 +23,8 @@ import TieImage from "../../resources/images/tie.png";
 import MediaCard from "../cards/HeroCard";
 import DialogContentText from '@material-ui/core/DialogContentText';
 import { withSnackbar } from "./GameSnackBar";
-import ManagmenteSocket from "../managment_socket/ManagmenteSocket";
 import {Redirect} from "react-router"
+import ManagementSocket from "../management_socket/ManagementSocket";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -108,7 +108,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function Game(props) {
+class Game extends React.Component {
     const classes = useStyles();
     var userMain = props.data.usuarios.find((user)=>user.username===props.mainUser);
     var userOpponent = props.data.usuarios.find((user)=>user.username!== props.mainUser);
@@ -118,11 +118,13 @@ function Game(props) {
     const [openResult, setOpenResult] = React.useState(false);
     const [attribute, setAttribute] = React.useState("");
     var deckCount;
-    useEffect(() => {
-        ManagmenteSocket.subscribeObserver(this)
-        ManagmenteSocket.sendMessage("CONNECT GAME")
-    })
-    const receiveMessage = (message) =>{
+
+    componentDidMount() {
+    ManagementSocket.subscribeObserver(this)
+        ManagementSocket.sendMessage("CONNECT GAME")
+    }
+
+    receiveMessage = (message) =>{
         if(message.contain("INIT")){
             let messagejson = JSON.parse(message)
             userMain = messagejson.creator
@@ -132,15 +134,15 @@ function Game(props) {
         console.log(message)
 
     }
-    const handleClickOpenCard = () => {
+    handleClickOpenCard = () => {
         setOpenCard(true);
     };
-    const handleCloseResult = () =>{
+    handleCloseResult = () =>{
         setOpenResult(false);
         setMatchResult(true)
     }
 
-    const handleCloseCard = (value) => {
+    handleCloseCard = (value) => {
         setAttribute(value);
         setOpenCard(false);
         if (value !== "") {
@@ -229,41 +231,54 @@ function Game(props) {
                 return (<Button variant="contained" onClick={handleClose} color={"secondary"}>Jugar</Button>);
             }
         }
-        return (
-            <Dialog onClose={handleCancel} aria-labelledby="simple-dialog-title" open={open}>
-                <DialogTitle id="simple-dialog-title">Elegir un atributo</DialogTitle>
-                <Grid container className={classes.dialog} xs={12}>
-                    <ButtonGroup title="botones" variant="outlined" color="secondary" size="small" aria-label="outlined secondary button group" orientation="vertical" className={classes.buttonGroup}>
-                        <IconButton aria-label="Altura" size={"small"} className={classes.icon} onClick={() =>handleListAttributeClick("Altura")}>
-                            <HeightIcon className={estilo("Altura")}/>
-                        </IconButton>
-                        <IconButton aria-label="Peso"   size={"small"} className={classes.icon} onClick={() =>handleListAttributeClick("Peso")}>
-                            <WeightIcon className={estilo("Peso")}/>
-                        </IconButton>
-                        <IconButton aria-label="Fuerza" size={"small"} className={classes.icon} onClick={() =>handleListAttributeClick("Fuerza")}>
-                            <StrongIcon className={estilo("Fuerza")}/>
-                        </IconButton>
-                        <IconButton aria-label="Inteligencia" size={"small"} className={classes.icon} onClick={() =>handleListAttributeClick("Inteligencia")}>
-                            <BrainIcon className={estilo("Inteligencia")}/>
-                        </IconButton>
-                        <IconButton aria-label="Velocidad"  size={"small"} className={classes.icon} onClick={() =>handleListAttributeClick("Velocidad")}>
-                            <SpeedIcon className={estilo("Velocidad")}/>
-                        </IconButton>
-                        <IconButton aria-label="Poder" size={"small"} className={classes.icon} onClick={() =>handleListAttributeClick("Poder")}>
-                            <PowerIcon className={estilo("Poder")}/>
-                        </IconButton>
-                        <IconButton  aria-label="Combate" size={"small"} className={classes.icon} onClick={() =>handleListAttributeClick("Combate")}>
-                            <CombatIcon className={estilo("Combate")}/>
-                        </IconButton>
-                    </ButtonGroup>
-                    <Grid item >
-                        <MediaCard
-                            data={card}
-                        /></Grid>
-                </Grid>
-                {playButton(attribute)}
-            </Dialog>
-        );
+
+        render()
+        {
+            return (
+                <Dialog onClose={handleCancel} aria-labelledby="simple-dialog-title" open={open}>
+                    <DialogTitle id="simple-dialog-title">Elegir un atributo</DialogTitle>
+                    <Grid container className={classes.dialog} xs={12}>
+                        <ButtonGroup title="botones" variant="outlined" color="secondary" size="small"
+                                     aria-label="outlined secondary button group" orientation="vertical"
+                                     className={classes.buttonGroup}>
+                            <IconButton aria-label="Altura" size={"small"} className={classes.icon}
+                                        onClick={() => handleListAttributeClick("Altura")}>
+                                <HeightIcon className={estilo("Altura")}/>
+                            </IconButton>
+                            <IconButton aria-label="Peso" size={"small"} className={classes.icon}
+                                        onClick={() => handleListAttributeClick("Peso")}>
+                                <WeightIcon className={estilo("Peso")}/>
+                            </IconButton>
+                            <IconButton aria-label="Fuerza" size={"small"} className={classes.icon}
+                                        onClick={() => handleListAttributeClick("Fuerza")}>
+                                <StrongIcon className={estilo("Fuerza")}/>
+                            </IconButton>
+                            <IconButton aria-label="Inteligencia" size={"small"} className={classes.icon}
+                                        onClick={() => handleListAttributeClick("Inteligencia")}>
+                                <BrainIcon className={estilo("Inteligencia")}/>
+                            </IconButton>
+                            <IconButton aria-label="Velocidad" size={"small"} className={classes.icon}
+                                        onClick={() => handleListAttributeClick("Velocidad")}>
+                                <SpeedIcon className={estilo("Velocidad")}/>
+                            </IconButton>
+                            <IconButton aria-label="Poder" size={"small"} className={classes.icon}
+                                        onClick={() => handleListAttributeClick("Poder")}>
+                                <PowerIcon className={estilo("Poder")}/>
+                            </IconButton>
+                            <IconButton aria-label="Combate" size={"small"} className={classes.icon}
+                                        onClick={() => handleListAttributeClick("Combate")}>
+                                <CombatIcon className={estilo("Combate")}/>
+                            </IconButton>
+                        </ButtonGroup>
+                        <Grid item>
+                            <MediaCard
+                                data={card}
+                            /></Grid>
+                    </Grid>
+                    {playButton(attribute)}
+                </Dialog>
+            );
+        }
     }
 
     function SimpleDialogResult(variable) {

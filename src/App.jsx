@@ -14,7 +14,7 @@ import Faq from "./components/faq/Faq";
 import Lobby from "./components/play/Lobby";
 import Game from "./components/game/Game";
 import MyMatches from "./components/MyMatches";
-import ManagementSocket from "./components/managment_socket/ManagmenteSocket";
+import ManagementSocket from "./components/management_socket/ManagementSocket";
 class App extends React.Component {
     carta = {"name": "A-Bomb", "id": 1, "power_stats": [{
             "name": "combat",

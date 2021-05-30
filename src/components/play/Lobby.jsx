@@ -7,7 +7,7 @@ import SuperfriendsBackendClient from "../../SuperfriendsBackendClient";
 import {Button} from "@material-ui/core";
 import GreenCheck from "../utils/GreenCheck";
 import {Redirect} from "react-router";
-import ManagmenteSocket from "../managment_socket/ManagmenteSocket";
+import ManagmenteSocket from "../management_socket/ManagementSocket";
 class Lobby extends React.Component {
     constructor(props) {
         super(props);
@@ -24,7 +24,7 @@ class Lobby extends React.Component {
         }
         ManagmenteSocket.matchId = urlParams.get('matchId')
         ManagmenteSocket.subscribeObserver(this)
-        ManagmenteSocket.createConection()
+        ManagmenteSocket.createConnection()
     }
 
     sendReadyToServer = () => {
