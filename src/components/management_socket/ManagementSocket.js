@@ -1,4 +1,3 @@
-import React from "react";
 
 class ManagementSocketClass {
     user = ""
@@ -14,7 +13,7 @@ class ManagementSocketClass {
         this.user = newUser
 
     }
-    createConection() {
+    createConnection() {
 
         this.socket = new WebSocket("ws://localhost:9000/join-match/" + this.matchId + "?userId=" + this.user)
         this.socket.onopen = () => {

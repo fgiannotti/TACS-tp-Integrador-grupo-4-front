@@ -1,0 +1,84 @@
+body {
+        background-color:#ffcc80;
+}
+.root {
+        padding:10;
+        content:"center";
+        justify-content: "center";
+        justify-self: "center";
+}
+.roots{
+        max-width: 200;
+        justify-self: "center";
+        text-align: "center";
+        padding: 2
+}
+.media {
+        height: 150;
+        padding-top: "56.25%";
+        text-align: "center";
+        justify-self: "center";
+}
+
+.users {
+        display: 'flex';
+        align-items: "center";
+        justify-content: "center";
+        justify-self:"center";
+        content:"center";
+}
+
+.deck {
+        padding:10;
+        content:"center";
+        justify-content: "center";
+        justify-self: "canter"
+}
+.dialog {
+        display: 'flex';
+        height:500;
+        width: 300,
+}
+.icon {
+        height:"50%";
+        width: '50%';
+        max-height:65;
+        background:#CACFD2
+}
+.botones {
+        max-height:500;
+        width: 30;
+        justify: "strech";
+        justify-items: "stretch"
+};
+.buttonGroup {
+        max-width:25;
+        max-height:450;
+}
+
+
+.image {
+        height:"50%";
+        width: '50%';
+        max-height:65;
+}
+.imageFocus {
+        height:"50%";
+        width: '50%';
+        max-height:65;
+        background:#229954;
+}
+.mainUserResult {
+        padding:15;
+        padding-right:75;
+}
+
+.opponentUserResult {
+        padding:15;
+        padding-left:75;
+}
+
+.center{
+        display: "flex";
+        justify-content: "center"
+}

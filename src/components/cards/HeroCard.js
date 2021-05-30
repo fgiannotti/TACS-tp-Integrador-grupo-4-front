@@ -26,7 +26,7 @@ class HeroCard extends React.Component {
 
     onClickCard = () => {
         if (this.props.onClickBuilder) {
-            this.props.onClickBuilder(this.props.data)
+            this.props.onClickBuilder(this.props.card)
         }
     }
 
@@ -36,14 +36,14 @@ class HeroCard extends React.Component {
                 <CardActionArea>
                     <CardMedia
                         className={this.props.style.media}
-                        image={this.props.data["image_url"]}
-                        title={this.props.data["name"]}
+                        image={this.props.card["image_url"]}
+                        title={this.props.card["name"]}
                     />
                     <CardContent className={this.props.style.content}>
                         <Typography gutterBottom variant="h6" component="h2">
-                            {this.props.data["name"]}
+                            {this.props.card["name"]}
                         </Typography>
-                        <AttributeGrid data={this.props.data["power_stats"]}/>
+                        <AttributeGrid powerStats={this.props.card["power_stats"]}/>
                     </CardContent>
                 </CardActionArea>
             </Card>);
@@ -51,6 +51,7 @@ class HeroCard extends React.Component {
 }
 
 export default function MediaCard(props) {
+    console.log(props)
     const classes = useStyles();
-    return (<HeroCard style={classes} data={props.data} onClickBuilder={props.onClickBuilder}/>);
+    return (<HeroCard style={classes} card={props.card} onClickBuilder={props.onClickBuilder}/>);
 }
