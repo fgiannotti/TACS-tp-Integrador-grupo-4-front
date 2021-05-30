@@ -15,18 +15,18 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import { withSnackbar } from "./GameSnackBar";
 import {Redirect} from "react-router"
 import ManagementSocket from "../management_socket/ManagementSocket";
-import './Game.css'
+import styles from '../../styles/Game.css';
 import SimpleResultDialog from "./SimpleResultDialog"
 import FormRow from "./FormRow"
 import MatchResultDialog from "./MatchResulDialog"
 import SimpleCardDialog from "./SimpleCardDialog"
 
-
 class Game extends React.Component {
     constructor(props) {
         super(props);
-        let userMain = props.data.usuarios.find((user)=>user.username===props.mainUser);
-        let userOpponent = props.data.usuarios.find((user)=>user.username!== props.mainUser);
+        let userMain = this.props.data.usuarios.find((user)=>user.userName === this.props.mainUser);
+        let userOpponent = this.props.data.usuarios.find((user)=>user.userName !== this.props.mainUser);
+
         const card = userMain.cartaActual;
         var deckCount;
 
@@ -39,7 +39,7 @@ class Game extends React.Component {
             userOpponent: userOpponent,
             userMain: userMain
         }
-
+        console.log(this.state)
     }
 
 
@@ -77,12 +77,12 @@ class Game extends React.Component {
         return <Redirect push to="/" />
     }
     
-    setAttribute(){
+    chooseAttributeButton(){
         if (this.props.mainUser === this.props.data.turno){
             return (
                 <React.Fragment>
                     <Button variant="contained" onClick={this.handleClickOpenCard}>Seleccionar atributo</Button>
-                    <SimpleCardDialog selectedValue={this.state.attribute} open={this.state.openCard} onClose={this.handleCloseCard} />
+                    <SimpleCardDialog card={this.state.card} selectedValue={this.state.attribute} open={this.state.openCard} onClose={this.handleCloseCard} />
                 </React.Fragment>);
         }
     }
@@ -95,17 +95,17 @@ class Game extends React.Component {
         };
         return (
             <Dialog onClose={handleCancel} aria-labelledby="simple-dialog-title" open={open} color="orange">
-                <DialogTitle id="simple-dialog-title" className="center">{data.result.event} {data.result.user}</DialogTitle>
+                <DialogTitle id="simple-dialog-title" className={styles.center}>{data.result.event} {data.result.user}</DialogTitle>
 
-                <Grid container xs={12} className="root">
-                <Grid item spacing={1} className="mainUserResult">
-                    <DialogTitle id="simple-dialog-title" className="center">{data.mainUser.username}</DialogTitle>
-                    <DialogContentText className="center"> {data.result.attribute} : {data.mainUser.attribute}</DialogContentText>
-                    <MediaCard data={this.state.card} /></Grid>
-                <Grid item  className="opponentUserResult">
-                    <DialogTitle id="simple-dialog-title" className="center">{data.opponent.username}</DialogTitle>
-                    <DialogContentText className="center"> {data.result.attribute} : {data.opponent.attribute}</DialogContentText>
-                    <MediaCard data={this.state.card}/></Grid>
+                <Grid container xs={12} className={styles.root}>
+                <Grid item spacing={1} className={styles.mainUserResult}>
+                    <DialogTitle id="simple-dialog-title" className={styles.center}>{data.mainUser.username}</DialogTitle>
+                    <DialogContentText className={styles.center}> {data.result.attribute} : {data.mainUser.attribute}</DialogContentText>
+                    <MediaCard card={this.state.card} /></Grid>
+                <Grid item  className={styles.opponentUserResult}>
+                    <DialogTitle id="simple-dialog-title" className={styles.center}>{data.opponent.username}</DialogTitle>
+                    <DialogContentText className={styles.center}> {data.result.attribute} : {data.opponent.attribute}</DialogContentText>
+                    <MediaCard card={this.state.card}/></Grid>
                 </Grid>
             </Dialog>
         );
@@ -113,9 +113,9 @@ class Game extends React.Component {
 
     turno() {
         if (this.props.data.turno === this.props.mainUser) {
-            return (<h3 className="center">Es tu turno</h3>);
+            return (<h3 className={styles.center}>Es tu turno</h3>);
         } else {
-            return (<h3 className="center">Esperando oponente</h3>);
+            return (<h3 className={styles.center}>Esperando oponente</h3>);
         }
     }
 
@@ -123,35 +123,40 @@ class Game extends React.Component {
     render() {
         return (
 
-        <div title="Game" className={"root"}>
+        <div title="Game" className={styles.root}>
             {this.turno()}
             <Grid title="Board" container direction="column" justify="flex-start" alignItems="stretch" spacing={3} xs={12}>
-                <Grid title="Opponent" container spacing={1} direction="row" className={"padding:10"} item>
-                    <Grid item xs={2} className="users">
+                {/**/ }
+                <Grid title="Opponent" container spacing={1} direction="row" style={{padding:16}} item>
+                    <Grid item xs={2} className={styles.users}>
                         <Avatar alt="Remy Sharp" src={this.state.userOpponent.imageUrl} title={"Username"}/>
                         {this.state.userOpponent.userName}
                     </Grid>
                     <FormRow score={this.state.userOpponent.score} cardsLeft={this.state.deckCount}/>
                 </Grid>
+
                 <Grid title="MainUser" container  spacing={1} direction="row" className={"padding:10"} item>
-                    <Grid item xs={2} className="users">
+                    <Grid item xs={2} className={styles.users}>
                         <Avatar alt="Remy Sharp" src={this.state.userMain.imageUrl} title={"Username"}/>
                         {this.state.userMain.userName}
                     </Grid>
                     <FormRow score={this.state.userMain.score} cardsLeft={this.state.deckCount}/>
                 </Grid>
             </Grid>
+
+
             <Grid title="Configuration" container alignItems={"flex-end"}>
-                <Grid container item xs={"12"} justify={"flex-end"}>
-                    {this.setAttribute()}
+                <Grid container item xs={12} justify={"flex-end"}>
+                    {this.chooseAttributeButton()}
                     <Button variant="contained" >Abandonar</Button>
                 </Grid>
             </Grid>
+
             <SimpleResultDialog data={{"result":{"event":"Winner","user":"username1","attribute":"Fuerza"},
                                     "mainUser": {"username":"username1", "attribute": "5"},
                                     "opponent":{"username":"username2", "attribute": "10"}}} 
                 open={this.state.openResult} onClose={this.handleCloseResult} card={this.state.card} />
-            <MatchResultDialog open ={this.openMatchResult} onClose={this.handleCloseMatchResult} result_status="lose"/>
+            <MatchResultDialog open={this.state.openMatchResult} onClose={this.handleCloseMatchResult} result_status="lose"/>
         </div>
         );
     }

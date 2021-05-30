@@ -4,11 +4,11 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import MediaCard from "../cards/HeroCard";
 import DialogContentText from '@material-ui/core/DialogContentText';
-import './Game.css'
 import LoseImage from "../../resources/images/losing.gif";
 import WinImage from "../../resources/images/winning.png";
 import TieImage from "../../resources/images/tie.png";
 import Button from "@material-ui/core/Button";
+import '../../styles/Game.css';
 
 
 export default class SimpleResultDialog extends Component {

@@ -13,10 +13,38 @@ import {ReactComponent as SpeedIcon} from "../../resources/images/speed.svg";
 import {ReactComponent as PowerIcon} from "../../resources/images/power.svg";
 import {ReactComponent as CombatIcon} from "../../resources/images/combat.svg";
 import Grid from '@material-ui/core/Grid';
-import './Game.css'
 
 export default class SimpleCardDialog extends React.Component {
+    styles = {
+        dialog: {
+            display: 'flex',
+            height:500,
+            width: 300, 
+        },
+        icon:{
+            height:"50%",
+            width: '50%',
+            maxHeight:65,
+            background:"#CACFD2"
+        },
+        buttonGroup: {
+            maxWidth:25,
+            maxHeight:450,
+            marginRight:32
+        },
 
+        imageFocus:{
+            background:'#2299540', //chequear
+            height:"100%",
+            width: '100%',
+            maxHeight:65
+        },
+        image:{
+            height:"80%",
+            width: '80%',
+            maxHeight:65
+        },
+    }
     constructor(props) {
         super(props);
 
@@ -38,7 +66,7 @@ export default class SimpleCardDialog extends React.Component {
     };
 
     estilo = (attr) => {
-        return this.state.attribute === attr ? "image focus" : "image"
+        return this.state.attribute === attr ? this.styles.imageFocus : this.styles.image
     }
 
     playButton = (attr) => {
@@ -49,45 +77,45 @@ export default class SimpleCardDialog extends React.Component {
 
     render() {
         return (
-            <Dialog onClose={this.props.handleCancel} aria-labelledby="simple-dialog-title" open={this.props.open}>
+            <Dialog onClose={this.props.handleCancel} style={{display:'flex',justifyContent:'center'}} aria-labelledby="simple-dialog-title" open={this.props.open}>
                 <DialogTitle id="simple-dialog-title">Elegir un atributo</DialogTitle>
-                <Grid container className="dialog" xs={12}>
+                <Grid container style={this.styles.dialog} xs={12}>
                     <ButtonGroup title="botones" variant="outlined" color="secondary" size="small"
                                  aria-label="outlined secondary button group" orientation="vertical"
-                                 className="buttonGroup">
-                        <IconButton aria-label="Altura" size={"small"} className="icon"
+                                 style={this.styles.buttonGroup}>
+                        <IconButton aria-label="Altura" size={"small"} style={this.styles.icon}
                                     onClick={() => this.handleListAttributeClick("Altura")}>
-                            <HeightIcon className={this.estilo("Altura")}/>
+                            <HeightIcon style={this.estilo("Altura")}/>
                         </IconButton>
-                        <IconButton aria-label="Peso" size={"small"} className="icon"
+                        <IconButton aria-label="Peso" size={"small"} style={this.styles.icon}
                                     onClick={() => this.handleListAttributeClick("Peso")}>
-                            <WeightIcon className={this.estilo("Peso")}/>
+                            <WeightIcon style={this.estilo("Peso")}/>
                         </IconButton>
-                        <IconButton aria-label="Fuerza" size={"small"} className="icon"
+                        <IconButton aria-label="Fuerza" size={"small"} style={this.styles.icon}
                                     onClick={() => this.handleListAttributeClick("Fuerza")}>
-                            <StrongIcon className={this.estilo("Fuerza")}/>
+                            <StrongIcon style={this.estilo("Fuerza")}/>
                         </IconButton>
-                        <IconButton aria-label="Inteligencia" size={"small"} className="icon"
+                        <IconButton aria-label="Inteligencia" size={"small"} style={this.styles.icon}
                                     onClick={() => this.handleListAttributeClick("Inteligencia")}>
-                            <BrainIcon className={this.estilo("Inteligencia")}/>
+                            <BrainIcon style={this.estilo("Inteligencia")}/>
                         </IconButton>
-                        <IconButton aria-label="Velocidad" size={"small"} className="icon"
+                        <IconButton aria-label="Velocidad" size={"small"} style={this.styles.icon}
                                     onClick={() => this.handleListAttributeClick("Velocidad")}>
-                            <SpeedIcon className={this.estilo("Velocidad")}/>
+                            <SpeedIcon style={this.estilo("Velocidad")}/>
                         </IconButton>
-                        <IconButton aria-label="Poder" size={"small"} className="icon"
+                        <IconButton aria-label="Poder" size={"small"} style={this.styles.icon}
                                     onClick={() => this.handleListAttributeClick("Poder")}>
-                            <PowerIcon className={this.estilo("Poder")}/>
+                            <PowerIcon style={this.estilo("Poder")}/>
                         </IconButton>
-                        <IconButton aria-label="Combate" size={"small"} className="icon"
+                        <IconButton aria-label="Combate" size={"small"} style={this.styles.icon}
                                     onClick={() => this.handleListAttributeClick("Combate")}>
-                            <CombatIcon className={this.estilo("Combate")}/>
+                            <CombatIcon style={this.estilo("Combate")}/>
                         </IconButton>
                     </ButtonGroup>
                     <Grid item>
                         <MediaCard
-                            data={this.state.card}
-                        /></Grid>
+                            card={this.props.card}/>
+                    </Grid>
                 </Grid>
                 {this.playButton(this.state.attribute)}
             </Dialog>

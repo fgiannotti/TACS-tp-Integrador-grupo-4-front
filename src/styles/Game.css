@@ -1,3 +1,6 @@
+body {
+        background-color:#ffcc80;
+}
 .root {
         padding:10;
         content:"center";
@@ -40,7 +43,7 @@
         height:"50%";
         width: '50%';
         max-height:65;
-        background:"#CACFD2"
+        background:#CACFD2
 }
 .botones {
         max-height:500;
@@ -53,16 +56,18 @@
         max-height:450;
 }
 
-.focus {
-        background:"#229954";
-}
 
 .image {
         height:"50%";
         width: '50%';
         max-height:65;
 }
-
+.imageFocus {
+        height:"50%";
+        width: '50%';
+        max-height:65;
+        background:#229954;
+}
 .mainUserResult {
         padding:15;
         padding-right:75;
