@@ -17,10 +17,14 @@ import {ReactComponent as BrainIcon} from "../../resources/images/brain.svg";
 import {ReactComponent as SpeedIcon} from "../../resources/images/speed.svg";
 import {ReactComponent as PowerIcon} from "../../resources/images/power.svg";
 import {ReactComponent as CombatIcon} from "../../resources/images/combat.svg";
+import LoseImage from "../../resources/images/losing.gif";
+import WinImage from "../../resources/images/winning.png";
+import TieImage from "../../resources/images/tie.png";
 import MediaCard from "../cards/HeroCard";
 import DialogContentText from '@material-ui/core/DialogContentText';
 import { withSnackbar } from "./GameSnackBar";
 import ManagmenteSocket from "../managment_socket/ManagmenteSocket";
+import {Redirect} from "react-router"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -110,6 +114,7 @@ function Game(props) {
     var userOpponent = props.data.usuarios.find((user)=>user.username!== props.mainUser);
     const card = userMain.cartaActual;
     const [openCard, setOpenCard] = React.useState(false);
+    const [openMatchResult, setMatchResult] = React.useState(false);
     const [openResult, setOpenResult] = React.useState(false);
     const [attribute, setAttribute] = React.useState("");
     var deckCount;
@@ -130,8 +135,9 @@ function Game(props) {
     const handleClickOpenCard = () => {
         setOpenCard(true);
     };
-    const handleCloseResult = (value) =>{
+    const handleCloseResult = () =>{
         setOpenResult(false);
+        setMatchResult(true)
     }
 
     const handleCloseCard = (value) => {
@@ -142,6 +148,12 @@ function Game(props) {
         }
         //setear atributo y llamar al back
     };
+
+    const handleCloseMatchResult = () => {
+        setMatchResult(false)
+        return <Redirect push to="/" />
+    }
+
     function FormRow(props) {
         return (
             <React.Fragment>
@@ -259,7 +271,7 @@ function Game(props) {
         const { onClose, open, data } = variable;
         const handleCancel = () =>{
             onClose("");
-            props.snackbarShowMessage("Es turno de tu contrincante")
+            //props.snackbarShowMessage("Es turno de tu contrincante")
         };
         return (
             <Dialog onClose={handleCancel} aria-labelledby="simple-dialog-title" open={open} color="orange">
@@ -278,12 +290,52 @@ function Game(props) {
             </Dialog>
         );
     }
-    function turno(){
-        if(props.data.turno === props.mainUser){
+
+    function turno() {
+        if (props.data.turno === props.mainUser) {
             return (<h3 className={classes.center}>Es tu turno</h3>);
-        }else{
-        return (<h3 className={classes.center}>Esperando oponente</h3>);
+        } else {
+            return (<h3 className={classes.center}>Esperando oponente</h3>);
         }
+    }
+
+    function MatchResultDialog(props) {
+        const {onClose, result_status, open} = props;
+
+        const chooseTittleMessage = () => {
+            switch (result_status){
+                case 'win':
+                    return "GANASTE"
+                case 'lose':
+                    return "PERDISTE"
+                default:
+                    return "EMPATE"
+            }
+        };
+
+        const chooseImage = () => {
+            switch (result_status){
+                case 'win':
+                    return WinImage
+                case 'lose':
+                    return LoseImage
+                default:
+                    return TieImage
+            }
+        };
+
+        const handleCancel = () =>{
+            onClose();
+        };
+
+        return (
+            <Dialog onClose={handleCancel} aria-labelledby="simple-dialog-title" open={open}>
+                <DialogTitle id="simple-dialog-title">{chooseTittleMessage()}</DialogTitle>
+                <img src={chooseImage()} alt={'asd'}/>
+                <Button onClick={handleCloseMatchResult}>Volver al Lobby</Button>
+            </Dialog>
+        );
+
     }
     return (
         <div title="Game" className={classes.root}>
@@ -311,6 +363,7 @@ function Game(props) {
                 </Grid>
             </Grid>
             <SimpleDialogResult data={{"result":{"event":"Winner","user":"username1","attribute":"Fuerza"},"mainUser": {"username":"username1", "attribute": "5"},"opponent":{"username":"username2", "attribute": "10"}}} open={openResult} onClose={handleCloseResult} />
+            <MatchResultDialog open ={openMatchResult} onClose={handleCloseMatchResult} result_status="lose"/>
         </div>
 
 
