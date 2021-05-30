@@ -17,9 +17,6 @@ import {ReactComponent as BrainIcon} from "../../resources/images/brain.svg";
 import {ReactComponent as SpeedIcon} from "../../resources/images/speed.svg";
 import {ReactComponent as PowerIcon} from "../../resources/images/power.svg";
 import {ReactComponent as CombatIcon} from "../../resources/images/combat.svg";
-import LoseImage from "../../resources/images/losing.gif";
-import WinImage from "../../resources/images/winning.png";
-import TieImage from "../../resources/images/tie.png";
 import MediaCard from "../cards/HeroCard";
 import DialogContentText from '@material-ui/core/DialogContentText';
 import { withSnackbar } from "./GameSnackBar";
@@ -28,7 +25,7 @@ import ManagementSocket from "../management_socket/ManagementSocket";
 import './Game.css'
 import SimpleResultDialog from "./SimpleResultDialog"
 import FormRow from "./FormRow"
-
+import MatchResultDialog from "./MatchResulDialog"
 class Game extends React.Component {
     constructor(props) {
         super(props);
@@ -198,44 +195,6 @@ class Game extends React.Component {
         }
     }
 
-    MatchResultDialog(props) {
-        const {onClose, result_status, open} = props;
-
-        const chooseTittleMessage = () => {
-            switch (result_status){
-                case 'win':
-                    return "GANASTE"
-                case 'lose':
-                    return "PERDISTE"
-                default:
-                    return "EMPATE"
-            }
-        };
-
-        const chooseImage = () => {
-            switch (result_status){
-                case 'win':
-                    return WinImage
-                case 'lose':
-                    return LoseImage
-                default:
-                    return TieImage
-            }
-        };
-
-        const handleCancel = () =>{
-            onClose();
-        };
-
-        return (
-            <Dialog onClose={handleCancel} aria-labelledby="simple-dialog-title" open={open}>
-                <DialogTitle id="simple-dialog-title">{chooseTittleMessage()}</DialogTitle>
-                <img src={chooseImage()} alt={'asd'}/>
-                <Button onClick={this.handleCloseMatchResult}>Volver al Lobby</Button>
-            </Dialog>
-        );
-
-    }
 
     render() {
         return (
