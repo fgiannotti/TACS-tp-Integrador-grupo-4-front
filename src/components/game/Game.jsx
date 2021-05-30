@@ -28,7 +28,6 @@ class Game extends React.Component {
         let userOpponent = this.props.data.usuarios.find((user)=>user.userName !== this.props.mainUser);
 
         const card = userMain.cartaActual;
-        var deckCount;
 
         this.state = {
             card: card,
@@ -36,25 +35,28 @@ class Game extends React.Component {
             openMatchResult: false,
             openResult: false,
             attribute: "",
-            userOpponent: userOpponent,
-            userMain: userMain
+            opponent: userOpponent,
+            creator: userMain,
+            deckCount: 0,
         }
         console.log(this.state)
     }
 
 
 
-    /*componentDidMount() {
+    componentDidMount() {
     ManagementSocket.subscribeObserver(this)
         ManagementSocket.sendMessage("CONNECT GAME")
-    }*/
+    }
 
-    receiveMessage = (message) =>{
+    receiveMessage = (message) => {
+        console.log(message)
         if(message.data.includes("INIT")){
             let messagejson = JSON.parse(message.data)
             let userMain = messagejson.creator
             let userOpponent = messagejson.opponent
             let deckCount = messagejson.deckCount
+            this.setState({creator: userMain, opponent: userOpponent, deckCount: deckCount})
         }
         console.log(message)
 
@@ -87,30 +89,6 @@ class Game extends React.Component {
         }
     }
 
-    SimpleDialogResult(variable) {
-        const { onClose, open, data } = variable;
-        const handleCancel = () =>{
-            onClose("");
-            //props.snackbarShowMessage("Es turno de tu contrincante")
-        };
-        return (
-            <Dialog onClose={handleCancel} aria-labelledby="simple-dialog-title" open={open} color="orange">
-                <DialogTitle id="simple-dialog-title" className={styles.center}>{data.result.event} {data.result.user}</DialogTitle>
-
-                <Grid container xs={12} className={styles.root}>
-                <Grid item spacing={1} className={styles.mainUserResult}>
-                    <DialogTitle id="simple-dialog-title" className={styles.center}>{data.mainUser.username}</DialogTitle>
-                    <DialogContentText className={styles.center}> {data.result.attribute} : {data.mainUser.attribute}</DialogContentText>
-                    <MediaCard card={this.state.card} /></Grid>
-                <Grid item  className={styles.opponentUserResult}>
-                    <DialogTitle id="simple-dialog-title" className={styles.center}>{data.opponent.username}</DialogTitle>
-                    <DialogContentText className={styles.center}> {data.result.attribute} : {data.opponent.attribute}</DialogContentText>
-                    <MediaCard card={this.state.card}/></Grid>
-                </Grid>
-            </Dialog>
-        );
-    }
-
     turno() {
         if (this.props.data.turno === this.props.mainUser) {
             return (<h3 className={styles.center}>Es tu turno</h3>);
@@ -126,21 +104,20 @@ class Game extends React.Component {
         <div title="Game" className={styles.root}>
             {this.turno()}
             <Grid title="Board" container direction="column" justify="flex-start" alignItems="stretch" spacing={3} xs={12}>
-                {/**/ }
                 <Grid title="Opponent" container spacing={1} direction="row" style={{padding:16}} item>
                     <Grid item xs={2} className={styles.users}>
-                        <Avatar alt="Remy Sharp" src={this.state.userOpponent.imageUrl} title={"Username"}/>
-                        {this.state.userOpponent.userName}
+                        <Avatar alt="Remy Sharp" src={this.state.opponent.imageUrl} title={"Username"}/>
+                        {this.state.opponent.userName}
                     </Grid>
-                    <FormRow score={this.state.userOpponent.score} cardsLeft={this.state.deckCount}/>
+                    <FormRow score={this.state.opponent.score} cardsLeft={this.state.deckCount}/>
                 </Grid>
 
                 <Grid title="MainUser" container  spacing={1} direction="row" className={"padding:10"} item>
                     <Grid item xs={2} className={styles.users}>
-                        <Avatar alt="Remy Sharp" src={this.state.userMain.imageUrl} title={"Username"}/>
-                        {this.state.userMain.userName}
+                        <Avatar alt="Remy Sharp" src={this.state.creator.imageUrl} title={"Username"}/>
+                        {this.state.creator.userName}
                     </Grid>
-                    <FormRow score={this.state.userMain.score} cardsLeft={this.state.deckCount}/>
+                    <FormRow score={this.state.creator.score} cardsLeft={this.state.deckCount}/>
                 </Grid>
             </Grid>
 
