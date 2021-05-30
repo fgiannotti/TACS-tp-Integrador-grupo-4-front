@@ -24,7 +24,7 @@ class ManagementSocketClass {
         this.socket.onmessage = (event) => {
             console.log(event)
             console.log(this.observer)
-                if (this.observer !== null){
+                if (this.observer){
                     this.observer.receiveMessage(event)
                 }
         }

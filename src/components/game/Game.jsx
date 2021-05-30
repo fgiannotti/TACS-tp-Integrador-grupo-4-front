@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Card from "@material-ui/core/Card";
@@ -20,7 +20,7 @@ import {ReactComponent as CombatIcon} from "../../resources/images/combat.svg";
 import MediaCard from "../cards/HeroCard";
 import DialogContentText from '@material-ui/core/DialogContentText';
 import { withSnackbar } from "./GameSnackBar";
-
+import ManagmenteSocket from "../managment_socket/ManagmenteSocket";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -112,6 +112,21 @@ function Game(props) {
     const [openCard, setOpenCard] = React.useState(false);
     const [openResult, setOpenResult] = React.useState(false);
     const [attribute, setAttribute] = React.useState("");
+    var deckCount;
+    useEffect(() => {
+        ManagmenteSocket.subscribeObserver(this)
+        ManagmenteSocket.sendMessage("CONNECT GAME")
+    })
+    const receiveMessage = (message) =>{
+        if(message.contain("INIT")){
+            let messagejson = JSON.parse(message)
+            userMain = messagejson.creator
+            userOpponent = messagejson.opponent
+            deckCount = messagejson.deckCount
+        }
+        console.log(message)
+
+    }
     const handleClickOpenCard = () => {
         setOpenCard(true);
     };
@@ -276,17 +291,17 @@ function Game(props) {
             <Grid title="Board" container direction="column" justify="flex-start" alignItems="stretch" spacing={3} xs={12}>
                 <Grid title="Opponent" container spacing={1} direction="row" className={"padding:10"} item>
                     <Grid item xs={2} className={classes.users}>
-                        <Avatar alt="Remy Sharp" src={userOpponent.image} title={"Username"}/>
-                        {userOpponent.username}
+                        <Avatar alt="Remy Sharp" src={userOpponent.imageUrl} title={"Username"}/>
+                        {userOpponent.userName}
                     </Grid>
-                    <FormRow score={userOpponent.ganadas} cards={userOpponent.carta}/>
+                    <FormRow score={userOpponent.score} cards={deckCount}/>
                 </Grid>
                 <Grid title="MainUser" container  spacing={1} direction="row" className={"padding:10"} item>
                     <Grid item xs={2} className={classes.users}>
-                        <Avatar alt="Remy Sharp" src={userMain.image} title={"Username"}/>
-                        {userMain.username}
+                        <Avatar alt="Remy Sharp" src={userMain.imageUrl} title={"Username"}/>
+                        {userMain.userName}
                     </Grid>
-                    <FormRow score={userMain.ganadas} cards={userMain.carta}/>
+                    <FormRow score={userMain.score} cards={deckCount}/>
                 </Grid>
             </Grid>
             <Grid title="Configuration" container alignItems={"flex-end"}>
