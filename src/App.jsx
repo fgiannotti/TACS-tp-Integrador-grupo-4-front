@@ -104,7 +104,7 @@ class App extends React.Component {
                   <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/deck-builder" component={(DeckBuilder)}/>
                   <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/lobby" component={() => <Lobby loggedUser={this.props.cookies.get('GOOGLEID')} loggedUserImage={this.props.cookies.get('USERIMAGE')} />} />
                     <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/game" 
-                        component={() => <Game mainUser="username1" 
+                        component={() => <Game loggedUser={this.props.cookies.get('GOOGLEID')} mainUser="username1"
                                 data={
                                     {"turno":"username1",
                                     "usuarios":[

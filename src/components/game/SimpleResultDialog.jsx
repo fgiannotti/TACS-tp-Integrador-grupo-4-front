@@ -17,7 +17,6 @@ export default class SimpleResultDialog extends Component {
             <div>
                 <Dialog onClose={this.handleCancel} aria-labelledby="simple-dialog-title" open={this.props.open} color="orange">
                     <DialogTitle id="simple-dialog-title" className={styles.center}>{this.props.data.result.event} {this.props.data.result.user}</DialogTitle>
-
                     <Grid container item xs={12} className={styles.root}>
                         <Grid item container spacing={1} className={styles.mainUserResult}>
                             <DialogTitle id="simple-dialog-title" className={styles.center}>{this.props.data.mainUser.username}</DialogTitle>

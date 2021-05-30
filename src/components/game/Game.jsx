@@ -10,6 +10,7 @@ import SimpleResultDialog from "./SimpleResultDialog"
 import FormRow from "./FormRow"
 import MatchResultDialog from "./MatchResulDialog"
 import SimpleCardDialog from "./SimpleCardDialog"
+import Loader from "../utils/Loader";
 
 class Game extends React.Component {
     constructor(props) {
@@ -28,6 +29,7 @@ class Game extends React.Component {
             opponent: userOpponent,
             creator: userMain,
             deckCount: 0,
+            isLoading: true
         }
     }
 
@@ -40,12 +42,19 @@ class Game extends React.Component {
 
     receiveMessage = (message) => {
         console.log(message)
-        if(message.data.includes("INIT")){
+        if (message.data.includes("INIT")) {
             let messageJson = JSON.parse(message.data)
-            let userMain = messageJson.creator
-            let userOpponent = messageJson.opponent
+            let mainUser
+            let opponent
+            if (messageJson.creator.userId === this.props.loggedUser) {
+                mainUser = messageJson.creator
+                opponent = messageJson.opponent
+            } else {
+                mainUser = messageJson.opponent
+                opponent = messageJson.creator
+            }
             let deckCount = messageJson.deckCount
-            this.setState({creator: userMain, opponent: userOpponent, deckCount: deckCount})
+            this.setState({mainUser: mainUser, opponent: opponent, deckCount: deckCount, isLoading: false})
         }
     }
     handleClickOpenCard = () => {
@@ -76,7 +85,7 @@ class Game extends React.Component {
         }
     }
 
-    turno() {
+    turn() {
         if (this.props.data.turno === this.props.mainUser) {
             return (<h3 className={styles.center}>Es tu turno</h3>);
         } else {
@@ -87,9 +96,9 @@ class Game extends React.Component {
 
     render() {
         return (
-
+            (this.state.isLoading ? <Loader /> :
         <div title="Game" className={styles.root}>
-            {this.turno()}
+            {this.turn()}
             <Grid title="Board" container direction="column" justify="flex-start" alignItems="stretch" spacing={3} xs={12} item={true}>
                 <Grid title="Opponent" container spacing={1} direction="row" style={{padding:16}} item={true}>
                     <Grid item={true} xs={2} className={styles.users}>
@@ -101,10 +110,10 @@ class Game extends React.Component {
 
                 <Grid title="MainUser" container  spacing={1} direction="row" className={"padding:10"} item={true}>
                     <Grid item={true} xs={2} className={styles.users}>
-                        <Avatar alt="Remy Sharp" src={this.state.creator.imageUrl} title={"Username"}/>
-                        {this.state.creator.userName}
+                        <Avatar alt="Remy Sharp" src={this.state.mainUser.imageUrl} title={"Username"}/>
+                        {this.state.mainUser.userName}
                     </Grid>
-                    <FormRow score={this.state.creator.score} cardsLeft={this.state.deckCount}/>
+                    <FormRow score={this.state.mainUser.score} cardsLeft={this.state.deckCount}/>
                 </Grid>
             </Grid>
 
@@ -122,7 +131,7 @@ class Game extends React.Component {
                 open={this.state.openResult} onClose={this.handleCloseResult} card={this.state.card} />
             <MatchResultDialog open={this.state.openMatchResult} onClose={this.handleCloseMatchResult} result_status="lose"/>
         </div>
-        );
+        ));
     }
 
 }
