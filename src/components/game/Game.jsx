@@ -57,8 +57,8 @@ class Game extends React.Component {
     }
 
     receiveMessage = (message) =>{
-        if(message.contain("INIT")){
-            let messagejson = JSON.parse(message)
+        if(message.data.includes("INIT")){
+            let messagejson = JSON.parse(message.data)
             let userMain = messagejson.creator
             let userOpponent = messagejson.opponent
             let deckCount = messagejson.deckCount
@@ -150,13 +150,21 @@ class Game extends React.Component {
             </Grid>
             <Grid title="Configuration" container alignItems={"flex-end"}>
                 <Grid container item xs={"12"} justify={"flex-end"}>
-                    {this.state.setAttribute()}
+                    {this.setAttribute()}
                     <Button variant="contained" >Abandonar</Button>
                 </Grid>
             </Grid>
+<<<<<<< Updated upstream
             <SimpleResultDialog/>
             <SimpleResultDialog data={{"result":{"event":"Winner","user":"username1","attribute":"Fuerza"},"mainUser": {"username":"username1", "attribute": "5"},"opponent":{"username":"username2", "attribute": "10"}}} open={openResult} onClose={handleCloseResult} />
             <MatchResultDialog open ={this.openMatchResult} onClose={this.handleCloseMatchResult} result_status="lose"/>
+=======
+            <SimpleResultDialog data={{"result":{"event":"Winner","user":"username1","attribute":"Fuerza"},
+                                    "mainUser": {"username":"username1", "attribute": "5"},
+                                    "opponent":{"username":"username2", "attribute": "10"}}} 
+                open={this.state.openResult} onClose={this.handleCloseResult} card={this.state.card} />
+            {/*<MatchResultDialog open ={this.openMatchResult} onClose={this.handleCloseMatchResult} result_status="lose"/>*/}
+>>>>>>> Stashed changes
         </div>
         );
     }

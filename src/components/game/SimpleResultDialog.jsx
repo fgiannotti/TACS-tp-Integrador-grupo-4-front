@@ -8,17 +8,6 @@ import './Game.css'
 
 export default class SimpleResultDialog extends Component {
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            onClose: "asd",
-            open: "asd",
-            data: "adat",
-            card: "card" //userMain.cartaActual...
-        }
-    }
-
     handleCancel = () =>{
         this.props.onClose("");
         //props.snackbarShowMessage("Es turno de tu contrincante")
@@ -26,19 +15,19 @@ export default class SimpleResultDialog extends Component {
     render() {
         return (
             <div>
-                <Dialog onClose={this.props.handleCancel} aria-labelledby="simple-dialog-title" open={this.props.open} color="orange">
-                    <DialogTitle id="simple-dialog-title" className="center">{this.state.this.state.data.result.event} {this.state.this.state.data.result.user}</DialogTitle>
+                <Dialog onClose={this.handleCancel} aria-labelledby="simple-dialog-title" open={this.props.open} color="orange">
+                    <DialogTitle id="simple-dialog-title" className="center">{this.props.data.result.event} {this.props.data.result.user}</DialogTitle>
 
                     <Grid container xs={12} className="root">
                         <Grid item spacing={1} className="mainUserResult">
-                            <DialogTitle id="simple-dialog-title" className="center">{this.state.data.mainUser.username}</DialogTitle>
-                            <DialogContentText className="center"> {this.state.data.result.attribute} : {this.state.data.mainUser.attribute}</DialogContentText>
-                            <MediaCard data={this.state.card}/>
+                            <DialogTitle id="simple-dialog-title" className="center">{this.props.data.mainUser.username}</DialogTitle>
+                            <DialogContentText className="center"> {this.props.data.result.attribute} : {this.props.data.mainUser.attribute}</DialogContentText>
+                            <MediaCard data={this.props.card}/>
                         </Grid>
                         <Grid item  className="opponentUserResult">
-                            <DialogTitle id="simple-dialog-title" className="center">{this.state.data.opponent.username}</DialogTitle>
-                            <DialogContentText className="center"> {this.state.data.result.attribute} : {this.state.data.opponent.attribute}</DialogContentText>
-                            <MediaCard data={this.state.card}/>
+                            <DialogTitle id="simple-dialog-title" className="center">{this.props.data.opponent.username}</DialogTitle>
+                            <DialogContentText className="center"> {this.props.data.result.attribute} : {this.props.data.opponent.attribute}</DialogContentText>
+                            <MediaCard data={this.props.card}/>
                         </Grid>
                     </Grid>
                 </Dialog>
