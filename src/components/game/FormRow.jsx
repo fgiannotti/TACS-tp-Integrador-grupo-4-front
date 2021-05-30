@@ -4,6 +4,7 @@ import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardMedia from "@material-ui/core/CardMedia";
 import './Game.css'
+import cardBack from '../../resources/images/cardback.jpg'
 
 
 export default class FormRow extends React.Component {
@@ -16,7 +17,7 @@ export default class FormRow extends React.Component {
                         <CardActionArea>
                             <CardMedia
                                 className="media"
-                                image={"https://retrocromy.com.ar/wp-content/uploads/2020/06/SuperAmigos40.jpg"}
+                                image={cardBack}
                             />
                         </CardActionArea>
                     </Card>
@@ -27,7 +28,7 @@ export default class FormRow extends React.Component {
                         <CardActionArea>
                             <CardMedia
                                 className="media"
-                                image={"https://retrocromy.com.ar/wp-content/uploads/2020/06/SuperAmigos40.jpg"}
+                                image={cardBack}
                             />
                         </CardActionArea>
                     </Card>

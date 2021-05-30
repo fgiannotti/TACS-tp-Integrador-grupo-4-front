@@ -10,13 +10,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import {ButtonGroup} from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
-import {ReactComponent as HeightIcon} from "../../resources/images/height.svg";
-import {ReactComponent as WeightIcon} from "../../resources/images/weight.svg";
-import {ReactComponent as StrongIcon} from "../../resources/images/strong.svg";
-import {ReactComponent as BrainIcon} from "../../resources/images/brain.svg";
-import {ReactComponent as SpeedIcon} from "../../resources/images/speed.svg";
-import {ReactComponent as PowerIcon} from "../../resources/images/power.svg";
-import {ReactComponent as CombatIcon} from "../../resources/images/combat.svg";
 import MediaCard from "../cards/HeroCard";
 import DialogContentText from '@material-ui/core/DialogContentText';
 import { withSnackbar } from "./GameSnackBar";
@@ -51,10 +44,10 @@ class Game extends React.Component {
 
 
 
-    componentDidMount() {
+    /*componentDidMount() {
     ManagementSocket.subscribeObserver(this)
         ManagementSocket.sendMessage("CONNECT GAME")
-    }
+    }*/
 
     receiveMessage = (message) =>{
         if(message.data.includes("INIT")){
@@ -154,17 +147,11 @@ class Game extends React.Component {
                     <Button variant="contained" >Abandonar</Button>
                 </Grid>
             </Grid>
-<<<<<<< Updated upstream
-            <SimpleResultDialog/>
-            <SimpleResultDialog data={{"result":{"event":"Winner","user":"username1","attribute":"Fuerza"},"mainUser": {"username":"username1", "attribute": "5"},"opponent":{"username":"username2", "attribute": "10"}}} open={openResult} onClose={handleCloseResult} />
-            <MatchResultDialog open ={this.openMatchResult} onClose={this.handleCloseMatchResult} result_status="lose"/>
-=======
             <SimpleResultDialog data={{"result":{"event":"Winner","user":"username1","attribute":"Fuerza"},
                                     "mainUser": {"username":"username1", "attribute": "5"},
                                     "opponent":{"username":"username2", "attribute": "10"}}} 
                 open={this.state.openResult} onClose={this.handleCloseResult} card={this.state.card} />
-            {/*<MatchResultDialog open ={this.openMatchResult} onClose={this.handleCloseMatchResult} result_status="lose"/>*/}
->>>>>>> Stashed changes
+            <MatchResultDialog open ={this.openMatchResult} onClose={this.handleCloseMatchResult} result_status="lose"/>
         </div>
         );
     }

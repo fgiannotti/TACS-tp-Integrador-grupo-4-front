@@ -51,7 +51,7 @@ export default function GameCard(props){
 
 
     function atributo(attr){
-        if (attribute===attr){
+        if (attribute === attr){
             return `${classes.image} ${classes.focus}`
         }
         else{
