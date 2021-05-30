@@ -49,7 +49,7 @@ export default class SimpleCardDialog extends React.Component {
         super(props);
 
         this.state = {
-            attribute: this.props.selectedValue,
+            attribute: "",
         }
     }
 
@@ -69,15 +69,9 @@ export default class SimpleCardDialog extends React.Component {
         return this.state.attribute === attr ? this.styles.imageFocus : this.styles.image
     }
 
-    playButton = (attr) => {
-        if(attr !== "" ){
-            return (<Button variant="contained" onClick={this.handleClose} color={"secondary"}>Jugar</Button>);
-        }
-    }
-
     render() {
         return (
-            <Dialog onClose={this.props.handleCancel} style={{display:'flex',justifyContent:'center'}} aria-labelledby="simple-dialog-title" open={this.props.open}>
+            <Dialog onClose={this.handleCancel} style={{display:'flex',justifyContent:'center'}} aria-labelledby="simple-dialog-title" open={this.props.open}>
                 <DialogTitle id="simple-dialog-title">Elegir un atributo</DialogTitle>
                 <Grid container style={this.styles.dialog}>
                     <ButtonGroup title="botones" variant="outlined" color="secondary" size="small"
@@ -114,7 +108,11 @@ export default class SimpleCardDialog extends React.Component {
                     </ButtonGroup>
                         <MediaCard card={this.props.card}/>
                 </Grid>
-                {this.playButton(this.state.attribute)}
+                {this.state.attribute !=="" ?
+                    <Button variant="contained" onClick={this.handleClose} color={"secondary"}>Jugar</Button>
+                    :
+                    <React.Fragment/>
+                }
             </Dialog>
         );
     }

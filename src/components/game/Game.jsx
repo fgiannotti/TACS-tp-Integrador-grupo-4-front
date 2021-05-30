@@ -75,23 +75,13 @@ class Game extends React.Component {
 
     handleCloseCard = (value) => {
         let openResult = value !== ""
-        this.setState({attribute: value, openCard: false, openResult: openResult});
+        this.setState({attribute: value, openCard: false, openResult: false});
         //setear atributo y llamar al back
     };
 
     handleCloseMatchResult = () => {
         this.setState({openMatchResult: false});
         return <Redirect push to="/" />
-    }
-    
-    chooseAttributeButton(){
-        if (this.props.mainUser === this.props.data.turno){
-            return (
-                <React.Fragment>
-                    <Button variant="contained" onClick={this.handleClickOpenCard}>Seleccionar atributo</Button>
-                    <SimpleCardDialog card={this.state.card} selectedValue={this.state.attribute} open={this.state.openCard} onClose={this.handleCloseCard} />
-                </React.Fragment>);
-        }
     }
 
 
@@ -120,10 +110,12 @@ class Game extends React.Component {
                 </Grid>
             </Grid>
 
-
-            <Grid title="Configuration" container alignItems={"flex-end"} item={true}>
+            <Grid container alignItems={"flex-end"} item={true}>
                 <Grid container xs={12} justify={"flex-end"} item={true}>
-                    {this.chooseAttributeButton()}
+                    <React.Fragment>
+                        <Button variant="contained" disabled={!this.state.isMainUserTurn} onClick={this.handleClickOpenCard}>Seleccionar atributo</Button>
+                        <SimpleCardDialog card={this.state.cardReceived} selectedValue={this.state.attribute} open={this.state.openCard} onClose={this.handleCloseCard} />
+                    </React.Fragment>
                     <Button variant="contained" >Abandonar</Button>
                 </Grid>
             </Grid>

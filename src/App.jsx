@@ -58,7 +58,6 @@ class App extends React.Component {
     };
     
     constructor(props) {
-        console.log("App constructor...")
         super(props);
         const { cookies } = props;
         const session = cookies.get('SESSIONID')
