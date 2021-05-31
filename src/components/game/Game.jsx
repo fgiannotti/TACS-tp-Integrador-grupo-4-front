@@ -72,12 +72,14 @@ class Game extends React.Component {
             let movementObject = JSON.parse(message.data)
             
             //update scores
-            let mainUserWon = movementObject.winner_id === this.state.loggedUserId
             let mainUserWithUpdatedScore = this.state.mainUser
             let opponentWithUpdatedScore = this.state.opponent
-            mainUserWithUpdatedScore.score = mainUserWon ? this.state.mainUser.score+1 : this.state.mainUser.score
-            opponentWithUpdatedScore.score = mainUserWon ? this.state.opponent.score : this.state.opponent.score+1
+            if (movementObject.winner_id !== "TIE"){
+                let mainUserWon = movementObject.winner_id === this.state.loggedUserId
 
+                mainUserWithUpdatedScore.score = mainUserWon ? this.state.mainUser.score+1 : this.state.mainUser.score
+                opponentWithUpdatedScore.score = mainUserWon ? this.state.opponent.score : this.state.opponent.score+1    
+            }
 
             this.setState({openResult: true, 
                 movementResult: movementObject, 
@@ -103,6 +105,7 @@ class Game extends React.Component {
             case "INTELIGENCIA": return "INTELLIGENCE"
             case "PODER": return "POWER"
             case "FUERZA": return "STRENGTH"
+            default: return "NOMATCH."+value
         }
     }
 
