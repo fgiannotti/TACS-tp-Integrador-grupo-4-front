@@ -26,6 +26,8 @@ class Game extends React.Component {
             openCard: false,
             openMatchResult: false,
             openResult: false,
+            redirectToHome:false,
+            resultStatus:"",
 
             attribute: "",
             deckCount: 0,
@@ -84,6 +86,14 @@ class Game extends React.Component {
                 opponent: opponentWithUpdatedScore,
                 deckCount: this.state.deckCount - 1})
         }
+        if (message.data.includes("MATCH_RESULT")){
+            let matchResult = JSON.parse(message.data)
+            console.log(matchResult)
+            let resultStatus = this.state.matchWinnerId === "TIE" ? 'tie' : ''
+            if (resultStatus !== 'tie') resultStatus = this.state.matchWinnerId.includes(this.state.loggedUserId) ?  'win' : 'lose'
+            console.log(resultStatus)
+            this.setState({openMatchResult:true, matchWinnerId: matchResult.winner_id,resultStatus:resultStatus})
+        }
     }
 
     handleClickOpenCard = () => {
@@ -112,12 +122,12 @@ class Game extends React.Component {
     };
 
     handleCloseMatchResult = () => {
-        this.setState({openMatchResult: false});
-        return <Redirect push to="/" />
+        this.setState({openMatchResult: false, redirectToHome:true});
     }
 
 
     render() {
+        if (this.state.redirectToHome) return (<Redirect to={"/"}/>)
         return (
             (this.state.isLoading ? <Loader /> :
         <div title="Game" className={styles.root}>
@@ -153,7 +163,7 @@ class Game extends React.Component {
             </Grid>
 
             {this.state.openResult ?
-                <SimpleResultDialog ccards={this.state.movementResult.cards}
+                <SimpleResultDialog cards={this.state.movementResult.cards}
                                     tie={this.state.movementResult.winner_id === "TIE"}
                                     open={this.state.openResult} onClose={this.handleCloseResult}
                                     winnerName={this.state.movementResult.winner_id === this.state.loggedUserId ? this.state.mainUser.user_name : this.state.opponent.user_name}
@@ -162,7 +172,9 @@ class Game extends React.Component {
                 : <React.Fragment/>
             }
 
-            <MatchResultDialog open={this.state.openMatchResult} onClose={this.handleCloseMatchResult} result_status="lose"/>
+            <MatchResultDialog open={this.state.openMatchResult} 
+                onClose={this.handleCloseMatchResult} 
+                result_status={this.state.resultStatus}/>
         </div>
         ));
     }

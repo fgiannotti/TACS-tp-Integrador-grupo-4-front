@@ -10,36 +10,27 @@ import '../../styles/Game.css';
 
 export default class MatchResultDialog extends Component {
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            onClose: "asd",
-            open: "asd",
-            result_type: "adat",
-
-        }
-    }
-
     chooseTittleMessage = () => {
-        switch (this.result_type){
+        switch (this.props.result_status){
             case 'win':
-                return "GANASTE"
+                return "Ganaste!"
             case 'lose':
-                return "PERDISTE"
+                return "Perdiste"
             default:
-                return "EMPATE"
+                return "Empate!"
         }
     };
 
     chooseImage = () => {
-        switch (this.result_type){
+        switch (this.props.result_status){
             case 'win':
                 return WinImage
             case 'lose':
                 return LoseImage
-            default:
+            case 'tie':
                 return TieImage
+            default:
+                return ""
         }
     };
 
@@ -50,10 +41,10 @@ export default class MatchResultDialog extends Component {
 
     render() {
         return (
-            <Dialog onClose={this.props.handleCancel} aria-labelledby="simple-dialog-title" open={this.props.open}>
+            <Dialog onClose={this.props.handleCancel} fullWidth={true} aria-labelledby="simple-dialog-title" open={this.props.open}>
                 <DialogTitle id="simple-dialog-title">{this.chooseTittleMessage()}</DialogTitle>
                 <img src={this.chooseImage()} alt={'foto_resultado'}/>
-                <Button onClick={this.handleCloseMatchResult}>Volver al Lobby</Button>
+                <Button onClick={this.props.onClose}>Volver al Lobby</Button>
             </Dialog>
         );
     }
