@@ -74,12 +74,17 @@ body {
         padding-right:75px;
 }
 
-.opponentUserResult {
-        padding:15px;
-        padding-left:75px;
-}
 
 .center{
         display: flex;
-        justify-content: center
+        justify-content: center;
+}
+.result-card{
+        margin-left:32px;
+        display:flex;
+        justify-content:center;
+}
+
+.p1 {
+        padding:16px
 }
