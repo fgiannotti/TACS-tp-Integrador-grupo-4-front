@@ -123,8 +123,12 @@ class Game extends React.Component {
     }
 
     handleCloseCard = (value) => {
-        this.setState({attribute: value, openCard: false});
-        ManagementSocket.sendMessage("SET_ATTRIBUTE:" + this.translateAttributeName(value))
+        if (value === "") {
+            this.setState({openCard: false})
+        } else {
+            this.setState({attribute: value, openCard: false});
+            ManagementSocket.sendMessage("SET_ATTRIBUTE:" + this.translateAttributeName(value))
+        }
     };
 
     handleCloseMatchResult = () => {
