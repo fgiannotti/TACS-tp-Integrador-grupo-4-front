@@ -43,7 +43,7 @@ class Game extends React.Component {
 
 
     componentDidMount() {
-    ManagementSocket.subscribeObserver(this)
+        ManagementSocket.subscribeObserver(this)
         ManagementSocket.sendMessage("CONNECT GAME")
     }
 
