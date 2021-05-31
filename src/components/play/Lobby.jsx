@@ -17,11 +17,13 @@ class Lobby extends React.Component {
         this.state = {
             matchId: matchId,
             bothUsersInLobby: false,
-            redirectToMatch: false,
             redirectToGame: false,
             opponentReady: false,
             ready: false
         }
+    }
+    componentDidMount() {
+        const urlParams = new URLSearchParams(window.location.search);
         ManagementSocket.setUser(this.props.cookies.get('GOOGLEID'))
         ManagementSocket.matchId = urlParams.get('matchId')
         ManagementSocket.subscribeObserver(this)
@@ -73,7 +75,6 @@ class Lobby extends React.Component {
 
     render() {
         if (this.state.redirectToGame) return <Redirect to={"/game"} />
-        if (this.state.redirectToMatch) return <Redirect to="/"/>
         return (
             <React.Fragment>
                 <Header/>

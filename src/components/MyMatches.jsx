@@ -8,6 +8,7 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import SuperfriendsBackendClient from "../SuperfriendsBackendClient";
 import Loader from "./utils/Loader";
 import Button from "@material-ui/core/Button";
+import {Redirect} from "react-router";
 
 class MyMatches extends Component {
     constructor(props) {
@@ -16,7 +17,9 @@ class MyMatches extends Component {
             matches: [],
             isLoading: true,
             open: false,
-            matchInfo: {movements: []}
+            matchInfo: {movements: []},
+            redirectToLobby: false,
+            loggedUser: this.props.cookies.get('GOOGLEID')
         }
     }
     backendClient = new SuperfriendsBackendClient()
@@ -31,7 +34,7 @@ class MyMatches extends Component {
 
     handleOpen = (matchId) => {
         this.backendClient.getMatchById(matchId).then(response => {
-                let isUserMatchCreator = response.match_creator.user_id === this.props.cookies.get('GOOGLEID')
+                let isUserMatchCreator = response.match_creator.user_id === this.state.loggedUser
                 this.setState({open: true, matchInfo: response, isUserMatchCreator: isUserMatchCreator});
             }
         )
@@ -45,8 +48,19 @@ class MyMatches extends Component {
         return this.state.matchInfo.deck.cards.find(c => c.id === cardId).name
     }
 
-    render() {
+    continueMatch = (match) => {
+        let opponent = match.match_creator.user_id === this.state.loggedUser ? match.challenged_player.user_id : match.match_creator.user_id
+        this.backendClient.inviteOpponentToContinueMatch(match.id, opponent)
+            .then((_ =>
+                    this.setState({
+                        redirectToLobby: true,
+                        matchIdToContinue: match.id
+                    })
+            ))
+    }
 
+    render() {
+        if (this.state.redirectToLobby) return <Redirect to={"/lobby?matchId=" + this.state.matchIdToContinue} />
         return (
             <React.Fragment>
                 <Header />
@@ -121,7 +135,7 @@ class MyMatches extends Component {
                                         <ListItemText style={{width: '25%'}} primary={match.deck_db_dto.name}/>
                                         <ListItemText style={{width: '25%'}} >
                                             {match.status === "PAUSED" ?
-                                            <Button variant="contained" color={"secondary"}>Continuar</Button>
+                                            <Button variant="contained" color={"secondary"} onClick={() => this.continueMatch(match)}>Continuar</Button>
                                             : (match.status === "FINISHED") ? "TERMINADO"
                                             : (match.status === "CREATED") ? "CREADO"
                                             : (match.status === "CANCELED") ? "CANCELADO"
