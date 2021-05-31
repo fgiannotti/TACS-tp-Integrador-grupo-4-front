@@ -76,16 +76,15 @@ class Game extends React.Component {
             let opponentWithUpdatedScore = this.state.opponent
             if (movementObject.winner_id !== "TIE"){
                 let mainUserWon = movementObject.winner_id === this.state.loggedUserId
-
-                mainUserWithUpdatedScore.score = mainUserWon ? this.state.mainUser.score+1 : this.state.mainUser.score
-                opponentWithUpdatedScore.score = mainUserWon ? this.state.opponent.score : this.state.opponent.score+1    
+                mainUserWithUpdatedScore.score = mainUserWon ? this.state.mainUser.score + 1 : this.state.mainUser.score
+                opponentWithUpdatedScore.score = mainUserWon ? this.state.opponent.score : this.state.opponent.score + 1
             }
 
             this.setState({openResult: true, 
                 movementResult: movementObject, 
                 mainUser: mainUserWithUpdatedScore, 
                 opponent: opponentWithUpdatedScore,
-                deckCount: this.state.deckCount-1})
+                deckCount: this.state.deckCount - 1})
         }
     }
 
@@ -156,7 +155,7 @@ class Game extends React.Component {
             </Grid>
 
             {this.state.openResult ?
-                <SimpleResultDialog cards={this.state.movementResult.cards}
+                <SimpleResultDialog movement={this.state.movementResult}
                                     tie={this.state.movementResult.winner_id === "TIE"}
                                     open={this.state.openResult} onClose={this.handleCloseResult}
                                     winnerName={this.state.movementResult.winner_id === this.state.loggedUserId ? this.state.mainUser.user_name : this.state.opponent.user_name}
