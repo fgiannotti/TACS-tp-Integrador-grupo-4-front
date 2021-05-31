@@ -45,7 +45,6 @@ class Game extends React.Component {
     }
 
     receiveMessage = (message) => {
-        console.log(message)
         if (message.data.includes("INIT")) {
             let messageJson = JSON.parse(message.data)
             let mainUser
@@ -62,9 +61,8 @@ class Game extends React.Component {
             this.setState({mainUser: mainUser, opponent: opponent, deckCount: deckCount, isLoading: false})
         }
         if (message.data.includes("TURN")){
-            console.log("received turn:");
+            console.log("received turn");
             let messageJson = JSON.parse(message.data)
-            console.log(messageJson);
             this.setState({cardReceived:messageJson.card, isMainUserTurn: messageJson.user_id_turn === this.state.loggedUserId})
         }
         if (message.data.includes("MOVEMENT_RESULT")) {
@@ -155,7 +153,7 @@ class Game extends React.Component {
             </Grid>
 
             {this.state.openResult ?
-                <SimpleResultDialog movement={this.state.movementResult}
+                <SimpleResultDialog ccards={this.state.movementResult.cards}
                                     tie={this.state.movementResult.winner_id === "TIE"}
                                     open={this.state.openResult} onClose={this.handleCloseResult}
                                     winnerName={this.state.movementResult.winner_id === this.state.loggedUserId ? this.state.mainUser.user_name : this.state.opponent.user_name}

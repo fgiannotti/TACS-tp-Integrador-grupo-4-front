@@ -26,7 +26,6 @@ export default class SimpleResultDialog extends Component {
     }
     handleCancel = () => { this.props.onClose("") }
     render() {
-        console.log("movement in simple result dialog" + this.props.movement.winner_card.name)
         return (
             <div>
                 <Dialog onClose={this.handleCancel} fullWidth={true} aria-labelledby="simple-dialog-title" open={this.props.open} color="orange">
@@ -35,9 +34,9 @@ export default class SimpleResultDialog extends Component {
                     <Grid item xs={12} className="root">
                         <Grid>
                             <DialogTitle id="simple-dialog-title" style={{textAlign:'center'}}>{this.props.winnerName}</DialogTitle>
-                            <DialogContentText style={{textAlign:'center'}}> {this.attributeNameToSpanish(this.props.attribute)+": " + this.getAttributeValue(this.props.movement.winner_card,this.props.attribute)}</DialogContentText>
+                            <DialogContentText style={{textAlign:'center'}}> {this.attributeNameToSpanish(this.props.attribute)+": " + this.getAttributeValue(this.props.cards[0],this.props.attribute)}</DialogContentText>
                             <div className="result-card">
-                                <MediaCard  card={this.props.movement.winner_card}/>
+                                <MediaCard  card={this.props.cards[0]}/>
                             </div>
                         </Grid>
 
@@ -45,9 +44,9 @@ export default class SimpleResultDialog extends Component {
 
                         <Grid>
                             <DialogTitle id="simple-dialog-title" style={{textAlign:'center'}} >{this.props.loserName} </DialogTitle>
-                            <DialogContentText style={{textAlign:'center'}}> {this.attributeNameToSpanish(this.props.attribute)+": " + this.getAttributeValue(this.props.movement.loser_card,this.props.attribute)}</DialogContentText>
+                            <DialogContentText style={{textAlign:'center'}}> {this.attributeNameToSpanish(this.props.attribute)+": " + this.getAttributeValue(this.props.cards[1],this.props.attribute)}</DialogContentText>
                             <div className="result-card">
-                                <MediaCard card={this.props.movement.loser_card}/>
+                                <MediaCard card={this.props.cards[1]}/>
                             </div>
                         </Grid>
                     </Grid>

@@ -54,6 +54,7 @@ export default class SimpleCardDialog extends React.Component {
     }
 
     handleClose = () => {
+        console.log("click jugar",this.state.attribute)
         this.props.onClose(this.state.attribute);
     };
 
@@ -62,6 +63,7 @@ export default class SimpleCardDialog extends React.Component {
     };
 
     handleListAttributeClick = (value) => {
+        console.log("click attribute:",value)
         this.setState({attribute:value})
     };
 
@@ -74,26 +76,26 @@ export default class SimpleCardDialog extends React.Component {
             <Dialog onClose={this.handleCancel} style={{display:'flex',justifyContent:'center'}} aria-labelledby="simple-dialog-title" open={this.props.open}>
                 <DialogTitle id="simple-dialog-title">Elegir un atributo</DialogTitle>
                 <Grid container style={this.styles.dialog}>
-                    <ButtonGroup title="botones" variant="outlined" color="secondary" size="small"
+                    <ButtonGroup variant="outlined" color="secondary" size="small"
                                  aria-label="outlined secondary button group" orientation="vertical"
                                  style={this.styles.buttonGroup}>
-                        <IconButton aria-label="Altura" size={"small"} style={this.styles.icon}
+                        <IconButton title="Altura" aria-label="Altura" size={"small"} style={this.styles.icon}
                                     onClick={() => this.handleListAttributeClick("Altura")}>
                             <HeightIcon style={this.applyStyle("Altura")}/>
                         </IconButton>
-                        <IconButton aria-label="Peso" size={"small"} style={this.styles.icon}
+                        <IconButton title="Peso" aria-label="Peso" size={"small"} style={this.styles.icon}
                                     onClick={() => this.handleListAttributeClick("Peso")}>
                             <WeightIcon style={this.applyStyle("Peso")}/>
                         </IconButton>
-                        <IconButton aria-label="Fuerza" size={"small"} style={this.styles.icon}
+                        <IconButton title="Fuerza" aria-label="Fuerza" size={"small"} style={this.styles.icon}
                                     onClick={() => this.handleListAttributeClick("Fuerza")}>
                             <StrongIcon style={this.applyStyle("Fuerza")}/>
                         </IconButton>
-                        <IconButton aria-label="Inteligencia" size={"small"} style={this.styles.icon}
+                        <IconButton title="Inteligencia" aria-label="Inteligencia" size={"small"} style={this.styles.icon}
                                     onClick={() => this.handleListAttributeClick("Inteligencia")}>
                             <BrainIcon style={this.applyStyle("Inteligencia")}/>
                         </IconButton>
-                        <IconButton aria-label="Velocidad" size={"small"} style={this.styles.icon}
+                        <IconButton title="Velocidad" aria-label="Velocidad" size={"small"} style={this.styles.icon}
                                     onClick={() => this.handleListAttributeClick("Velocidad")}>
                             <SpeedIcon style={this.applyStyle("Velocidad")}/>
                         </IconButton>
