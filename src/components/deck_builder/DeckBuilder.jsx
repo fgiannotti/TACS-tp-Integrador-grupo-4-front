@@ -56,6 +56,8 @@ class DeckBuilder extends React.Component {
         let heroList = []
         if (cardIds.length > 0) {
             heroList = await deckClient.getHerosByCardIds(cardIds);
+            console.log("heroList:")
+            console.log(heroList)
         }
 
         this.setState({deckId: deckId, deckName: deckName, selectedHeroList: heroList})
@@ -93,7 +95,6 @@ class DeckBuilder extends React.Component {
     saveDeck = () => {
         this.setSaveDeckAlert(false);
 
-        //HACER LA PARTE DE GUARDAR LOS IDS DEL MAZO EN ALGUN LADO CON EL NOMBRE
         const deckId = this.state.deckId
         const deckName = this.state.deckName
         const cardIds = this.state.selectedHeroList.map(hero => hero["id"])

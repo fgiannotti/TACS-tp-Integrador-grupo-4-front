@@ -9,11 +9,12 @@ import AttributeGrid from './AttributeGrid'
 class HeroCard extends React.Component {
     styles = {
         root: {
-            maxWidth: 200,
-            marginTop: 10,
+            maxWidth: '200px',
+            maxHeight:'400px',
         },
         media: {
-            height: 150
+            height: '150px',
+            backgroundPosition:'top',
         },
         content: {
             padding: "5%",

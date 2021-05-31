@@ -26,10 +26,11 @@ class Game extends React.Component {
             openCard: false,
             openMatchResult: false,
             openResult: false,
+
             attribute: "",
             deckCount: 0,
+            loggedUserId: this.props.cookies.get('GOOGLEID'),
             isLoading: true,
-            loggedUser: this.props.cookies.get('GOOGLEID'),
             isMainUserTurn: false,
             mainUserCardUrl: defaultCardJpg,
             movementResult: {}
@@ -49,7 +50,7 @@ class Game extends React.Component {
             let messageJson = JSON.parse(message.data)
             let mainUser
             let opponent
-            if (messageJson.creator.user_id === this.state.loggedUser) {
+            if (messageJson.creator.user_id === this.state.loggedUserId) {
                 mainUser = messageJson.creator
                 opponent = messageJson.opponent
             } else {
@@ -57,18 +58,32 @@ class Game extends React.Component {
                 opponent = messageJson.creator
             }
             let deckCount = messageJson.deck_count
+            //TODO: SCORES INITIAL VALUES
             this.setState({mainUser: mainUser, opponent: opponent, deckCount: deckCount, isLoading: false})
         }
         if (message.data.includes("TURN")){
             console.log("received turn:");
             let messageJson = JSON.parse(message.data)
             console.log(messageJson);
-            this.setState({cardReceived:messageJson.card, isMainUserTurn: messageJson.user_id_turn === this.state.loggedUser})
+            this.setState({cardReceived:messageJson.card, isMainUserTurn: messageJson.user_id_turn === this.state.loggedUserId})
         }
         if (message.data.includes("MOVEMENT_RESULT")) {
             console.log("received movement result")
-            let messageJson = JSON.parse(message.data)
-            this.setState({openResult: true, movementResult: messageJson})
+            let movementObject = JSON.parse(message.data)
+            
+            //update scores
+            let mainUserWon = movementObject.winner_id === this.state.loggedUserId
+            let mainUserWithUpdatedScore = this.state.mainUser
+            let opponentWithUpdatedScore = this.state.opponent
+            mainUserWithUpdatedScore.score = mainUserWon ? this.state.mainUser.score+1 : this.state.mainUser.score
+            opponentWithUpdatedScore.score = mainUserWon ? this.state.opponent.score : this.state.opponent.score+1
+
+
+            this.setState({openResult: true, 
+                movementResult: movementObject, 
+                mainUser: mainUserWithUpdatedScore, 
+                opponent: opponentWithUpdatedScore,
+                deckCount: this.state.deckCount-1})
         }
     }
 
@@ -141,7 +156,9 @@ class Game extends React.Component {
                 <SimpleResultDialog cards={this.state.movementResult.cards}
                                     tie={this.state.movementResult.winner_id === "TIE"}
                                     open={this.state.openResult} onClose={this.handleCloseResult}
-                                    winner={this.state.movementResult.winner_id === this.state.loggedUser ? this.state.mainUser.user_name : this.state.opponent.user_name}/>
+                                    winnerName={this.state.movementResult.winner_id === this.state.loggedUserId ? this.state.mainUser.user_name : this.state.opponent.user_name}
+                                    loserName={this.state.movementResult.winner_id !== this.state.loggedUserId ? this.state.mainUser.user_name : this.state.opponent.user_name}
+                                    attribute={this.state.movementResult.chosen_attribute}/>
                 : <React.Fragment/>
             }
 

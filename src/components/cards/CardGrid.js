@@ -15,16 +15,17 @@ export default class CardGrid extends React.Component{
         },
     }));
     render() {
-       return(
+        console.log(this.props.cards)
+        return(
            <Grid container spacing={3}>
-            {this.props.cards.map((card, i) => (
+            {this.props.cards.length > 1 ? this.props.cards.map((card, i) => (
                 <Grid item key={i}>
                     <MediaCard 
                         data={card} 
                         onClickBuilder={this.props.onClickBuilder}
                     />
                 </Grid>
-            ))}
+            )): <React.Fragment/>}
         </Grid>
        );
     }
