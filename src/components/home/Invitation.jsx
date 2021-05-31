@@ -33,11 +33,11 @@ export default class Invitation extends React.Component {
         if (this.state.redirectToLobby) return (<Redirect to={"/lobby?matchId=" + this.state.matchInvited}/>)
         return (
             <div>
-                <Dialog open={this.state.open} onClose={this.handleMatchRefuse} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
+                <Dialog open={this.state.open} fullWidth={true} className="maxWidth200" onClose={this.handleMatchRefuse} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
                     <DialogTitle id="alert-dialog-title">{"Invitacion!"}</DialogTitle>
                     <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Te estan invitando pá
+                        Te estan invitando a una partida!
                     </DialogContentText>
                     </DialogContent>
                     <DialogActions>
