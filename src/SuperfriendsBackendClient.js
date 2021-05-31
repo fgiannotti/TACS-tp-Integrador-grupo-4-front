@@ -73,6 +73,12 @@ class SuperfriendsBackendClient {
             .then((response) => response.data)
             .catch((error) => console.log(error))
     }
+
+    inviteOpponentToContinueMatch = (matchId, opponentId) => {
+        return axios.get(this.backendUrl + "/invite/"+ matchId + "/" + opponentId)
+            .then((response) => response.data)
+            .catch((error) => console.log(error))
+    }
 }
 
 export default SuperfriendsBackendClient;
