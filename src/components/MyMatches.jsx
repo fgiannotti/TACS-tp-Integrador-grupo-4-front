@@ -16,7 +16,7 @@ class MyMatches extends Component {
             matches: [],
             isLoading: true,
             open: false,
-            matchInfo: {movements:[]}
+            matchInfo: {movements: []}
         }
     }
     backendClient = new SuperfriendsBackendClient()
@@ -41,8 +41,12 @@ class MyMatches extends Component {
         this.setState({ open: false });
     };
 
+    getCardName(cardId) {
+        return this.state.matchInfo.deck.cards.find(c => c.id === cardId).name
+    }
 
     render() {
+
         return (
             <React.Fragment>
                 <Header />
@@ -60,14 +64,6 @@ class MyMatches extends Component {
                                 ))}
                             </ListItem>
                             <Divider/>
-                            {/*} movements: Array(2)
-                                    0:
-                                    attribute_name: "STRENGTH"
-                                    creator_card_id: 2
-                                    id: 0
-                                    opponent_card_id: 4
-                                winner_card_id: 4*
-                                */}
                             
                             {this.state.matchInfo.movements.sort((a,b) => a.id - b.id).map((movement, i) => (
                                 <React.Fragment key={i}>
@@ -75,14 +71,13 @@ class MyMatches extends Component {
                                         <ListItemText style={{width: '25%'}} primary={i++}/>
 
                                         <div style={{width: '25%',display:'flex', alignItems: 'center'}}>
-                                            <ListItemText primary={this.state.isUserMatchCreator ? movement.creator_card_id : movement.opponent_card_id} />
-                                            {movement.winner_card_id === movement.creator_card_id ? <CheckCircleIcon style={{fontSize: 'small'}} /> : null}
-                                            
+                                            <ListItemText primary={this.state.isUserMatchCreator ? this.getCardName(movement.creator_card_id) : this.getCardName(movement.opponent_card_id)} />
+                                            {movement.winner_id_or_tie === this.props.loggedUser ? <CheckCircleIcon style={{fontSize: 'small'}} /> : <React.Fragment />}
                                         </div>
 
                                         <div style={{width: '25%',display:'flex', alignItems: 'center'}}>
-                                            <ListItemText  primary={this.state.isUserMatchCreator ? movement.opponent_card_id : movement.creator_card_id} />
-                                            {movement.winner_card_id === movement.opponent_card_id ? <CheckCircleIcon style={{fontSize: 'small'}} /> : null }
+                                            <ListItemText  primary={this.state.isUserMatchCreator ? this.getCardName(movement.opponent_card_id) : this.getCardName(movement.creator_card_id)} />
+                                            {movement.winner_id_or_tie !== 'TIE' && movement.winner_id_or_tie !== this.props.loggedUser ? <CheckCircleIcon style={{fontSize: 'small'}} /> : <React.Fragment /> }
                                         </div>
 
                                         <ListItemText style={{width: '25%'}} primary={movement.attribute_name === "STRENGTH" ? "Fuerza" 
