@@ -88,3 +88,14 @@ body {
 .p1 {
         padding:16px
 }
+
+.lowerButtons {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 16px;
+        margin-bottom: 16px;
+}
+
+.maxWidth200 {
+        max-width: 200px;
+}

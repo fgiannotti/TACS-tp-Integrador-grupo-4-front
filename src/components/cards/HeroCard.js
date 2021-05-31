@@ -33,14 +33,14 @@ class HeroCard extends React.Component {
                 <CardActionArea>
                     <CardMedia
                         style={this.styles.media}
-                        image={this.props.card["image_url"]}
-                        title={this.props.card["name"]}
+                        image={this.props.card.image_url}
+                        title={this.props.card.name}
                     />
                     <CardContent style={this.styles.content}>
                         <Typography gutterBottom variant="h6" component="h2">
                             {this.props.card["name"]}
                         </Typography>
-                        <AttributeGrid powerStats={this.props.card["power_stats"]}/>
+                        <AttributeGrid powerStats={this.props.card.power_stats}/>
                     </CardContent>
                 </CardActionArea>
             </Card>);

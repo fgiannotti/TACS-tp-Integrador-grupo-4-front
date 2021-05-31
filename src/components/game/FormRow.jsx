@@ -30,6 +30,7 @@ export default class FormRow extends React.Component {
         }
     }
     render() {
+        console.log(this.props.cardReceived)
         return (
             <React.Fragment>
                 <Grid container direction="row" justify="space-around"  item xs={8}>

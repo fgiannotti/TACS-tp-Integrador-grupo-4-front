@@ -9,10 +9,11 @@ import styles from '../../styles/Game.css';
 import SimpleResultDialog from "./SimpleResultDialog"
 import FormRow from "./FormRow"
 import {withCookies} from "react-cookie";
-import MatchResultDialog from "./MatchResulDialog.jsx"
+import MatchResultDialog from "./MatchResultDialog.jsx"
 import SimpleCardDialog from "./SimpleCardDialog"
 import Loader from "../utils/Loader";
 import defaultCardJpg from "../../resources/images/cardback.jpg";
+import StopMatchDialog from './StopMatchDialog';
 
 class Game extends React.Component {
     constructor(props) {
@@ -82,7 +83,7 @@ class Game extends React.Component {
             //if its the first movement result received, the last card played is the cardReceived from turn
             let lastCardPlayed = this.state.lastCardPlayed ? this.state.lastCardPlayed : this.state.cardReceived
             let opponentCard = movementObject.cards.find(c => c.id !== lastCardPlayed.id)
-            
+            console.log("opponent result card", opponentCard, movementObject.cards)
             this.setState({openResult: true, 
                 movementResult: movementObject, 
                 mainUser: mainUserWithUpdatedScore, 
@@ -97,8 +98,12 @@ class Game extends React.Component {
             console.log(matchResult)
             let resultStatus = matchResult.winner_id === "TIE" ? 'tie' : ''
             if (resultStatus !== 'tie') resultStatus = matchResult.winner_id.includes(this.state.loggedUserId) ?  'win' : 'lose'
-            console.log(resultStatus)
+            console.log("result status",resultStatus)
             this.setState({openMatchResult:true, matchWinnerId: matchResult.winner_id, resultStatus:resultStatus})
+        }
+
+        if (message.data.includes("STOP_MATCH")){
+            this.setState({showStopMatch:true})
         }
     }
 
@@ -135,6 +140,9 @@ class Game extends React.Component {
         this.setState({openMatchResult: false, redirectToHome:true});
     }
 
+    handleCloseStopMatchDialog = () => {
+        this.setState({openMatchResult: false, redirectToHome:true});
+    }
 
     render() {
         if (this.state.redirectToHome) return (<Redirect to={"/"}/>)
@@ -162,14 +170,12 @@ class Game extends React.Component {
                 </Grid>
             </Grid>
 
-            <Grid container alignItems={"flex-end"} item={true}>
-                <Grid container xs={12} justify={"flex-end"} item={true}>
-                    <React.Fragment>
-                        <Button variant="contained" disabled={!this.state.isMainUserTurn} onClick={this.handleClickOpenCard}>Seleccionar atributo</Button>
-                        <SimpleCardDialog card={this.state.cardReceived} selectedValue={this.state.attribute} open={this.state.openCard} onClose={this.handleCloseCard} />
-                    </React.Fragment>
-                    <Button variant="contained" >Abandonar</Button>
-                </Grid>
+            <Grid className="lowerButtons">
+                <React.Fragment>
+                    <Button variant="contained" disabled={!this.state.isMainUserTurn} onClick={this.handleClickOpenCard}>Seleccionar atributo</Button>
+                    <SimpleCardDialog card={this.state.cardReceived} selectedValue={this.state.attribute} open={this.state.openCard} onClose={this.handleCloseCard} />
+                </React.Fragment>
+                <Button variant="contained" >Abandonar</Button>
             </Grid>
 
             {this.state.openResult ?
@@ -187,6 +193,8 @@ class Game extends React.Component {
             <MatchResultDialog open={this.state.openMatchResult} 
                 onClose={this.handleCloseMatchResult} 
                 result_status={this.state.resultStatus}/>
+
+            <StopMatchDialog open={this.state.showStopMatch} onClose={this.handleCloseMatchResult}/>
         </div>
         ));
     }
