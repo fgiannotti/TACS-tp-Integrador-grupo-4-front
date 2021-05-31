@@ -31,7 +31,8 @@ class Game extends React.Component {
             isLoading: true,
             loggedUser: this.props.cookies.get('GOOGLEID'),
             isMainUserTurn: false,
-            mainUserCardUrl: defaultCardJpg
+            mainUserCardUrl: defaultCardJpg,
+            movementResult: {}
         }
     }
 
@@ -64,19 +65,35 @@ class Game extends React.Component {
             console.log(messageJson);
             this.setState({cardReceived:messageJson.card, isMainUserTurn: messageJson.user_id_turn === this.state.loggedUser})
         }
+        if (message.data.includes("MOVEMENT_RESULT")) {
+            console.log("received movement result")
+            let messageJson = JSON.parse(message.data)
+            this.setState({openResult: true, movementResult: messageJson})
+        }
     }
 
     handleClickOpenCard = () => {
         this.setState({openCard: true});
     };
     handleCloseResult = () =>{
-        this.setState({openResult: true, openMatchResult: true});
+        this.setState({openResult: false});
+    }
+
+    translateAttributeName = (value) => {
+        switch (value.toUpperCase()) {
+            case "PESO": return "WEIGHT"
+            case "ALTURA": return "HEIGHT"
+            case "VELOCIDAD": return "SPEED"
+            case "COMBATE": return "COMBAT"
+            case "INTELIGENCIA": return "INTELLIGENCE"
+            case "PODER": return "POWER"
+            case "FUERZA": return "STRENGTH"
+        }
     }
 
     handleCloseCard = (value) => {
-        let openResult = value !== ""
-        this.setState({attribute: value, openCard: false, openResult: false});
-        //setear atributo y llamar al back
+        this.setState({attribute: value, openCard: false});
+        ManagementSocket.sendMessage("SET_ATTRIBUTE:" + this.translateAttributeName(value))
     };
 
     handleCloseMatchResult = () => {
@@ -120,10 +137,13 @@ class Game extends React.Component {
                 </Grid>
             </Grid>
 
-            <SimpleResultDialog data={{"result":{"event":"Winner","user":"username1","attribute":"Fuerza"},
-                                    "mainUser": {"username":"username1", "attribute": "5"},
-                                    "opponent":{"username":"username2", "attribute": "10"}}} 
-                open={this.state.openResult} onClose={this.handleCloseResult} card={this.state.card} />
+            {this.state.openResult ?
+                <SimpleResultDialog cards={this.state.movementResult.cards}
+                                    tie={this.state.movementResult.winner_id === "TIE"}
+                                    open={this.state.openResult} onClose={this.handleCloseResult}
+                                    winner={this.state.movementResult.winner_id === this.state.loggedUser ? this.state.mainUser.user_name : this.state.opponent.user_name}/>
+                : <React.Fragment/>
+            }
 
             <MatchResultDialog open={this.state.openMatchResult} onClose={this.handleCloseMatchResult} result_status="lose"/>
         </div>

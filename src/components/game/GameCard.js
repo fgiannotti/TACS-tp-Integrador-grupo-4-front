@@ -89,7 +89,7 @@ export default function GameCard(props){
                 </ButtonGroup>
             <Grid item >
                 <MediaCard
-                data={props.card}
+                card={props.card}
             /></Grid>
         </Grid>);
 
