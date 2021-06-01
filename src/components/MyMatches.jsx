@@ -21,10 +21,11 @@ class MyMatches extends Component {
             redirectToLobby: false,
             loggedUser: this.props.cookies.get('GOOGLEID')
         }
+        this.refreshMyMatches()
     }
     backendClient = new SuperfriendsBackendClient()
 
-    componentDidMount() {
+    refreshMyMatches()  {
         this.backendClient.getMatchesOfUser(this.props.loggedUser)
             .then((response) => this.setState({
                 matches: response,
