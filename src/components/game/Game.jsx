@@ -158,17 +158,15 @@ class Game extends React.Component {
             <Grid title="Board" container direction="column" justify="flex-start" alignItems="stretch" spacing={3} xs={12} item={true}>
                 <Grid title="Opponent" container spacing={1} direction="row" style={{padding:16}} item={true}>
                     <Grid item={true} xs={2} className={styles.users}>
-                        <Avatar style={{height:'30%', width: '50%'}} alt="" src={this.state.opponent.image_url} title={"Username"}/>
-                        <span>
+                        <Avatar alt="Remy Sharp" src={this.state.opponent.image_url} title={"Username"}/>
                             {this.state.opponent.user_name}
-                        </span>
                     </Grid>
                     <FormRow score={this.state.opponent.score} cardsLeft={this.state.deckCount}/>
                 </Grid>
 
                 <Grid title="MainUser" container  spacing={1} direction="row" className={"padding:10"} item={true}>
                     <Grid item={true} xs={2} className={styles.users}>
-                        <Avatar style={{height:'30%', width: '50%'}} alt="" src={this.state.mainUser.image_url} title={"Username"}/>
+                        <Avatar alt="Remy Sharp" src={this.state.mainUser.image_url} title={"Username"}/>
                         {this.state.mainUser.user_name}
                     </Grid>
                     <FormRow score={this.state.mainUser.score} cardReceived={this.state.cardReceived} cardsLeft={this.state.deckCount}/>

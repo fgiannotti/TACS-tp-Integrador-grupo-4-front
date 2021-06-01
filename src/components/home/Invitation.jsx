@@ -6,7 +6,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
+import styles from '../../styles/Home.css';
 export default class Invitation extends React.Component {
     constructor(props) {
         super(props);
@@ -33,7 +33,7 @@ export default class Invitation extends React.Component {
         if (this.state.redirectToLobby) return (<Redirect to={"/lobby?matchId=" + this.state.matchInvited}/>)
         return (
             <div>
-                <Dialog open={this.state.open} fullWidth={true} className="maxWidth200" onClose={this.handleMatchRefuse} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
+                <Dialog open={this.state.open} fullWidth={true} className={styles.center} onClose={this.handleMatchRefuse} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
                     <DialogTitle id="alert-dialog-title">{"Invitacion!"}</DialogTitle>
                     <DialogContent>
                     <DialogContentText id="alert-dialog-description">
