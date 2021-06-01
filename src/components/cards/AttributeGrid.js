@@ -20,16 +20,6 @@ class AttributeGrid extends React.Component {
     strength = 0;
     power = 0;
     speed = 0;
-    constructor(props) {
-        super(props);
-        this.height = this.props.powerStats.filter(power => power.name === "height")[0].value;
-        this.weight = this.props.powerStats.filter(power => power.name === "weight")[0].value;
-        this.intelligence = this.props.powerStats.filter(power => power.name === "intelligence")[0].value;
-        this.strength = this.props.powerStats.filter(power => power.name === "strength")[0].value;
-        this.power = this.props.powerStats.filter(power => power.name === "power")[0].value;
-        this.speed = this.props.powerStats.filter(power => power.name === "speed")[0].value;
-        this.combat = this.props.powerStats.filter(power => power.name === "combat")[0].value;
-    }
     style() {
         return (makeStyles((theme) => ({
             root: {
@@ -53,7 +43,17 @@ class AttributeGrid extends React.Component {
             </React.Fragment>
         );
     }
+    refreshFunction(){
+        this.height = this.props.powerStats.filter(power => power.name === "height")[0].value;
+        this.weight = this.props.powerStats.filter(power => power.name === "weight")[0].value;
+        this.intelligence = this.props.powerStats.filter(power => power.name === "intelligence")[0].value;
+        this.strength = this.props.powerStats.filter(power => power.name === "strength")[0].value;
+        this.power = this.props.powerStats.filter(power => power.name === "power")[0].value;
+        this.speed = this.props.powerStats.filter(power => power.name === "speed")[0].value;
+        this.combat = this.props.powerStats.filter(power => power.name === "combat")[0].value;
+    }
     render() {
+        this.refreshFunction()
         return (
             <div className={this.style().root}>
                 <Grid container spacing={1} >
