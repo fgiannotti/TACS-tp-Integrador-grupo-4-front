@@ -154,32 +154,37 @@ class Game extends React.Component {
         return (
             (this.state.isLoading ? <Loader /> :
         <div title="Game" className={styles.root}>
-            <h3 className={styles.center}> {this.state.isMainUserTurn ? "Es tu turno" : "Esperando oponente"} </h3>
+            <h2 className={styles.center}> {this.state.isMainUserTurn ? "Es tu turno" : "Esperando oponente"} </h2>
             <Grid title="Board" container direction="column" justify="flex-start" alignItems="stretch" spacing={3} xs={12} item={true}>
                 <Grid title="Opponent" container spacing={1} direction="row" style={{padding:16}} item={true}>
                     <Grid item={true} xs={2} className={styles.users}>
-                        <Avatar alt="Remy Sharp" src={this.state.opponent.image_url} title={"Username"}/>
-                            {this.state.opponent.user_name}
+                        <div className="player-info-centered">
+                            <Avatar alt="Remy Sharp" src={this.state.opponent.image_url} title={"Username"}/>
+                        </div>
+                        {this.state.opponent.user_name}
                     </Grid>
                     <FormRow score={this.state.opponent.score} cardsLeft={this.state.deckCount}/>
                 </Grid>
 
+                <Grid className="lowerButtons">
+                            <React.Fragment>
+                                <Button variant="contained" disabled={!this.state.isMainUserTurn} onClick={this.handleClickOpenCard}>Seleccionar atributo</Button>
+                                <SimpleCardDialog card={this.state.cardReceived} selectedValue={this.state.attribute} open={this.state.openCard} onClose={this.handleCloseCard} />
+                            </React.Fragment>
+                            <Button variant="contained" onClick={this.handleOnClickAbandon}>Abandonar</Button>
+                        </Grid>
                 <Grid title="MainUser" container  spacing={1} direction="row" className={"padding:10"} item={true}>
                     <Grid item={true} xs={2} className={styles.users}>
-                        <Avatar alt="Remy Sharp" src={this.state.mainUser.image_url} title={"Username"}/>
+                        <div className="player-info-centered">
+                            <Avatar alt="Remy Sharp" src={this.state.opponent.image_url} title={"Username"}/>
+                        </div>
                         {this.state.mainUser.user_name}
                     </Grid>
+                    
                     <FormRow score={this.state.mainUser.score} cardReceived={this.state.cardReceived} cardsLeft={this.state.deckCount}/>
                 </Grid>
             </Grid>
 
-            <Grid className="lowerButtons">
-                <React.Fragment>
-                    <Button variant="contained" disabled={!this.state.isMainUserTurn} onClick={this.handleClickOpenCard}>Seleccionar atributo</Button>
-                    <SimpleCardDialog card={this.state.cardReceived} selectedValue={this.state.attribute} open={this.state.openCard} onClose={this.handleCloseCard} />
-                </React.Fragment>
-                <Button variant="contained" onClick={this.handleOnClickAbandon}>Abandonar</Button>
-            </Grid>
 
             {this.state.openResult ?
                 <SimpleResultDialog tie={this.state.movementResult.winner_id === "TIE"}

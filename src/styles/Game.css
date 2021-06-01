@@ -100,3 +100,10 @@ body {
 .maxWidth200 {
         max-width: 200px;
 }
+
+.player-info-centered {
+        display: flex;
+        place-content: center;
+        margin: 16px;
+        text-align: -webkit-center;
+}
