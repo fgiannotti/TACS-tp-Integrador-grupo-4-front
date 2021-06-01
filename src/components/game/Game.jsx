@@ -144,6 +144,11 @@ class Game extends React.Component {
         this.setState({openMatchResult: false, redirectToHome:true});
     }
 
+    handleOnClickAbandon = () => {
+        console.log("click abandon")
+        ManagementSocket.sendMessage("ABANDON:" + this.state.loggedUserId)
+        this.setState({redirectToHome:true})
+    }
     render() {
         if (this.state.redirectToHome) return (<Redirect to={"/"}/>)
         return (
@@ -175,7 +180,7 @@ class Game extends React.Component {
                     <Button variant="contained" disabled={!this.state.isMainUserTurn} onClick={this.handleClickOpenCard}>Seleccionar atributo</Button>
                     <SimpleCardDialog card={this.state.cardReceived} selectedValue={this.state.attribute} open={this.state.openCard} onClose={this.handleCloseCard} />
                 </React.Fragment>
-                <Button variant="contained" >Abandonar</Button>
+                <Button variant="contained" onClick={this.handleOnClickAbandon}>Abandonar</Button>
             </Grid>
 
             {this.state.openResult ?
