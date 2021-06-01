@@ -12,6 +12,7 @@ import DeckNameAndSave from './DeckNameAndSave';
 import CardGrid from '../cards/CardGrid';
 import {Redirect} from "react-router-dom";
 import Loader from "../utils/Loader";
+import Header from '../Header';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -148,6 +149,7 @@ class DeckBuilder extends React.Component {
         }
         return (
             <React.Fragment>
+                <Header />
                 <div className='flex-row-center'>
                     <div className='search-container'>
                         <CardSearch onClickBuilder={this.addSelectedHero}/>
