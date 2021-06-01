@@ -11,6 +11,7 @@ import SuperfriendsBackendClient from "../../SuperfriendsBackendClient";
 import DeckNameAndSave from './DeckNameAndSave';
 import CardGrid from '../cards/CardGrid';
 import {Redirect} from "react-router-dom";
+import Loader from "../utils/Loader";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -32,7 +33,8 @@ class DeckBuilder extends React.Component {
             saveDeckAlert: false,
             deckName: '',
             isSaved: isSaved,
-            selectedHeroList: []
+            selectedHeroList: [],
+            isLoading: true
         }
 
         this.changeDeckNameIsValid = this.changeDeckNameIsValid.bind(this);
@@ -60,7 +62,7 @@ class DeckBuilder extends React.Component {
             console.log(heroList)
         }
 
-        this.setState({deckId: deckId, deckName: deckName, selectedHeroList: heroList})
+        this.setState({deckId: deckId, deckName: deckName, deckNameIsValid: deckName !== '', selectedHeroList: heroList, isLoading:false})
     }
 
     changeDeckNameIsValid = (booleanValue) => {
@@ -155,7 +157,11 @@ class DeckBuilder extends React.Component {
                                          deckName={this.state.deckName} changeDeckName={this.changeDeckName}
                                          saveDeckAction={this.showSaveDeckAlert}/>
                         <div className='p2' style={{paddingTop: '0'}}>
-                            <CardGrid cards={this.state.selectedHeroList} onClickBuilder={this.removeSelectedHero}/>
+
+                            {this.state.isLoading ? 
+                                <Loader/> : 
+                                <CardGrid cards={this.state.selectedHeroList} onClickBuilder={this.removeSelectedHero}/>
+                            }
                         </div>
                     </div>
                 </div>

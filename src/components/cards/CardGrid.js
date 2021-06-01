@@ -15,7 +15,6 @@ export default class CardGrid extends React.Component{
         },
     }));
     render() {
-        console.log(this.props.cards)
         return(
            <Grid container spacing={3}>
             {this.props.cards.length > 1 ? this.props.cards.map((card, i) => (
