@@ -6,7 +6,11 @@ body {
     display: flex;
     justify-content: center;
 }
-
+.center{
+    display: flex;
+    justify-content: center;
+    max-width: 200px;
+}
 .flex-evenly {
     display: flex;
     justify-content: space-evenly;

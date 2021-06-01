@@ -8,6 +8,7 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import SuperfriendsBackendClient from "../SuperfriendsBackendClient";
 import Loader from "./utils/Loader";
 import Button from "@material-ui/core/Button";
+import {Redirect} from "react-router";
 
 class MyMatches extends Component {
     constructor(props) {
@@ -16,12 +17,15 @@ class MyMatches extends Component {
             matches: [],
             isLoading: true,
             open: false,
-            matchInfo: {movements:[]}
+            matchInfo: {movements: []},
+            redirectToLobby: false,
+            loggedUser: this.props.cookies.get('GOOGLEID')
         }
+        this.refreshMyMatches()
     }
     backendClient = new SuperfriendsBackendClient()
 
-    componentDidMount() {
+    refreshMyMatches()  {
         this.backendClient.getMatchesOfUser(this.props.loggedUser)
             .then((response) => this.setState({
                 matches: response,
@@ -31,8 +35,7 @@ class MyMatches extends Component {
 
     handleOpen = (matchId) => {
         this.backendClient.getMatchById(matchId).then(response => {
-                console.log(response)
-                let isUserMatchCreator = response.match_creator.user_id === this.props.cookies.get('GOOGLEID')
+                let isUserMatchCreator = response.match_creator.user_id === this.state.loggedUser
                 this.setState({open: true, matchInfo: response, isUserMatchCreator: isUserMatchCreator});
             }
         )
@@ -42,8 +45,23 @@ class MyMatches extends Component {
         this.setState({ open: false });
     };
 
+    getCardName(cardId) {
+        return this.state.matchInfo.deck.cards.find(c => c.id === cardId).name
+    }
+
+    continueMatch = (match) => {
+        let opponent = match.match_creator.user_id === this.state.loggedUser ? match.challenged_player.user_id : match.match_creator.user_id
+        this.backendClient.inviteOpponentToContinueMatch(match.id, opponent)
+            .then((_ =>
+                    this.setState({
+                        redirectToLobby: true,
+                        matchIdToContinue: match.id
+                    })
+            ))
+    }
 
     render() {
+        if (this.state.redirectToLobby) return <Redirect to={"/lobby?matchId=" + this.state.matchIdToContinue} />
         return (
             <React.Fragment>
                 <Header />
@@ -61,14 +79,6 @@ class MyMatches extends Component {
                                 ))}
                             </ListItem>
                             <Divider/>
-                            {/*} movements: Array(2)
-                                    0:
-                                    attribute_name: "STRENGTH"
-                                    creator_card_id: 2
-                                    id: 0
-                                    opponent_card_id: 4
-                                winner_card_id: 4*
-                                */}
                             
                             {this.state.matchInfo.movements.sort((a,b) => a.id - b.id).map((movement, i) => (
                                 <React.Fragment key={i}>
@@ -76,14 +86,13 @@ class MyMatches extends Component {
                                         <ListItemText style={{width: '25%'}} primary={i++}/>
 
                                         <div style={{width: '25%',display:'flex', alignItems: 'center'}}>
-                                            <ListItemText primary={this.state.isUserMatchCreator ? movement.creator_card_id : movement.opponent_card_id} />
-                                            {movement.winner_card_id === movement.creator_card_id ? <CheckCircleIcon style={{fontSize: 'small'}} /> : null}
-                                            
+                                            <ListItemText primary={this.state.isUserMatchCreator ? this.getCardName(movement.creator_card_id) : this.getCardName(movement.opponent_card_id)} />
+                                            {movement.winner_id_or_tie === this.props.loggedUser ? <CheckCircleIcon style={{fontSize: 'small'}} /> : <React.Fragment />}
                                         </div>
 
                                         <div style={{width: '25%',display:'flex', alignItems: 'center'}}>
-                                            <ListItemText  primary={this.state.isUserMatchCreator ? movement.opponent_card_id : movement.creator_card_id} />
-                                            {movement.winner_card_id === movement.opponent_card_id ? <CheckCircleIcon style={{fontSize: 'small'}} /> : null }
+                                            <ListItemText  primary={this.state.isUserMatchCreator ? this.getCardName(movement.opponent_card_id) : this.getCardName(movement.creator_card_id)} />
+                                            {movement.winner_id_or_tie !== 'TIE' && movement.winner_id_or_tie !== this.props.loggedUser ? <CheckCircleIcon style={{fontSize: 'small'}} /> : <React.Fragment /> }
                                         </div>
 
                                         <ListItemText style={{width: '25%'}} primary={movement.attribute_name === "STRENGTH" ? "Fuerza" 
@@ -127,7 +136,7 @@ class MyMatches extends Component {
                                         <ListItemText style={{width: '25%'}} primary={match.deck_db_dto.name}/>
                                         <ListItemText style={{width: '25%'}} >
                                             {match.status === "PAUSED" ?
-                                            <Button variant="contained" color={"secondary"}>Continuar</Button>
+                                            <Button variant="contained" color={"secondary"} onClick={() => this.continueMatch(match)}>Continuar</Button>
                                             : (match.status === "FINISHED") ? "TERMINADO"
                                             : (match.status === "CREATED") ? "CREADO"
                                             : (match.status === "CANCELED") ? "CANCELADO"

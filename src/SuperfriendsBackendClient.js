@@ -15,10 +15,9 @@ class SuperfriendsBackendClient {
     }
 
 
-    getHerosByCardIds = async (cardIds) => {
+    getHeroesByCardIds = async (cardIds) => {
         const promises = cardIds.map(cardId => this.getCardById(cardId));
         const cards = await Promise.all(promises);
-
         return cards.filter(card => card);
     }
 
@@ -70,6 +69,12 @@ class SuperfriendsBackendClient {
 
     getMatchById = (matchId) => {
         return axios.get(this.backendUrl + "/matches/" + matchId)
+            .then((response) => response.data)
+            .catch((error) => console.log(error))
+    }
+
+    inviteOpponentToContinueMatch = (matchId, opponentId) => {
+        return axios.get(this.backendUrl + "/invite/"+ matchId + "/" + opponentId)
             .then((response) => response.data)
             .catch((error) => console.log(error))
     }

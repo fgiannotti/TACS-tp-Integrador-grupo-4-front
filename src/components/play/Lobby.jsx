@@ -7,7 +7,7 @@ import SuperfriendsBackendClient from "../../SuperfriendsBackendClient";
 import {Button} from "@material-ui/core";
 import GreenCheck from "../utils/GreenCheck";
 import {Redirect} from "react-router";
-
+import ManagementSocket from "../management_socket/ManagementSocket";
 class Lobby extends React.Component {
     constructor(props) {
         super(props);
@@ -17,72 +17,64 @@ class Lobby extends React.Component {
         this.state = {
             matchId: matchId,
             bothUsersInLobby: false,
-            redirectToMatch: false,
+            redirectToGame: false,
             opponentReady: false,
             ready: false
         }
     }
-
-    socket;
+    componentDidMount() {
+        const urlParams = new URLSearchParams(window.location.search);
+        ManagementSocket.setUser(this.props.cookies.get('GOOGLEID'))
+        ManagementSocket.matchId = urlParams.get('matchId')
+        ManagementSocket.subscribeObserver(this)
+        ManagementSocket.createConnection()
+    }
 
     sendReadyToServer = () => {
         this.setState({
             ready: true
         })
-        this.socket.send("READY:"+ this.props.loggedUser)
+        ManagementSocket.sendMessage("READY:"+ this.props.loggedUser)
     }
 
     backendClient = new SuperfriendsBackendClient()
 
-    keepAlive = (socket) => {
-        socket.send(new Uint8Array([1]))
-        setTimeout(() => this.keepAlive(socket), 50000)
-    }
+    receiveMessage(message){
+        if (message.data.includes("IN_LOBBY")){
+            //IN_LOBBY:USERID1:USERID2
+            const msg = message.data.split(":")
+            const userId1 = msg[1]
+            const userId2 = msg[2]
+            const myId = this.props.cookies.get('GOOGLEID')
 
-    componentDidMount() {
-        this.socket = new WebSocket("ws://localhost:9000/join-match/"+ this.state.matchId + "?userId=" + this.props.loggedUser);
-
-        this.socket.onopen = () => {
-            //send keep alive binary message
-            this.keepAlive(this.socket)
+            let opponentId = myId !== userId1 ? userId1 : userId2
+            this.backendClient.getPlayerById(opponentId).then((opponentData) => {
+                    this.setState({
+                        opponentId: opponentId,
+                        bothUsersInLobby: true,
+                        opponentImage: opponentData.image_url,
+                        opponentUserName: opponentData.user_name
+                    })
+                }
+            )
         }
 
-        this.socket.onmessage = (event) => {
-            console.log(event.data)
-            if (event.data.includes("IN_LOBBY")) {
-                //IN_LOBBY:USERID1:USERID2
-                const msg = event.data.split(":")
-                const userId1 = msg[1]
-                const userId2 = msg[2]
-                const myId = this.props.cookies.get('GOOGLEID')
+        if (message.data === "OPPONENT_READY") {
+            this.setState({opponentReady: true})
+        }
 
-                let opponentId = myId !== userId1 ? userId1 : userId2
-                this.backendClient.getPlayerById(opponentId).then((opponentData) => {
-                        this.setState({
-                            opponentId: opponentId,
-                            bothUsersInLobby: true,
-                            opponentImage: opponentData.image_url,
-                            opponentUserName: opponentData.user_name
-                        })
-                    }
-                )
-            }
+        if (message.data === "ALL_READY") {
+            this.setState({redirectToGame: true})
+            setTimeout(
+                () => this.setState({
 
-            if (event.data === "OPPONENT_READY") {
-                this.setState({opponentReady: true})
-            }
-
-            if (event.data === "ALL_READY") {
-                setTimeout(
-                    () => this.setState({
-                        redirectToMatch: true
-                    }), 2000)
-            }
+                    redirectToMatch: true
+                }), 2000)
         }
     }
 
     render() {
-        if (this.state.redirectToMatch) return <Redirect to="/"/>
+        if (this.state.redirectToGame) return <Redirect to={"/game"} />
         return (
             <React.Fragment>
                 <Header/>

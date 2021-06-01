@@ -11,6 +11,8 @@ import SuperfriendsBackendClient from "../../SuperfriendsBackendClient";
 import DeckNameAndSave from './DeckNameAndSave';
 import CardGrid from '../cards/CardGrid';
 import {Redirect} from "react-router-dom";
+import Loader from "../utils/Loader";
+import Header from '../Header';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -32,7 +34,8 @@ class DeckBuilder extends React.Component {
             saveDeckAlert: false,
             deckName: '',
             isSaved: isSaved,
-            selectedHeroList: []
+            selectedHeroList: [],
+            isLoading: true
         }
 
         this.changeDeckNameIsValid = this.changeDeckNameIsValid.bind(this);
@@ -55,11 +58,12 @@ class DeckBuilder extends React.Component {
 
         let heroList = []
         if (cardIds.length > 0) {
-            heroList = await deckClient.getHerosByCardIds(cardIds);
+            heroList = await deckClient.getHeroesByCardIds(cardIds);
+            console.log("heroList:")
             console.log(heroList)
         }
 
-        this.setState({deckId: deckId, deckName: deckName, selectedHeroList: heroList})
+        this.setState({deckId: deckId, deckName: deckName, deckNameIsValid: deckName !== '', selectedHeroList: heroList, isLoading:false})
     }
 
     changeDeckNameIsValid = (booleanValue) => {
@@ -94,7 +98,6 @@ class DeckBuilder extends React.Component {
     saveDeck = () => {
         this.setSaveDeckAlert(false);
 
-        //HACER LA PARTE DE GUARDAR LOS IDS DEL MAZO EN ALGUN LADO CON EL NOMBRE
         const deckId = this.state.deckId
         const deckName = this.state.deckName
         const cardIds = this.state.selectedHeroList.map(hero => hero["id"])
@@ -146,6 +149,7 @@ class DeckBuilder extends React.Component {
         }
         return (
             <React.Fragment>
+                <Header />
                 <div className='flex-row-center'>
                     <div className='search-container'>
                         <CardSearch onClickBuilder={this.addSelectedHero}/>
@@ -155,7 +159,11 @@ class DeckBuilder extends React.Component {
                                          deckName={this.state.deckName} changeDeckName={this.changeDeckName}
                                          saveDeckAction={this.showSaveDeckAlert}/>
                         <div className='p2' style={{paddingTop: '0'}}>
-                            <CardGrid cards={this.state.selectedHeroList} onClickBuilder={this.removeSelectedHero}/>
+
+                            {this.state.isLoading ? 
+                                <Loader/> : 
+                                <CardGrid cards={this.state.selectedHeroList} onClickBuilder={this.removeSelectedHero}/>
+                            }
                         </div>
                     </div>
                 </div>

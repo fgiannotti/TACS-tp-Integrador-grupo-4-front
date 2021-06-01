@@ -14,9 +14,10 @@ export default class CardSearchBar extends react.Component{
     render() {
     return (
         <SearchBar
-        value={this.state.value}
-        onChange={(newValue) => this.setState({ value: newValue })}
-        onRequestSearch={() => this.props.onRequestSearch(this.state.value)}
+            style={{color:'gray !important'}}
+            value={this.state.value}
+            onChange={(newValue) => this.setState({ value: newValue })}
+            onRequestSearch={() => this.props.onRequestSearch(this.state.value)}
         />
         );
 }
