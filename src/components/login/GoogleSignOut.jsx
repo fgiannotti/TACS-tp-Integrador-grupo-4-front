@@ -9,19 +9,22 @@ class GoogleSignOut extends React.Component {
     render() {
         return (
         <GoogleLogout
-        clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
+        clientId='1058494963753-drauquf06tsu1jnbl7k13ptrp98s323d.apps.googleusercontent.com'
         buttonText="Logout"
         onLogoutSuccess={this.logout}
-        onScriptLoadFailure={this.logout}
-        onFailure={this.logout}
+        onScriptLoadFailure={this.fail}
+        onFailure={this.fail}
         />
       )
     }
 
     logout = (response) => {
         console.log(response);
-        localStorage.clear();
         window.location.href='/login'
+    }
+    
+    fail = (event) => {
+        console.log(event)
     }
 }
 

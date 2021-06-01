@@ -3,10 +3,9 @@ import axios from "axios";
 class SuperfriendsBackendClient {
     backendUrl = "http://localhost:9000"
 
-    postLogin = (userInfoDTO) => {
-        return axios.post(this.backendUrl + "/login", userInfoDTO)
-            .then((response) => response.data)
-            .catch((e) => console.log("Error fetching user information in login: " + e))
+    postLogin = async (userInfoDTO) => {
+        let response = await axios.post(this.backendUrl + "/login", userInfoDTO)
+        return response.data
     }
 
     getCardById = async (id) => {
@@ -16,10 +15,9 @@ class SuperfriendsBackendClient {
     }
 
 
-    getHerosByCardIds = async (cardIds) => {
+    getHeroesByCardIds = async (cardIds) => {
         const promises = cardIds.map(cardId => this.getCardById(cardId));
         const cards = await Promise.all(promises);
-
         return cards.filter(card => card);
     }
 
@@ -50,6 +48,36 @@ class SuperfriendsBackendClient {
             .catch((e) => console.log("Error deleting deck with id :" + deckId + "   " + e))
     }
 
+    createMatch = (matchCreationDTO) => {
+        return axios.post(this.backendUrl + "/matches", matchCreationDTO)
+            .then((response) => response.data)
+            .catch((error) => console.log(error))
+
+    }
+
+    getPlayerById = (userId) => {
+        return axios.get(this.backendUrl + "/players/" + userId)
+            .then((response) => response.data)
+            .catch((error) => console.log(error))
+    }
+
+    getMatchesOfUser = (userId) => {
+        return axios.get(this.backendUrl + "/matches?user_id=" + userId)
+            .then((response) => response.data)
+            .catch((error) => console.log(error))
+    }
+
+    getMatchById = (matchId) => {
+        return axios.get(this.backendUrl + "/matches/" + matchId)
+            .then((response) => response.data)
+            .catch((error) => console.log(error))
+    }
+
+    inviteOpponentToContinueMatch = (matchId, opponentId) => {
+        return axios.get(this.backendUrl + "/invite/"+ matchId + "/" + opponentId)
+            .then((response) => response.data)
+            .catch((error) => console.log(error))
+    }
 }
 
 export default SuperfriendsBackendClient;

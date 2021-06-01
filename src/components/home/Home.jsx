@@ -1,62 +1,118 @@
-import { Card, Typography } from '@material-ui/core';
 import React from 'react';
 import '../../styles/Home.css';
-import Header from  '../home/Header';
-import CardImage from './cardExample.png'
+import Header from '../Header';
+import { withCookies } from "react-cookie";
+import CreateMatchScreen from "../play/CreateMatchScreen";
+import Batman from "../../resources/images/batman.png"
+import SuperfriendsBackendClient from "../../SuperfriendsBackendClient";
+import '../../styles/CommonStyles.css'
+import HomeTitle from './Title';
+import Invitation from './Invitation';
 
 class Home extends React.Component {
+    constructor(props) {
+        super(props);
 
-    componentDidMount(){
-        document.body.style.backgroundColor = '#ffcc80'
+        this.state = {
+            decks: [],
+            connectedUsers: [],
+            invitation: {userInvited:"0",matchId:"0"},
+        }
+
+        console.log(this.state);
+    }
+
+    componentDidMount() {
+        this.connectToBackendWithSockets(this.props.cookies.get('GOOGLEID'))
+        this.backendClient.getDecks().then((decks) => this.setState({decks: decks}))
+    }
+
+
+    backendClient = new SuperfriendsBackendClient()
+
+    keepAlive = (socket) => {
+        socket.send(new Uint8Array([1]))
+        setTimeout(() => this.keepAlive(socket), 50000)
+    }
+
+    connectToBackendWithSockets = (googleId) => {
+        let socket = new WebSocket("ws://localhost:9000/home?userId=" + googleId);
+        socket.onopen = () => {
+            //send keep alive binary message
+            this.keepAlive(socket)
+        }
+
+        socket.onmessage = (event) => {
+            //INVITE:PLAYERID:MATCHID
+            let inviteMsgType = "INVITE:"
+            //localeCompare returns 0 if are equals
+            let isInviteMsgType = event.data.includes(inviteMsgType)
+            switch (isInviteMsgType){
+                case true:
+                    const invitation = event.data.split(":")
+                    this.setState({
+                        invitation: {
+                            userInvited: invitation[1],
+                            matchId:     invitation[2]
+                        }
+                    })
+                    break
+
+                default:
+                    let connectedUsers = []
+                    try {
+                        connectedUsers = JSON.parse(event.data)
+                        connectedUsers = connectedUsers.map(userString => JSON.parse(userString))
+                    }catch(err) {
+                        console.log(err)
+                    }
+
+                    this.setState({connectedUsers: connectedUsers})
+            }
+
+        }
+
+        socket.onclose = (event) => {
+            if(event.wasClean) {
+                console.log("EVENT WAS CLOSED CLEANLY")
+            } else {
+                console.log("CLOSED CONNECTION CODE IS " + event.code)
+            }
+        }
+        socket.onerror = (ev => console.log("socket on error code: "+ ev.code))
     }
 
     render() {
         return (
-            <div>
+            <React.Fragment>
               <Header/>
-
-              <div style={{display:'flex',margin:'16px', placeContent: 'center'}}>
-                <Card style={{ padding: '4px',backgroundColor: '#ffbe5c'}}>
-
-                    <Typography variant="h3" component="h3">
-                        Superamigos
-                    </Typography>
-                </Card>
-              </div>
-
-            <Typography align={'left'} className="bodyText" component="p" paragraph={true} style={{padding:'32px',fontWeight: 'bold'}}>
-                ¿Cómo jugar?
-            </Typography>
-            <div style={{width: '80%'}}>
-                <Typography align={'justify'} className="bodyText" component="p" paragraph={true} style={{paddingLeft:'32px'}}>
-
-                    La partida se desarrolla entre 2 jugadores en modalidad uno contra uno.
-                    <br/>Se toma la baraja, se mezcla y se reparten en cantidades iguales a cada jugador quedando las cartas boca abajo.
-                    <br/>Se lanza una moneda para decidir que jugador será el primero en jugar.
-                    <br/>
-                    <br/>Cada jugador toma la carta de arriba sin mostrarla al adversario, al enfrentamiento entre las 2 cartas se lo llamará duelo. 
-                    <br/>A continuación el jugador que tenga el turno seleccionará un atributo con el que ambas cartas competirán. 
-                    <br/>Ambos jugadores cantarán el valor de su carta para ese atributo y el ganador se llevará ambas cartas. 
-                    <br/>En caso de empate cada uno se llevará su carta. 
-                    Las cartas ganadas se colocarán en el mazo de premios.
-                </Typography>
-
-                <Typography align={'left'} className="bodyText" component="p" paragraph={true} style={{padding:'32px',fontWeight: 'bold'}}>
-                    Fin de la partida
-                </Typography>
-
-                <Typography align={'justify'} className="bodyText"  component="p" paragraph={true} style={{paddingLeft:'32px'}}>
-
-                    Al finalizar las cartas de ambos mazos se preocederá al conteo de cartas ganadas. 
-                    <br/>El jugador que tenga más cartas ganadas será declarado ganador. 
-                    <br/>En caso de que los dos participantes tengan una cantidad igual de cartas se declarará el empate.
-                </Typography>
-            </div>
-            <img src={CardImage} alt='card' width={'20%'}/>
-              {this.props.isAdmin ? console.log("admin"): <React.Fragment/>}
-            </div>
+                <HomeTitle/>
+                {this.state.invitation.userInvited === this.props.cookies.get('GOOGLEID') ? <Invitation invitation={this.state.invitation}/> : <React.Fragment/>}
+                <div className='flex-evenly'>
+                    <img src={Batman} style={{maxHeight:'250px',alignSelf:'center'}}  alt={'Batman'}/>
+                    <CreateMatchScreen decks={this.state.decks} connectedUsers={this.state.connectedUsers} userId={this.props.cookies.get('GOOGLEID')}/>
+                    <img src={Batman} style={{maxHeight:'250px',alignSelf:'center'}}  alt={'Batman'}/>
+                </div>
+            </React.Fragment>
         )
     }
 
+
 }
-export default Home;
+export default withCookies(Home);
+
+/* In case we need to persist connected users in local storage to have them in multiple windows....
+    getUsersFromLocalStorage = () => {
+        let connectedUsers = [{user_name:this.props.cookies.get('USERNAME'),user_id:this.props.cookies.get('GOOGLEID')}]
+        
+        let connectedUsersStr = localStorage.getItem('connectedUsers')
+        if (connectedUsersStr !== null){
+            try {
+                connectedUsers = JSON.parse(connectedUsersStr)
+            }catch(e){
+                console.log(e)
+            }
+        }
+        return connectedUsers
+    }
+*/

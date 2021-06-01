@@ -1,0 +1,109 @@
+body {
+        background-color:#ffcc80;
+}
+
+.root {
+        padding: 10px;
+        justify-content: center;
+        justify-self: center;
+}
+
+.roots{
+        max-width: 200px;
+        justify-self: center;
+        text-align: center;
+        padding: 4px
+}
+.media {
+        height: 150px;
+        padding-top: 56.25%;
+        text-align: center;
+        justify-self: center;
+}
+
+.users {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        justify-self: center;
+        content: "center";
+}
+
+.deck {
+        padding:10px;
+        justify-content: center;
+        justify-self: center
+}
+.dialog {
+        display: flex;
+        height:500px;
+        width: 300px;
+}
+.icon {
+        height: 50%;
+        width: 50%;
+        max-height: 65px;
+        background:#CACFD2
+}
+.botones {
+        max-height:500px;
+        width: 30px;
+        justify-content: stretch;
+        justify-items: stretch;
+}
+
+.buttonGroup {
+        max-width:25px;
+        max-height:450px;
+}
+
+
+.image {
+        height: 50%;
+        width: 50%;
+        max-height:65px;
+}
+.imageFocus {
+        height:50%;
+        width: 50%;
+        max-height:65px;
+        background:#229954;
+}
+.mainUserResult {
+        padding:15px;
+        padding-right:75px;
+}
+
+
+.center{
+        display: flex;
+        justify-content: center;
+}
+.result-card{
+        margin-left:32px;
+        display:flex;
+        justify-content:center;
+}
+
+.p1 {
+        padding:16px
+}
+
+.lowerButtons {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 16px;
+        margin-bottom: 16px;
+}
+
+.maxWidth200 {
+        max-width: 200px;
+}
+
+.player-info-centered {
+        display: flex;
+        place-content: center;
+        margin: 16px;
+        text-align: -webkit-center;
+}

@@ -10,7 +10,7 @@ import {
 import { Home } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
-import GoogleSignOut from "../login/GoogleSignOut";
+import GoogleSignOut from "./login/GoogleSignOut";
 
 const useStyles = makeStyles({
   navDisplayFlex: {
@@ -34,7 +34,6 @@ const useStyles = makeStyles({
 
 const navLinks = [
   { title: `mazos`, path: `/decks` },
-  { title: `jugar`, path: `/play` },
   { title: `partidas`, path: `/matches` },
   { title: `faq`, path: `/faq` }
 ];

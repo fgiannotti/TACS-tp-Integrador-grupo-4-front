@@ -3,5 +3,19 @@ body {
 }
 .bodyText {
     text-align: justify;
-    text-justify: inter-word;
+    display: flex;
+    justify-content: center;
+}
+.center{
+    display: flex;
+    justify-content: center;
+    max-width: 200px;
+}
+.flex-evenly {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.m2 {
+    margin: 16px;
 }

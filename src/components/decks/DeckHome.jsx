@@ -2,7 +2,7 @@ import React from "react";
 import List from '@material-ui/core/List';
 import {Divider, ListItem, ListItemText, Paper} from "@material-ui/core";
 import SuperfriendsBackendClient from "../../SuperfriendsBackendClient";
-import Header from '../home/Header';
+import Header from '../Header';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
@@ -32,13 +32,10 @@ class DeckHome extends React.Component {
     }
 
     onClickView = (deck) => {
-        console.log(deck);
-        //todo: saltar a la vista del builder con este deck como prop
         window.location.href = "/deck-builder?deckId=" + deck.id + "&deckName=" + deck.name + "&isSaved=true&cardIds=" + deck.card_ids.join(",");
     }
 
     onClickAdd = () => {
-        console.log();
         window.location.href = "/deck-builder"
     }
 
@@ -74,7 +71,7 @@ class DeckHome extends React.Component {
                             : <React.Fragment/>}
                     </div>
                     <div>
-                        <Paper className="container">
+                        <Paper className="container" style={{minWidth: '50%'}}>
                             <List component="nav" aria-label="main mailbox folders">
                                 {this.state.decks.map((deck, i) => (
                                     <React.Fragment key={i}>

@@ -1,49 +1,46 @@
 import React from 'react';
-import {makeStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
-
 import AttributeGrid from './AttributeGrid'
 
-var useStyles = makeStyles({
-    root: {
-        maxWidth: 200,
-        marginTop: 10,
-    },
-    media: {
-        height: 150,
-        paddingTop: "56.25%",
-    },
-    content: {
-        padding: "5%",
-    },
-});
-
 class HeroCard extends React.Component {
+    styles = {
+        root: {
+            maxWidth: '200px',
+            maxHeight:'400px',
+        },
+        media: {
+            height: '150px',
+            backgroundPosition:'top',
+        },
+        content: {
+            padding: "5%",
+        },
+    }
 
     onClickCard = () => {
         if (this.props.onClickBuilder) {
-            this.props.onClickBuilder(this.props.data)
+            this.props.onClickBuilder(this.props.card)
         }
     }
 
     render() {
         return (
-            <Card className={this.props.style.root} onClick={this.onClickCard}>
+            <Card style={this.styles.root} onClick={this.onClickCard}>
                 <CardActionArea>
                     <CardMedia
-                        className={this.props.style.media}
-                        image={this.props.data["image_url"]}
-                        title={this.props.data["name"]}
+                        style={this.styles.media}
+                        image={this.props.card.image_url}
+                        title={this.props.card.name}
                     />
-                    <CardContent className={this.props.style.content}>
+                    <CardContent style={this.styles.content}>
                         <Typography gutterBottom variant="h6" component="h2">
-                            {this.props.data["name"]}
+                            {this.props.card["name"]}
                         </Typography>
-                        <AttributeGrid data={this.props.data["power_stats"]}/>
+                        <AttributeGrid powerStats={this.props.card.power_stats}/>
                     </CardContent>
                 </CardActionArea>
             </Card>);
@@ -51,6 +48,5 @@ class HeroCard extends React.Component {
 }
 
 export default function MediaCard(props) {
-    const classes = useStyles();
-    return (<HeroCard style={classes} data={props.data} onClickBuilder={props.onClickBuilder}/>);
+    return (<HeroCard card={props.card} onClickBuilder={props.onClickBuilder}/>);
 }
