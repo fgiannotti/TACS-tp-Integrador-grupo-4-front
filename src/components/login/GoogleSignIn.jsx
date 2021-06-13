@@ -8,7 +8,8 @@ class GoogleSignIn extends React.Component {
 
     superfriendsBackendClient = new SuperfriendsBackendClient()
 
-    fail =  () => {
+    fail =  (e) => {
+        console.log(e);
         alert("Auth failed with google")
     }
     

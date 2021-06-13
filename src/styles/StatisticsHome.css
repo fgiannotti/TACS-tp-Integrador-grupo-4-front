@@ -43,7 +43,7 @@ td {
 th {
     position: sticky;
     top: 0;
-    background: #6c7ae0;
+    background: #3a36a0;
     text-align: center;
     font-weight: normal;
     font-size: 1.1rem;
@@ -70,6 +70,13 @@ th:last-child {
 .header--being-resized .resize-handle {
     opacity: 0.5;
 }
+
+.match-list {
+    display: flex;
+    justify-content: space-between;
+    margin: 2px;
+}
+
 .two-column-grid-equal {
     display: grid;
     grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.5fr);

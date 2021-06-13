@@ -1,6 +1,6 @@
 import React from 'react'
 
-class Faq extends React.Component {
+class Ranking extends React.Component {
 
     render() {
         return (
@@ -32,10 +32,40 @@ class Faq extends React.Component {
                     <td>10</td>
                     <td>90% (9)</td>
                 </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Eveleen</td>
+                    <td>10</td>
+                    <td>90% (9)</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>Eveleen</td>
+                    <td>10</td>
+                    <td>90% (9)</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>Eveleen</td>
+                    <td>10</td>
+                    <td>90% (9)</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>Eveleen</td>
+                    <td>10</td>
+                    <td>90% (9)</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>Eveleen</td>
+                    <td>10</td>
+                    <td>90% (9)</td>
+                </tr>
                 </tbody>
             </table>
         );
     }
 }
 
-export default Faq;
+export default Ranking;
