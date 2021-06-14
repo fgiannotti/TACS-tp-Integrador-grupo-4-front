@@ -78,6 +78,28 @@ class SuperfriendsBackendClient {
             .then((response) => response.data)
             .catch((error) => console.log(error))
     }
+
+    getRanking = () => {
+        return axios.get(this.backendUrl + "/statistics/rankings")
+            .then((response) => response.data)
+            .catch((error) => console.log(error))
+    }
+    getStatistics = () => {
+        return axios.get(this.backendUrl + "/statistics")
+            .then((response) => response.data)
+            .catch((error) => console.log(error))
+    }
+    getStatisticsUserId = (userId) => {
+        return axios.get(this.backendUrl + "/statistics?userId="+userId)
+            .then((response) => response.data)
+            .catch((error) => console.log(error))
+    }
+
+    getStatisticsUserIdWithDates = (userId, from, until) => {
+        return axios.get(this.backendUrl + "/statistics?userId="+userId)
+            .then((response) => response.data)
+            .catch((error) => console.log(error))
+    }
 }
 
 export default SuperfriendsBackendClient;

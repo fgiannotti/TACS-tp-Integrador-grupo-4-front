@@ -14,7 +14,7 @@ class DateInput extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            selectedDate: new Date('2014-08-18T21:11:54')
+            selectedDate: this.props.date
         }
     }
 
