@@ -3,6 +3,7 @@ import '../../styles/CommonStyles.css'
 import React from "react";
 import {withCookies} from 'react-cookie';
 import SuperfriendsBackendClient from '../../SuperfriendsBackendClient'
+import {decodeToken, useJwt} from "react-jwt";
 
 class GoogleSignIn extends React.Component {
 
@@ -24,9 +25,8 @@ class GoogleSignIn extends React.Component {
         }
 
         const loginResponse = await this.superfriendsBackendClient.postLogin(userInfoDto);
-
-        const {is_authenticated, is_authorized, is_admin} = loginResponse;
-        this.props.handleSignIn(userInfoDto,is_authenticated, is_authorized, is_admin);
+        const data = decodeToken(loginResponse["access_token"]);
+        this.props.handleSignIn(userInfoDto,data["isAuthenticated"], data["isAuthorized"], data["isAdmin"], loginResponse["access_token"]);
     }
 
     render() {

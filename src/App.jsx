@@ -31,7 +31,7 @@ class App extends React.Component {
     }
 
 
-    handleSignIn = (userInfo,isAuthenticated,isAuthorized,isAdmin) => {
+    handleSignIn = (userInfo,isAuthenticated,isAuthorized,isAdmin, jwt_data) => {
         const { cookies } = this.props;
         
         this.setState({
@@ -45,7 +45,7 @@ class App extends React.Component {
             cookies.set('SESSIONID', userInfo.token_id)
             cookies.set('USERNAME', userInfo.name)
             cookies.set('USERIMAGE', userInfo.image_url)
-
+            cookies.set('JWT', jwt_data)
             this.setState({homeRedirect: true, loggedUser: userInfo.google_id})
             ManagementSocket.setUser(userInfo.google_id)
         } else {
