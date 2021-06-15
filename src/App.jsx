@@ -59,7 +59,7 @@ class App extends React.Component {
             <div className="App full-screen">
                 <BrowserRouter history={this.history}>
                   {this.state.homeRedirect ? <Redirect to="/"/> : <React.Fragment/>}
-                  <Route exact path="/cards" component={(StatisticsHome)}/>
+                  <Route exact path="/stats" component={(StatisticsHome)}/>
                   <Route exact path="/login" component={()=> <LoginScreen error={this.state.loginError} handleSignIn={this.handleSignIn}/>}/>
                   <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/"
                                   component={() => <Home userName={this.props.cookies.get('USERNAME')} userId={this.props.cookies.get('GOOGLEID')} isAdmin={this.state.isAdmin}/>}/>

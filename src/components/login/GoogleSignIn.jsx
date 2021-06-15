@@ -14,7 +14,7 @@ class GoogleSignIn extends React.Component {
     }
     
     onLoginSuccess = async (response) => {
-        console.log("google response:"+response);
+        console.log(response);
         const userInfo = response.profileObj;
         const userInfoDto = {
             "name": userInfo.name,
