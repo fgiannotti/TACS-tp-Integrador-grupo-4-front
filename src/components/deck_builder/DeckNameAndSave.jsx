@@ -26,7 +26,6 @@ class DeckNameAndSave extends React.Component {
         let firstUpdate = !prevState.updated
 
         const deckNameExists = this.props.deckName ? true:false;
-
         if (deckNameExists && firstUpdate) {
             console.log("deck name exists")
             this.setState({
