@@ -1,7 +1,6 @@
 import React from 'react'
 import {
     AppBar,
-    FormControl,
     Paper,
     Toolbar
 } from "@material-ui/core";
@@ -10,19 +9,23 @@ import Ranking from "./Ranking";
 import Button from "@material-ui/core/Button";
 import DateInput from "./DateInput";
 import SuperfriendsBackendClient from "../../SuperfriendsBackendClient";
+import {withCookies} from "react-cookie";
 
 class StatisticsHome extends React.Component {
     backClient = new SuperfriendsBackendClient()
+
     constructor(props) {
         super(props);
         this.state = {
             ranking: [],
-            stats: {total:0, in_process:0, finished:0}
+            stats: {total: 0, in_process: 0, finished: 0}
         }
     }
 
     async componentDidMount() {
         let rankingFound = await this.backClient.getRanking()
+        //won_matches, user_id, total_matches
+        rankingFound.sort(this.compareRankings)
         console.log(rankingFound)
         this.setState({
             ranking: rankingFound ? rankingFound : []
@@ -34,6 +37,50 @@ class StatisticsHome extends React.Component {
         this.setState({stats: stats})
     }
 
+    compareRankings( r1, r2 ) {
+        if ( r1.won_matches > r2.won_matches ){
+            return -1;
+        }
+        if ( r1.won_matches < r2.won_matches){
+            return 1;
+        }
+        return 0;
+    }
+
+
+    handleSubmit = (e) => {
+        e.preventDefault()
+        //14/06/2021  -->  2021-06-14
+        let from = this.parseDate(e.target[0].value);
+        let until = this.parseDate(e.target[2].value);
+
+        this.backClient.getStatisticsUserIdWithDates(this.props.cookies.get('GOOGLEID'), from, until).then(
+            r => {
+                this.setState({stats: r})
+            }
+        ).catch(_ => {
+            alert("GET Failed. See console for more logs.")
+            this.setState({stats: {total: 0, in_process: 0, finished: 0}})
+        })
+    }
+
+     handleClickPlayer = async (e) => {
+        let newPlayerStats = await this.backClient.getStatisticsUserId(e.target.id)
+         this.setState({stats:newPlayerStats})
+    }
+    // 14/06/2021 parse to 2021-06-14
+    parseDate(date) {
+        let dateSplitted = date.split("/")
+        let day = dateSplitted[0]
+        let month = dateSplitted[1]
+        let year = dateSplitted[2]
+        return year + "-" + month + "-" + day
+    }
+
+    onClickReset = (e) => {
+        this.setState({stats: {total: 0, in_process: 0, finished: 0}})
+    }
+
     render() {
         return (
             <div>
@@ -43,11 +90,11 @@ class StatisticsHome extends React.Component {
                 <div style={{'padding': '32px'}}/>
                 <div className="two-column-grid-equal">
                     <div>
-                        <Ranking ranking={this.state.ranking}/>
+                        <Ranking handleClickPlayer={this.handleClickPlayer} ranking={this.state.ranking}/>
                     </div>
 
-                    <div style={{"justify-content": "center"}}>
-                        <div style={{"display": "flex", "justify-content": "center"}}>
+                    <div style={{"justifyContent": "center"}}>
+                        <div style={{"display": "flex", "justifyContent": "center"}}>
 
                             <Paper className="container align-items-center flex-column-space-around p1"
                                    style={{
@@ -59,12 +106,15 @@ class StatisticsHome extends React.Component {
                                    }}>
                                 <span className="m1" style={{fontSize: "x-large", fontWeight: "bold"}}> Partidas </span>
                                 <span className="m1"> Estadisticas de partidas por fecha </span>
+                                <form action="/" method="GET" onSubmit={this.handleSubmit}>
 
-                                <DateInput label="Desde" date={ new Date('2014-08-18T21:11:54')}/>
-                                <DateInput label="Hasta" date={ Date.now()}/>
+                                    <DateInput label="Desde" date={new Date('2014-08-18T21:11:54')}/>
+                                    <DateInput label="Hasta" date={Date.now()}/>
 
-                                <Button variant="contained" color="primary" onClick={this.handleSearch}
-                                        style={{margin: '16px', fontWeight: 'bold'}}> Buscar </Button>
+                                    <Button variant="contained" type="submit" color="primary"
+
+                                            style={{margin: '16px', fontWeight: 'bold'}}> Buscar </Button>
+                                </form>
 
                                 <Paper style={{minWidth: '70%', backgroundColor: "lightgray", marginTop: '8px'}}>
                                     <div style={{"display": "grid", "margin": "8px"}}>
@@ -83,17 +133,14 @@ class StatisticsHome extends React.Component {
 
                                     </div>
 
-
-                                    <FormControl fullWidth={true} component="fieldset">
-                                        {/*seleccionar */}
-                                    </FormControl>
                                 </Paper>
 
                             </Paper>
                         </div>
                         <Button variant="contained"
                                 color='secondary'
-                                style={{margin: '16px', fontWeight: 'bold'}}> Reestablecer </Button>
+                                style={{margin: '16px', fontWeight: 'bold'}}
+                                onClick={this.onClickReset}> Reestablecer </Button>
                     </div>
                 </div>
             </div>
@@ -101,4 +148,4 @@ class StatisticsHome extends React.Component {
     }
 }
 
-export default StatisticsHome;
+export default withCookies(StatisticsHome);

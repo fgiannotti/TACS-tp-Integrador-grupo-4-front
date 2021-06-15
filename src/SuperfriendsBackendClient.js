@@ -90,13 +90,13 @@ class SuperfriendsBackendClient {
             .catch((error) => console.log(error))
     }
     getStatisticsUserId = (userId) => {
-        return axios.get(this.backendUrl + "/statistics?userId="+userId)
+        return axios.get(this.backendUrl + "/statistics?user_id="+userId)
             .then((response) => response.data)
             .catch((error) => console.log(error))
     }
 
     getStatisticsUserIdWithDates = (userId, from, until) => {
-        return axios.get(this.backendUrl + "/statistics?userId="+userId)
+        return axios.get(this.backendUrl + "/statistics?user_id="+userId+"&from_date="+from+"&to_date="+until)
             .then((response) => response.data)
             .catch((error) => console.log(error))
     }
