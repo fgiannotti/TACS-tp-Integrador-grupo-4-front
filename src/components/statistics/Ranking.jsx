@@ -27,54 +27,6 @@ class Ranking extends React.Component {
                     </tr>
                 ))
                 }
-                <tr>
-                    <td>1</td>
-                    <td>Lani</td>
-                    <td>60</td>
-                    <td>50% (30)</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Israel</td>
-                    <td>100</td>
-                    <td>25% (25)</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Eveleen</td>
-                    <td>10</td>
-                    <td>90% (9)</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>Eveleen</td>
-                    <td>10</td>
-                    <td>90% (9)</td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>Eveleen</td>
-                    <td>10</td>
-                    <td>90% (9)</td>
-                </tr>
-                <tr>
-                    <td>6</td>
-                    <td>Eveleen</td>
-                    <td>10</td>
-                    <td>90% (9)</td>
-                </tr>
-                <tr>
-                    <td>7</td>
-                    <td>Eveleen</td>
-                    <td>10</td>
-                    <td>90% (9)</td>
-                </tr>
-                <tr>
-                    <td>8</td>
-                    <td>Eveleen</td>
-                    <td>10</td>
-                    <td>90% (9)</td>
-                </tr>
                 </tbody>
             </table>
         );

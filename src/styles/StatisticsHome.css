@@ -37,7 +37,12 @@ td {
     padding: 15px;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    align-self: center;
+    text-align: center;
+    height: 100%;
+    display: flex;
+    place-content: center;
+    align-items: center;
 }
 
 th {
@@ -101,4 +106,9 @@ tr:nth-child(even) td {
 
 tr:nth-child(odd) td {
     background: #e6eaff;
+}
+
+
+td:hover {
+    color: #944c2f;
 }

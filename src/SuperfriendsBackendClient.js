@@ -98,7 +98,10 @@ class SuperfriendsBackendClient {
     getStatisticsUserIdWithDates = (userId, from, until) => {
         return axios.get(this.backendUrl + "/statistics?user_id="+userId+"&from_date="+from+"&to_date="+until)
             .then((response) => response.data)
-            .catch((error) => console.log(error))
+            .catch((error) => {
+                alert("Error doing GET. check logs from console.")
+                console.log(error)
+            })
     }
 }
 

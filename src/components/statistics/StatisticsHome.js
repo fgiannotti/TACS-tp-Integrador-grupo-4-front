@@ -10,15 +10,19 @@ import Button from "@material-ui/core/Button";
 import DateInput from "./DateInput";
 import SuperfriendsBackendClient from "../../SuperfriendsBackendClient";
 import {withCookies} from "react-cookie";
+import Header from "../Header";
 
 class StatisticsHome extends React.Component {
     backClient = new SuperfriendsBackendClient()
+    initialStats =  {total: 0, in_process: 0, finished: 0}
 
     constructor(props) {
         super(props);
         this.state = {
             ranking: [],
-            stats: {total: 0, in_process: 0, finished: 0}
+            stats: this.initialStats,
+            fromInitialDate: new Date('2014-08-18T21:11:54'),
+            toInitialDate: Date.now()
         }
     }
 
@@ -37,11 +41,11 @@ class StatisticsHome extends React.Component {
         this.setState({stats: stats})
     }
 
-    compareRankings( r1, r2 ) {
-        if ( r1.won_matches > r2.won_matches ){
+    compareRankings(r1, r2) {
+        if (r1.won_matches > r2.won_matches) {
             return -1;
         }
-        if ( r1.won_matches < r2.won_matches){
+        if (r1.won_matches < r2.won_matches) {
             return 1;
         }
         return 0;
@@ -56,18 +60,16 @@ class StatisticsHome extends React.Component {
 
         this.backClient.getStatisticsUserIdWithDates(this.props.cookies.get('GOOGLEID'), from, until).then(
             r => {
-                this.setState({stats: r})
+                r ? this.setState({stats: r}) : this.setState(this.initialStats)
             }
-        ).catch(_ => {
-            alert("GET Failed. See console for more logs.")
-            this.setState({stats: {total: 0, in_process: 0, finished: 0}})
-        })
+        )
     }
 
-     handleClickPlayer = async (e) => {
+    handleClickPlayer = async (e) => {
         let newPlayerStats = await this.backClient.getStatisticsUserId(e.target.id)
-         this.setState({stats:newPlayerStats})
+        this.setState({stats: newPlayerStats})
     }
+
     // 14/06/2021 parse to 2021-06-14
     parseDate(date) {
         let dateSplitted = date.split("/")
@@ -78,15 +80,17 @@ class StatisticsHome extends React.Component {
     }
 
     onClickReset = (e) => {
-        this.setState({stats: {total: 0, in_process: 0, finished: 0}})
+        this.setState({
+            stats: this.initialStats,
+        })
+
     }
 
     render() {
+
         return (
             <div>
-                <AppBar position="static" color='secondary'>
-                    <Toolbar/>
-                </AppBar>
+                <Header/>
                 <div style={{'padding': '32px'}}/>
                 <div className="two-column-grid-equal">
                     <div>
@@ -108,8 +112,8 @@ class StatisticsHome extends React.Component {
                                 <span className="m1"> Estadisticas de partidas por fecha </span>
                                 <form action="/" method="GET" onSubmit={this.handleSubmit}>
 
-                                    <DateInput label="Desde" date={new Date('2014-08-18T21:11:54')}/>
-                                    <DateInput label="Hasta" date={Date.now()}/>
+                                    <DateInput label="Desde" date={this.state.fromInitialDate}/>
+                                    <DateInput label="Hasta" date={this.state.toInitialDate}/>
 
                                     <Button variant="contained" type="submit" color="primary"
 
@@ -139,6 +143,7 @@ class StatisticsHome extends React.Component {
                         </div>
                         <Button variant="contained"
                                 color='secondary'
+                                type="button"
                                 style={{margin: '16px', fontWeight: 'bold'}}
                                 onClick={this.onClickReset}> Reestablecer </Button>
                     </div>
