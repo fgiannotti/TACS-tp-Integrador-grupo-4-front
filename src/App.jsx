@@ -15,44 +15,8 @@ import Lobby from "./components/play/Lobby";
 import Game from "./components/game/Game";
 import MyMatches from "./components/MyMatches";
 import ManagementSocket from "./components/management_socket/ManagementSocket";
+import StatisticsHome from "./components/statistics/StatisticsHome";
 class App extends React.Component {
-    carta = {"name": "A-Bomb", 
-        "id": 1, 
-        "power_stats": [
-            {
-                "name": "combat",
-                "value": 64
-            },
-            {
-                "name": "intelligence",
-                "value": 38
-            },
-            {
-                "name": "strength", "value": 100
-            },
-            {
-                "name": "power",
-                "value": 24
-            },
-            {
-                "name": "durability",
-                "value": 80
-            },
-            {
-                "name": "speed",
-                "value": 17
-            },
-            {
-                "name": "height",
-                "value": 203
-            },
-            {
-                "name": "weight",
-                "value": 441
-            }
-        ],
-        "image_url": "https://www.superherodb.com/pictures2/portraits/10/100/10060.jpg"
-    };
     static propTypes = {
       cookies: instanceOf(Cookies).isRequired
     };
@@ -95,41 +59,22 @@ class App extends React.Component {
             <div className="App full-screen">
                 <BrowserRouter history={this.history}>
                   {this.state.homeRedirect ? <Redirect to="/"/> : <React.Fragment/>}
-                  <Route exact path="/cards" component={(CardSearch)}/>
+                  <Route exact path="/stats" component={(StatisticsHome)}/>
                   <Route exact path="/login" component={()=> <LoginScreen error={this.state.loginError} handleSignIn={this.handleSignIn}/>}/>
-                  <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/" component={() => <Home userName={this.props.cookies.get('USERNAME')} userId={this.props.cookies.get('GOOGLEID')} isAdmin={this.state.isAdmin}/>}/>
+                  <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/"
+                                  component={() => <Home userName={this.props.cookies.get('USERNAME')} userId={this.props.cookies.get('GOOGLEID')} isAdmin={this.state.isAdmin}/>}/>
                   <ProtectedRoute  isSignedIn={this.state.isAuthenticated} exact path="/decks" component={ () => <DeckHome isAdmin={this.state.isAdmin} />} />
                   <ProtectedRoute  isSignedIn={this.state.isAuthenticated} exact path="/faq" component={ () => <Faq/>} />
                   <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/deck-builder" component={(DeckBuilder)}/>
-                  <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/lobby" component={() => <Lobby loggedUser={this.props.cookies.get('GOOGLEID')} loggedUserImage={this.props.cookies.get('USERIMAGE')} />} />
-                    <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/game" 
-                        component={() => <Game loggedUser={this.props.cookies.get('GOOGLEID')} mainUser="username1"
-                                data={
-                                    {"turno":"username1",
-                                    "usuarios":[
-                                        {
-                                            "userName":"username1",
-                                            "imageUrl":"https://i.pinimg.com/originals/19/87/90/198790eb7e08830027c1ae1686496c72.png", 
-                                            "cartaActual":this.carta,
-                                            "carta":1,
-                                            "score":10
-                                        }, 
-                                        {
-                                            "userName":"username2", 
-                                            "imageUrl":"https://i.pinimg.com/originals/19/87/90/198790eb7e08830027c1ae1686496c72.png", 
-                                            "cartaActual":this.carta,
-                                            "carta":10,
-                                            "score":11
-                                        }
-                                    ]}
-                                }/> 
-                        }/>
+                  <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/lobby"
+                                  component={() => <Lobby loggedUser={this.props.cookies.get('GOOGLEID')} loggedUserImage={this.props.cookies.get('USERIMAGE')} />} />
+                    <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/game"
+                                    component={() => <Game loggedUser={this.props.cookies.get('GOOGLEID')}/>} />
                   <ProtectedRoute isSignedIn={this.state.isAuthenticated} exact path="/matches" component={() => <MyMatches loggedUser={this.props.cookies.get('GOOGLEID')} />} />
                 </BrowserRouter>
             </div>
         );
     }
-
 }
 
 export default withCookies(App);
