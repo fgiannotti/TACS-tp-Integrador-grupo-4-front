@@ -13,13 +13,14 @@ class Lobby extends React.Component {
         super(props);
         const urlParams = new URLSearchParams(window.location.search);
         const matchId = urlParams.get('matchId');
-
+        const automatedMatch = urlParams.get('solo')
         this.state = {
             matchId: matchId,
             bothUsersInLobby: false,
             redirectToGame: false,
             opponentReady: false,
-            ready: false
+            ready: false,
+            automatedMatch: automatedMatch
         }
     }
     componentDidMount() {
@@ -27,7 +28,7 @@ class Lobby extends React.Component {
         ManagementSocket.setUser(this.props.cookies.get('GOOGLEID'))
         ManagementSocket.matchId = urlParams.get('matchId')
         ManagementSocket.subscribeObserver(this)
-        ManagementSocket.createConnection()
+        ManagementSocket.createConnection(this.state.automatedMatch)
     }
 
     sendReadyToServer = () => {
@@ -69,7 +70,7 @@ class Lobby extends React.Component {
                 () => this.setState({
 
                     redirectToMatch: true
-                }), 2000)
+                }), 1000)
         }
     }
 

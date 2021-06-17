@@ -1,5 +1,4 @@
 import React from 'react'
-import Button from "@material-ui/core/Button";
 
 class Ranking extends React.Component {
     //[{"user_id":"102400486230688279463","user_name":"FRANCO GIANNOTTI CALENS","won_matches":0,"total_matches":2},{"user_id":"104725077753706905086","user_name":"Franco Giannotti","won_matches":1,"total_matches":2}]

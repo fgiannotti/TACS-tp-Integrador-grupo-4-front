@@ -45,7 +45,7 @@ class CreateMatchScreen extends React.Component {
     }
 
     render() {
-        if (this.state.redirectToLobby) return (<Redirect to={"/lobby?matchId=" + this.state.matchId}/>)
+        if (this.state.redirectToLobby) return (<Redirect to={"/lobby?matchId=" + this.state.matchId + "&solo=" + (this.state.chosenOpponent === "automatedPlayer")}/>)
            return (
             <div className="flex-column-center" style={{margin: '4%'}}>
                         <Paper className="container align-items-center flex-column-space-around p1"
@@ -73,6 +73,19 @@ class CreateMatchScreen extends React.Component {
                             <Paper style={{minWidth: '70%', backgroundColor: "lightgray"}}>
                                 <FormControl fullWidth={true} component="fieldset">
                                     <RadioGroup>
+                                        <FormControlLabel key={0}
+                                                          id={"automatedPlayer"}
+                                                          value={"Juga por tu cuenta"}
+                                                          control={<Radio color="primary" id={"automatedPlayer"}/>}
+                                                          label={"Juga por tu cuenta"}
+                                                          labelPlacement="start"
+                                                          style={{
+                                                              display: 'flex',
+                                                              justifyContent: 'space-between',
+                                                              padding: '3%'
+                                                          }}
+                                                          onChange={this.setOpponent}
+                                        />
                                         {this.props.connectedUsers.map((user, i) =>
                                             <React.Fragment key={i}>
                                                 <FormControlLabel key={i}

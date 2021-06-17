@@ -1,9 +1,8 @@
 import React from "react";
-import { instanceOf } from 'prop-types';
+import {instanceOf} from 'prop-types';
 import {BrowserRouter, Redirect, Route} from "react-router-dom";
 import {createBrowserHistory} from "history";
-import { withCookies, Cookies } from "react-cookie";
-import CardSearch from "./components/card_finder/CardSearch";
+import {Cookies, withCookies} from "react-cookie";
 import Home from './components/home/Home';
 import LoginScreen from "./components/login/LoginScreen";
 import ProtectedRoute from './components/ProtectedRoute';
@@ -16,6 +15,7 @@ import Game from "./components/game/Game";
 import MyMatches from "./components/MyMatches";
 import ManagementSocket from "./components/management_socket/ManagementSocket";
 import StatisticsHome from "./components/statistics/StatisticsHome";
+
 class App extends React.Component {
     static propTypes = {
       cookies: instanceOf(Cookies).isRequired
