@@ -2,12 +2,12 @@ import { GoogleLogin } from 'react-google-login';
 import '../../styles/CommonStyles.css'
 import React from "react";
 import {withCookies} from 'react-cookie';
-import SuperfriendsBackendClient from '../../SuperfriendsBackendClient'
+import SuperfriendsBackendClient from '../../services/SuperfriendsBackendClient'
 import {decodeToken, useJwt} from "react-jwt";
 
 class GoogleSignIn extends React.Component {
 
-    superfriendsBackendClient = new SuperfriendsBackendClient()
+    superfriendsBackendClient = SuperfriendsBackendClient
 
     fail =  () => {
         alert("Auth failed with google")

@@ -3,7 +3,7 @@ import Header from '../Header';
 import Loader from "../utils/Loader";
 import { withCookies } from "react-cookie";
 import UserCard from "../cards/UserCard";
-import SuperfriendsBackendClient from "../../SuperfriendsBackendClient";
+import SuperfriendsBackendClient from "../../services/SuperfriendsBackendClient";
 import {Button} from "@material-ui/core";
 import GreenCheck from "../utils/GreenCheck";
 import {Redirect} from "react-router";
@@ -37,7 +37,7 @@ class Lobby extends React.Component {
         ManagementSocket.sendMessage("READY:"+ this.props.loggedUser)
     }
 
-    backendClient = new SuperfriendsBackendClient()
+    backendClient = SuperfriendsBackendClient
 
     receiveMessage(message){
         if (message.data.includes("IN_LOBBY")){

@@ -33,7 +33,8 @@ class App extends React.Component {
 
     handleSignIn = (userInfo, jwt_data) => {
         const { cookies } = this.props;
-        if ((this.props.cookies.get('JWT') ===undefined || !isExpired(jwt_data)) && decodeToken(this.props.cookies.get('JWT'))["isAuthenticated"] && decodeToken(this.props.cookies.get('JWT'))["isAuthorized"]) {
+        console.log(this.props.cookies.get('JWT'))
+        if ((this.props.cookies.get('JWT') == null || !isExpired(jwt_data)) && decodeToken(jwt_data)["isAuthenticated"] && decodeToken(jwt_data)["isAuthorized"]) {
             cookies.set('GOOGLEID', userInfo.google_id)
             cookies.set('SESSIONID', userInfo.token_id)
             cookies.set('USERNAME', userInfo.name)

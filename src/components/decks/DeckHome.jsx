@@ -1,7 +1,7 @@
 import React from "react";
 import List from '@material-ui/core/List';
 import {Divider, ListItem, ListItemText, Paper} from "@material-ui/core";
-import SuperfriendsBackendClient from "../../SuperfriendsBackendClient";
+import SuperfriendsBackendClient from "../../services/SuperfriendsBackendClient";
 import Header from '../Header';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
@@ -23,7 +23,7 @@ class DeckHome extends React.Component {
         this.getDecksAndSetState()
     }
 
-    deckClient = new SuperfriendsBackendClient()
+    deckClient = SuperfriendsBackendClient
 
     getDecksAndSetState = () => {
         return this.deckClient.getDecks().then((decksResponse) => {

@@ -1,7 +1,15 @@
 import axios from "axios";
+import {instanceOf} from "prop-types";
+import {Cookies} from "react-cookie";
 
 class SuperfriendsBackendClient {
     backendUrl = "http://localhost:9000"
+    static propTypes = {
+        cookies: instanceOf(Cookies).isRequired
+    };
+    headers = () =>{
+        return {Authorization: `Bearer ${this.props.cookies["JWT"]}` };}
+
 
     postLogin = async (userInfoDTO) => {
         let response = await axios.post(this.backendUrl + "/login", userInfoDTO)
@@ -32,18 +40,18 @@ class SuperfriendsBackendClient {
     }
 
     createDeck = (createDeckDTO) => {
-        return axios.post(this.backendUrl + "/decks", createDeckDTO)
+        return axios.post(this.backendUrl + "/decks", createDeckDTO, {headers:this.headers()})
             .then((response) => console.log(response))
             .catch((e) => console.log("Error creating deck with info :" + createDeckDTO + "   " + e))
     }
 
     updateDeck = (deckId, updateDeckDTO) => {
-        return axios.put(this.backendUrl + "/decks/" + deckId, updateDeckDTO)
+        return axios.put(this.backendUrl + "/decks/" + deckId, updateDeckDTO, {headers:this.headers()})
             .catch((e) => console.log("Error updating deck with id :" + deckId + "   " + e))
     }
 
     deleteDeck = (deckId) => {
-        return axios.delete(this.backendUrl + "/decks/" + deckId)
+        return axios.delete(this.backendUrl + "/decks/" + deckId, {headers:this.headers()})
             .then((response) => console.log(response))
             .catch((e) => console.log("Error deleting deck with id :" + deckId + "   " + e))
     }
@@ -56,19 +64,19 @@ class SuperfriendsBackendClient {
     }
 
     getPlayerById = (userId) => {
-        return axios.get(this.backendUrl + "/players/" + userId)
+        return axios.get(this.backendUrl + "/players/" + userId,{headers:this.headers()})
             .then((response) => response.data)
             .catch((error) => console.log(error))
     }
 
     getMatchesOfUser = (userId) => {
-        return axios.get(this.backendUrl + "/matches?user_id=" + userId)
+        return axios.get(this.backendUrl + "/matches?user_id=" + userId,{headers:this.headers()})
             .then((response) => response.data)
             .catch((error) => console.log(error))
     }
 
     getMatchById = (matchId) => {
-        return axios.get(this.backendUrl + "/matches/" + matchId)
+        return axios.get(this.backendUrl + "/matches/" + matchId, {headers:this.headers()})
             .then((response) => response.data)
             .catch((error) => console.log(error))
     }
@@ -80,4 +88,5 @@ class SuperfriendsBackendClient {
     }
 }
 
-export default SuperfriendsBackendClient;
+const SuperfriendsBackendClientInstance =  new SuperfriendsBackendClient();
+export default SuperfriendsBackendClientInstance

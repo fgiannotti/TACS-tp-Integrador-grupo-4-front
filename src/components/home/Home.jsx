@@ -4,7 +4,7 @@ import Header from '../Header';
 import { withCookies } from "react-cookie";
 import CreateMatchScreen from "../play/CreateMatchScreen";
 import Batman from "../../resources/images/batman.png"
-import SuperfriendsBackendClient from "../../SuperfriendsBackendClient";
+import SuperfriendsBackendClient from "../../services/SuperfriendsBackendClient";
 import '../../styles/CommonStyles.css'
 import HomeTitle from './Title';
 import Invitation from './Invitation';
@@ -28,7 +28,7 @@ class Home extends React.Component {
     }
 
 
-    backendClient = new SuperfriendsBackendClient()
+    backendClient =  SuperfriendsBackendClient
 
     keepAlive = (socket) => {
         socket.send(new Uint8Array([1]))
