@@ -21,7 +21,7 @@ class Ranking extends React.Component {
                             {player.user_name}
                         </td>
                         <td id={player.user_id}> {player.total_matches} </td>
-                        <td id={player.user_id}> {player.won_matches / player.total_matches * 100}% ({player.won_matches})</td>
+                        <td id={player.user_id}> {(player.won_matches / player.total_matches * 100).toFixed(1)}% ({player.won_matches})</td>
 
                     </tr>
                 ))
