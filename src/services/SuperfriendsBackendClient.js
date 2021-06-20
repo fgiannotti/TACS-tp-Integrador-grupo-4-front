@@ -1,15 +1,14 @@
 import axios from "axios";
 import {instanceOf} from "prop-types";
-import {Cookies} from "react-cookie";
 
 class SuperfriendsBackendClient {
     backendUrl = "http://localhost:9000"
-    static propTypes = {
-        cookies: instanceOf(Cookies).isRequired
-    };
+    jwt = ""
+    setJWT = (newJWT) => {
+        this.jwt = newJWT
+    }
     headers = () =>{
-        return {Authorization: `Bearer ${this.props.cookies["JWT"]}` };}
-
+        return {Authorization: `Bearer ${this.jwt}` };}
 
     postLogin = async (userInfoDTO) => {
         let response = await axios.post(this.backendUrl + "/login", userInfoDTO)
@@ -35,7 +34,7 @@ class SuperfriendsBackendClient {
     }
 
     getDecks = async () => {
-        let response = await axios.get(this.backendUrl + "/decks").catch((e) => console.log("Error fetching decks: " + e))
+        let response = await axios.get(this.backendUrl + "/decks", {headers:this.headers()}).catch((e) => console.log("Error fetching decks: " + e))
         return response.data
     }
 

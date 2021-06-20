@@ -17,6 +17,7 @@ import MyMatches from "./components/MyMatches";
 import ManagementSocket from "./components/management_socket/ManagementSocket";
 import StatisticsHome from "./components/statistics/StatisticsHome";
 import {decodeToken, isExpired} from "react-jwt";
+import SuperfriendsBackendClientInstance from "./services/SuperfriendsBackendClient";
 class App extends React.Component {
     static propTypes = {
       cookies: instanceOf(Cookies).isRequired
@@ -40,6 +41,7 @@ class App extends React.Component {
             cookies.set('USERNAME', userInfo.name)
             cookies.set('USERIMAGE', userInfo.image_url)
             cookies.set('JWT', jwt_data)
+            SuperfriendsBackendClientInstance.setJWT(jwt_data)
             this.setState({LoggedUser: userInfo.google_id, homeRedirect: true})
             ManagementSocket.setUser(userInfo.google_id)
         } else {
