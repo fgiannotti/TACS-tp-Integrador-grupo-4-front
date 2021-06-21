@@ -57,6 +57,7 @@ class App extends React.Component {
         }
     }
     validateLogin(){
+        SuperfriendsBackendClientInstance.setJWT(this.props.cookies.get('JWT'))
         if (this.props.cookies.get('JWT') ===undefined){
             return false
         }else{
@@ -70,12 +71,12 @@ class App extends React.Component {
             <div className="App full-screen">
                 <BrowserRouter history={this.history}>
                   {this.redirectHome() ? <Redirect to="/"/> : <React.Fragment/>}
-                  <Route exact path="/cards" component={(StatisticsHome)}/>
                   <Route exact path="/login" component={()=> <LoginScreen error={this.state.loginError} handleSignIn={this.handleSignIn}/>}/>
                   <ProtectedRoute isSignedIn={this.validateLogin()} exact path="/"
                                   component={() => <Home userName={this.props.cookies.get('USERNAME')} userId={this.props.cookies.get('GOOGLEID')} isAdmin={decodeToken(this.props.cookies.get('JWT'))["isAdmin"]}/>}/>
                   <ProtectedRoute  isSignedIn={this.validateLogin()} exact path="/decks" component={ () => <DeckHome isAdmin={ decodeToken(this.props.cookies.get('JWT'))["isAdmin"]} />} />
                   <ProtectedRoute  isSignedIn={this.validateLogin()} exact path="/faq" component={ () => <Faq/>} />
+                    <ProtectedRoute  isSignedIn={this.validateLogin()} exact path="/stats" component={(StatisticsHome)} />
                   <ProtectedRoute isSignedIn={this.validateLogin()} exact path="/deck-builder" component={(DeckBuilder)}/>
                   <ProtectedRoute isSignedIn={this.validateLogin()} exact path="/lobby"
                                   component={() => <Lobby loggedUser={this.props.cookies.get('GOOGLEID')} loggedUserImage={this.props.cookies.get('USERIMAGE')} />} />
