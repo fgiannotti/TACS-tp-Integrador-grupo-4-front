@@ -8,12 +8,12 @@ import './../../styles/StatisticsHome.css'
 import Ranking from "./Ranking";
 import Button from "@material-ui/core/Button";
 import DateInput from "./DateInput";
-import SuperfriendsBackendClient from "../../SuperfriendsBackendClient";
+import SuperfriendsBackendClientInstance from "../../services/SuperfriendsBackendClient";
 import {withCookies} from "react-cookie";
 import Header from "../Header";
 
 class StatisticsHome extends React.Component {
-    backClient = new SuperfriendsBackendClient()
+    backClient =  SuperfriendsBackendClientInstance
     initialStats =  {total: 0, in_process: 0, finished: 0}
 
     constructor(props) {
@@ -27,7 +27,9 @@ class StatisticsHome extends React.Component {
     }
 
     async componentDidMount() {
+        console.log(this.backClient.jwt)
         let rankingFound = await this.backClient.getRanking()
+        console.log(rankingFound)
         //won_matches, user_id, total_matches
         rankingFound.sort(this.compareRankings)
         console.log(rankingFound)

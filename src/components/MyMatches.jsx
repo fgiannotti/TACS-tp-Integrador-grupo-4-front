@@ -5,7 +5,7 @@ import { withCookies } from "react-cookie";
 import {Divider, ListItem, ListItemText, Modal, Paper} from "@material-ui/core";
 import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import SuperfriendsBackendClient from "../SuperfriendsBackendClient";
+import SuperfriendsBackendClientInstance from "../services/SuperfriendsBackendClient";
 import Loader from "./utils/Loader";
 import Button from "@material-ui/core/Button";
 import {Redirect} from "react-router";
@@ -23,7 +23,7 @@ class MyMatches extends Component {
         }
         this.refreshMyMatches()
     }
-    backendClient = new SuperfriendsBackendClient()
+    backendClient =  SuperfriendsBackendClientInstance
 
     refreshMyMatches()  {
         this.backendClient.getMatchesOfUser(this.props.loggedUser)
