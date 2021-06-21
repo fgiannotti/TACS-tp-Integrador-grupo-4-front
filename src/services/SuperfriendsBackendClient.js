@@ -16,7 +16,7 @@ class SuperfriendsBackendClient {
     }
 
     getCardById = async (id) => {
-        let response = await axios.get(this.backendUrl + "/cards/" + id + "/id")
+        let response = await axios.get(this.backendUrl + "/cards/" + id + "/id", {headers:this.headers()})
             .catch((e) => console.log("Error fetching cards by id: " + e))
         return response.data
     }
@@ -29,7 +29,7 @@ class SuperfriendsBackendClient {
     }
 
     getCardsByName = async (name) => {
-        let response = await axios.get(this.backendUrl + "/cards/" + name + "/name").catch((e) => console.log("Error fetching cards by name: " + e))
+        let response = await axios.get(this.backendUrl + "/cards/" + name + "/name", {headers:this.headers()}).catch((e) => console.log("Error fetching cards by name: " + e))
         return response.data
     }
 
@@ -56,7 +56,7 @@ class SuperfriendsBackendClient {
     }
 
     createMatch = (matchCreationDTO) => {
-        return axios.post(this.backendUrl + "/matches", matchCreationDTO)
+        return axios.post(this.backendUrl + "/matches", matchCreationDTO, {headers:this.headers()})
             .then((response) => response.data)
             .catch((error) => console.log(error))
 
@@ -81,29 +81,29 @@ class SuperfriendsBackendClient {
     }
 
     inviteOpponentToContinueMatch = (matchId, opponentId) => {
-        return axios.get(this.backendUrl + "/invite/"+ matchId + "/" + opponentId)
+        return axios.get(this.backendUrl + "/invite/"+ matchId + "/" + opponentId, {headers:this.headers()})
             .then((response) => response.data)
             .catch((error) => console.log(error))
     }
 
     getRanking = () => {
-        return axios.get(this.backendUrl + "/statistics/rankings")
+        return axios.get(this.backendUrl + "/statistics/rankings",{headers:this.headers()})
             .then((response) => response.data)
             .catch((error) => console.log(error))
     }
     getStatistics = () => {
-        return axios.get(this.backendUrl + "/statistics")
+        return axios.get(this.backendUrl + "/statistics",{headers:this.headers()})
             .then((response) => response.data)
             .catch((error) => console.log(error))
     }
     getStatisticsUserId = (userId) => {
-        return axios.get(this.backendUrl + "/statistics?user_id="+userId)
+        return axios.get(this.backendUrl + "/statistics?user_id="+userId, {headers:this.headers()})
             .then((response) => response.data)
             .catch((error) => console.log(error))
     }
 
     getStatisticsUserIdWithDates = (userId, from, until) => {
-        return axios.get(this.backendUrl + "/statistics?user_id="+userId+"&from_date="+from+"&to_date="+until)
+        return axios.get(this.backendUrl + "/statistics?user_id="+userId+"&from_date="+from+"&to_date="+until, {headers:this.headers()})
             .then((response) => response.data)
             .catch((error) => {
                 alert("Error doing GET. check logs from console.")
