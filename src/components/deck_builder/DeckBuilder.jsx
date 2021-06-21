@@ -7,7 +7,7 @@ import Slide from '@material-ui/core/Slide';
 import CardSearch from '../card_finder/CardSearch';
 import '../../styles/DeckBuilder.css';
 import '../../styles/CommonStyles.css';
-import SuperfriendsBackendClient from "../../SuperfriendsBackendClient";
+import SuperfriendsBackendClientInstance from "../../services/SuperfriendsBackendClient";
 import DeckNameAndSave from './DeckNameAndSave';
 import CardGrid from '../cards/CardGrid';
 import {Redirect} from "react-router-dom";
@@ -17,7 +17,7 @@ import Header from '../Header';
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
-const deckClient = new SuperfriendsBackendClient();
+const deckClient =  SuperfriendsBackendClientInstance;
 
 class DeckBuilder extends React.Component {
 

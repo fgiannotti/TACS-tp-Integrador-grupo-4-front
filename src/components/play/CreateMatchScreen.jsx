@@ -4,7 +4,7 @@ import '../../styles/CommonStyles.css';
 import '../../styles/CommonLayoutsFlex.css';
 import Button from "@material-ui/core/Button";
 import {Autocomplete} from "@material-ui/lab";
-import SuperfriendsBackendClient from "../../SuperfriendsBackendClient";
+import SuperfriendsBackendClientInstance from "../../services/SuperfriendsBackendClient";
 import {Redirect} from "react-router";
 import { withCookies } from "react-cookie";
 
@@ -18,7 +18,7 @@ class CreateMatchScreen extends React.Component {
         }
     }
 
-    createMatchClient = new SuperfriendsBackendClient()
+    createMatchClient = SuperfriendsBackendClientInstance
 
     setOpponent = (opponent) => {
         this.setState({chosenOpponent: opponent.target.id})

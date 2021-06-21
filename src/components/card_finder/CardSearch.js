@@ -2,7 +2,7 @@ import React from 'react'
 import CardSearchBar from "./CardSearchBar";
 import CardGrid from "../cards/CardGrid";
 import '../../styles/CommonStyles.css';
-import SuperfriendsBackendClient from "../../SuperfriendsBackendClient";
+import SuperfriendsBackendClientInstance from "../../services/SuperfriendsBackendClient";
 import Loader from '../utils/Loader';
 
 
@@ -17,7 +17,7 @@ export default class CardSearch extends React.Component {
         this.search_by_name = this.search_by_name.bind(this)
     }
 
-    cardsClient = new SuperfriendsBackendClient()
+    cardsClient = SuperfriendsBackendClientInstance
 
     search_by_name(name) {
         this.setState({isSearching: true})
