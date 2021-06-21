@@ -1,5 +1,4 @@
 import axios from "axios";
-import {instanceOf} from "prop-types";
 
 class SuperfriendsBackendClient {
     backendUrl = "http://localhost:9000"

@@ -1,9 +1,5 @@
 import React from 'react'
-import {
-    AppBar,
-    Paper,
-    Toolbar
-} from "@material-ui/core";
+import {Paper} from "@material-ui/core";
 import './../../styles/StatisticsHome.css'
 import Ranking from "./Ranking";
 import Button from "@material-ui/core/Button";
