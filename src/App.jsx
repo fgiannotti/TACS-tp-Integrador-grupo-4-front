@@ -25,8 +25,6 @@ class App extends React.Component {
     
     constructor(props) {
         super(props);
-        const { cookies } = props;
-
         this.state = {loginError: false, homeRedirect: false}
         this.history = createBrowserHistory();
     }
