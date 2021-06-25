@@ -3,7 +3,7 @@ import Header from '../Header';
 import Loader from "../utils/Loader";
 import { withCookies } from "react-cookie";
 import UserCard from "../cards/UserCard";
-import SuperfriendsBackendClient from "../../SuperfriendsBackendClient";
+import SuperfriendsBackendClientInstance from "../../services/SuperfriendsBackendClient";
 import {Button} from "@material-ui/core";
 import GreenCheck from "../utils/GreenCheck";
 import {Redirect} from "react-router";
@@ -13,13 +13,14 @@ class Lobby extends React.Component {
         super(props);
         const urlParams = new URLSearchParams(window.location.search);
         const matchId = urlParams.get('matchId');
-
+        const automatedMatch = urlParams.get('solo')
         this.state = {
             matchId: matchId,
             bothUsersInLobby: false,
             redirectToGame: false,
             opponentReady: false,
-            ready: false
+            ready: false,
+            automatedMatch: automatedMatch
         }
     }
     componentDidMount() {
@@ -27,7 +28,7 @@ class Lobby extends React.Component {
         ManagementSocket.setUser(this.props.cookies.get('GOOGLEID'))
         ManagementSocket.matchId = urlParams.get('matchId')
         ManagementSocket.subscribeObserver(this)
-        ManagementSocket.createConnection()
+        ManagementSocket.createConnection(this.state.automatedMatch)
     }
 
     sendReadyToServer = () => {
@@ -37,7 +38,7 @@ class Lobby extends React.Component {
         ManagementSocket.sendMessage("READY:"+ this.props.loggedUser)
     }
 
-    backendClient = new SuperfriendsBackendClient()
+    backendClient = SuperfriendsBackendClientInstance
 
     receiveMessage(message){
         if (message.data.includes("IN_LOBBY")){
@@ -69,7 +70,7 @@ class Lobby extends React.Component {
                 () => this.setState({
 
                     redirectToMatch: true
-                }), 2000)
+                }), 1000)
         }
     }
 

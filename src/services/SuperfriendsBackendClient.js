@@ -2,6 +2,12 @@ import axios from "axios";
 
 class SuperfriendsBackendClient {
     backendUrl = "http://localhost:9000"
+    jwt = ""
+    setJWT = (newJWT) => {
+        this.jwt = newJWT
+    }
+    headers = () =>{
+        return {Authorization: `Bearer ${this.jwt}` };}
 
     postLogin = async (userInfoDTO) => {
         let response = await axios.post(this.backendUrl + "/login", userInfoDTO)
@@ -9,7 +15,7 @@ class SuperfriendsBackendClient {
     }
 
     getCardById = async (id) => {
-        let response = await axios.get(this.backendUrl + "/cards/" + id + "/id")
+        let response = await axios.get(this.backendUrl + "/cards/" + id + "/id", {headers:this.headers()})
             .catch((e) => console.log("Error fetching cards by id: " + e))
         return response.data
     }
@@ -22,81 +28,81 @@ class SuperfriendsBackendClient {
     }
 
     getCardsByName = async (name) => {
-        let response = await axios.get(this.backendUrl + "/cards/" + name + "/name").catch((e) => console.log("Error fetching cards by name: " + e))
+        let response = await axios.get(this.backendUrl + "/cards/" + name + "/name", {headers:this.headers()}).catch((e) => console.log("Error fetching cards by name: " + e))
         return response.data
     }
 
     getDecks = async () => {
-        let response = await axios.get(this.backendUrl + "/decks").catch((e) => console.log("Error fetching decks: " + e))
+        let response = await axios.get(this.backendUrl + "/decks", {headers:this.headers()}).catch((e) => console.log("Error fetching decks: " + e))
         return response.data
     }
 
     createDeck = (createDeckDTO) => {
-        return axios.post(this.backendUrl + "/decks", createDeckDTO)
+        return axios.post(this.backendUrl + "/decks", createDeckDTO, {headers:this.headers()})
             .then((response) => console.log(response))
             .catch((e) => console.log("Error creating deck with info :" + createDeckDTO + "   " + e))
     }
 
     updateDeck = (deckId, updateDeckDTO) => {
-        return axios.put(this.backendUrl + "/decks/" + deckId, updateDeckDTO)
+        return axios.put(this.backendUrl + "/decks/" + deckId, updateDeckDTO, {headers:this.headers()})
             .catch((e) => console.log("Error updating deck with id :" + deckId + "   " + e))
     }
 
     deleteDeck = (deckId) => {
-        return axios.delete(this.backendUrl + "/decks/" + deckId)
+        return axios.delete(this.backendUrl + "/decks/" + deckId, {headers:this.headers()})
             .then((response) => console.log(response))
             .catch((e) => console.log("Error deleting deck with id :" + deckId + "   " + e))
     }
 
     createMatch = (matchCreationDTO) => {
-        return axios.post(this.backendUrl + "/matches", matchCreationDTO)
+        return axios.post(this.backendUrl + "/matches", matchCreationDTO, {headers:this.headers()})
             .then((response) => response.data)
             .catch((error) => console.log(error))
 
     }
 
     getPlayerById = (userId) => {
-        return axios.get(this.backendUrl + "/players/" + userId)
+        return axios.get(this.backendUrl + "/players/" + userId,{headers:this.headers()})
             .then((response) => response.data)
             .catch((error) => console.log(error))
     }
 
     getMatchesOfUser = (userId) => {
-        return axios.get(this.backendUrl + "/matches?user_id=" + userId)
+        return axios.get(this.backendUrl + "/matches?user_id=" + userId,{headers:this.headers()})
             .then((response) => response.data)
             .catch((error) => console.log(error))
     }
 
     getMatchById = (matchId) => {
-        return axios.get(this.backendUrl + "/matches/" + matchId)
+        return axios.get(this.backendUrl + "/matches/" + matchId, {headers:this.headers()})
             .then((response) => response.data)
             .catch((error) => console.log(error))
     }
 
     inviteOpponentToContinueMatch = (matchId, opponentId) => {
-        return axios.get(this.backendUrl + "/invite/"+ matchId + "/" + opponentId)
+        return axios.get(this.backendUrl + "/invite/"+ matchId + "/" + opponentId, {headers:this.headers()})
             .then((response) => response.data)
             .catch((error) => console.log(error))
     }
 
     getRanking = () => {
-        return axios.get(this.backendUrl + "/statistics/rankings")
+        return axios.get(this.backendUrl + "/statistics/rankings",{headers:this.headers()})
             .then((response) => response.data)
             .catch((error) => console.log(error))
     }
     getStatistics = () => {
-        return axios.get(this.backendUrl + "/statistics")
+        return axios.get(this.backendUrl + "/statistics",{headers:this.headers()})
             .then((response) => response.data)
             .catch((error) => console.log(error))
     }
     getStatisticsUserId = (userId) => {
-        return axios.get(this.backendUrl + "/statistics?user_id="+userId)
+        return axios.get(this.backendUrl + "/statistics?user_id="+userId, {headers:this.headers()})
             .then((response) => response.data)
             .catch((error) => console.log(error))
     }
 
     getStatisticsUserIdWithDates = (userId, from, until) => {
-        return axios.get(this.backendUrl + "/statistics?user_id="+userId+"&from_date="+from+"&to_date="+until)
+        return axios.get(this.backendUrl + "/statistics?user_id="+userId+"&from_date="+from+"&to_date="+until, {headers:this.headers()})
             .then((response) => response.data)
             .catch((error) => {
                 alert("Error doing GET. check logs from console.")
@@ -105,4 +111,5 @@ class SuperfriendsBackendClient {
     }
 }
 
-export default SuperfriendsBackendClient;
+const SuperfriendsBackendClientInstance =  new SuperfriendsBackendClient();
+export default SuperfriendsBackendClientInstance

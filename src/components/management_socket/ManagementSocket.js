@@ -1,44 +1,46 @@
-
 class ManagementSocketClass {
     user = ""
     socket = null
     observer = null
     matchId = null
 
-     keepAlive = (socket) => {
+    keepAlive = (socket) => {
         socket.send(new Uint8Array([1]))
         setTimeout(() => this.keepAlive(socket), 50000)
     }
-    setUser= (newUser) =>{
+    setUser = (newUser) => {
         this.user = newUser
-
     }
-    createConnection() {
 
-        this.socket = new WebSocket("ws://localhost:9000/join-match/" + this.matchId + "?userId=" + this.user)
+    createConnection(playSolo) {
+        this.socket = new WebSocket("ws://localhost:9000/join-match/" + this.matchId + (playSolo ? "/automated" : "") + "?userId=" + this.user)
         this.socket.onopen = () => {
-                //send keep alive binary message
-                this.keepAlive(this.socket)
-            }
+            //send keep alive binary message
+            this.keepAlive(this.socket)
+        }
         this.socket.onmessage = (event) => {
             console.log(event)
             console.log(this.observer)
-                if (this.observer){
-                    this.observer.receiveMessage(event)
-                }
+            if (this.observer) {
+                this.observer.receiveMessage(event)
+            }
         }
     }
-    subscribeObserver(newObserver){
+
+    subscribeObserver(newObserver) {
         this.observer = newObserver
 
     }
-    unsubscribeObserver(){
+
+    unsubscribeObserver() {
         this.observer = null
     }
-    sendMessage(message){
+
+    sendMessage(message) {
         this.socket.send(message)
     }
 
 }
-const ManagementSocket =  new ManagementSocketClass();
+
+const ManagementSocket = new ManagementSocketClass();
 export default ManagementSocket
