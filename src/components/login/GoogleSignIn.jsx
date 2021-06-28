@@ -1,19 +1,20 @@
-import { GoogleLogin } from 'react-google-login';
+import {GoogleLogin} from 'react-google-login';
 import '../../styles/CommonStyles.css'
 import React from "react";
 import {withCookies} from 'react-cookie';
-import SuperfriendsBackendClient from '../../SuperfriendsBackendClient'
+import SuperfriendsBackendClientInstance from '../../services/SuperfriendsBackendClient'
 
 class GoogleSignIn extends React.Component {
 
-    superfriendsBackendClient = new SuperfriendsBackendClient()
+    superfriendsBackendClient = SuperfriendsBackendClientInstance
 
-    fail =  () => {
+    fail =  (e) => {
+        console.log(e);
         alert("Auth failed with google")
     }
     
     onLoginSuccess = async (response) => {
-        console.log("google response:"+response);
+        console.log(response);
         const userInfo = response.profileObj;
         const userInfoDto = {
             "name": userInfo.name,
@@ -24,9 +25,7 @@ class GoogleSignIn extends React.Component {
         }
 
         const loginResponse = await this.superfriendsBackendClient.postLogin(userInfoDto);
-
-        const {is_authenticated, is_authorized, is_admin} = loginResponse;
-        this.props.handleSignIn(userInfoDto,is_authenticated, is_authorized, is_admin);
+        this.props.handleSignIn(userInfoDto, loginResponse["access_token"]);
     }
 
     render() {

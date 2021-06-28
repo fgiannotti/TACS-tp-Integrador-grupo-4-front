@@ -18,11 +18,6 @@ import StopMatchDialog from './StopMatchDialog';
 class Game extends React.Component {
     constructor(props) {
         super(props);
-    //    let userMain = this.props.data.usuarios.find((user)=>user.userName === this.props.mainUser);
-      //  let userOpponent = this.props.data.usuarios.find((user)=>user.userName !== this.props.mainUser);
-
-        //const card = userMain.cartaActual;
-
         this.state = {
             openCard: false,
             openMatchResult: false,
@@ -176,7 +171,7 @@ class Game extends React.Component {
                 <Grid title="MainUser" container  spacing={1} direction="row" className={"padding:10"} item={true}>
                     <Grid item={true} xs={2} className={styles.users}>
                         <div className="player-info-centered">
-                            <Avatar alt="Remy Sharp" src={this.state.opponent.image_url} title={"Username"}/>
+                            <Avatar alt="Remy Sharp" src={this.state.mainUser.image_url} title={"Username"}/>
                         </div>
                         {this.state.mainUser.user_name}
                     </Grid>
