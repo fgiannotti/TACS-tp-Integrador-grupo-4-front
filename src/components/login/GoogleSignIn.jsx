@@ -36,7 +36,6 @@ class GoogleSignIn extends React.Component {
                 buttonText="Continua con Google"
                 onSuccess={this.onLoginSuccess}
                 onFailure={this.fail}
-                cookiePolicy={'http://localhost:9000'}
                 isSignedIn={false}
             />
         )

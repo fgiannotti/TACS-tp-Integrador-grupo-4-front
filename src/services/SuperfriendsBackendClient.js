@@ -1,7 +1,7 @@
 import axios from "axios";
 
 class SuperfriendsBackendClient {
-    backendUrl = "http://localhost:9000"
+    backendUrl = "http://ec2-13-48-196-241.eu-north-1.compute.amazonaws.com:9000"
     jwt = ""
     setJWT = (newJWT) => {
         this.jwt = newJWT
