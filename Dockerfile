@@ -17,4 +17,4 @@ RUN npm install
 COPY . ./
 
 # start app
-CMD ["npm", "--max_old_space_size=512","start"]
+CMD ["npm","--host 0.0.0.0", "--max_old_space_size=512","start"]
