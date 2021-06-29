@@ -9,6 +9,6 @@ COPY package.json ./
 COPY package-lock.json ./
 RUN npm install
 COPY . ./
-
+EXPOSE 80
 # start app
 CMD ["npm", "--max_old_space_size=128","start"]
