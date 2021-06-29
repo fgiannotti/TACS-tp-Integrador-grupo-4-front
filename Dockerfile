@@ -16,6 +16,7 @@ RUN npm install
 # add app
 COPY . ./
 
-# start app
-CMD ["npm", "--max_old_space_size=512","PORT=80 start"]
 EXPOSE 80
+EXPOSE 3000
+# start app
+CMD ["npm", "--max_old_space_size=512","start"]
