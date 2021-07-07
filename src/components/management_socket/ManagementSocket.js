@@ -13,7 +13,7 @@ class ManagementSocketClass {
     }
 
     createConnection(playSolo) {
-        this.socket = new WebSocket("ws://ec2-13-48-196-241.eu-north-1.compute.amazonaws.com:9000/join-match/" + this.matchId + (playSolo ? "/automated" : "") + "?userId=" + this.user)
+        this.socket = new WebSocket("ws://ec2-13-53-235-7.eu-north-1.compute.amazonaws.com:9000/join-match/" + this.matchId + (playSolo ? "/automated" : "") + "?userId=" + this.user)
         this.socket.onopen = () => {
             //send keep alive binary message
             this.keepAlive(this.socket)
