@@ -36,7 +36,7 @@ class Home extends React.Component {
     }
 
     connectToBackendWithSockets = (googleId) => {
-        let socket = new WebSocket("ws://ec2-13-53-235-7.eu-north-1.compute.amazonaws.com:9000/home?userId=" + googleId);
+        let socket = new WebSocket("ws://ec2-13-51-251-224.eu-north-1.compute.amazonaws.com:9000/home?userId=" + googleId);
         socket.onopen = () => {
             //send keep alive binary message
             this.keepAlive(socket)
