@@ -35,8 +35,10 @@ class MyMatches extends Component {
 
     handleOpen = (matchId) => {
         this.backendClient.getMatchById(matchId).then(response => {
-                let isUserMatchCreator = response.match_creator.user_id === this.state.loggedUser
-                this.setState({open: true, matchInfo: response, isUserMatchCreator: isUserMatchCreator});
+                if (response) {
+                    let isUserMatchCreator = response.match_creator.user_id === this.state.loggedUser
+                    this.setState({open: true, matchInfo: response, isUserMatchCreator: isUserMatchCreator});
+                }
             }
         )
     };
