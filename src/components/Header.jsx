@@ -36,6 +36,7 @@ const navLinks = [
   { title: `mazos`, path: `/decks` },
   { title: `partidas`, path: `/matches` },
   { title: `estadisticas`, path: `/stats` },
+  { title: `cartas`, path: `/cards` },
   { title: `faq`, path: `/faq` }
 ];
 
