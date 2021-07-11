@@ -18,6 +18,10 @@
     min-height: 100vh;
 }
 
+h1 {
+    color: #272727;
+}
+
 @keyframes App-logo-spin {
     from {
         transform: rotate(0deg);
