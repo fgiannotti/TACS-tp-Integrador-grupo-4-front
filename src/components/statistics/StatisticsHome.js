@@ -89,6 +89,9 @@ class StatisticsHome extends React.Component {
         return (
             <div>
                 <Header/>
+                <h1>
+                    Seleccioná un jugador para ver sus estadísticas
+                </h1>
                 <div style={{'padding': '32px'}}/>
                 <div className="two-column-grid-equal">
                     <div>

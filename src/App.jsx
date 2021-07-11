@@ -17,6 +17,7 @@ import ManagementSocket from "./components/management_socket/ManagementSocket";
 import StatisticsHome from "./components/statistics/StatisticsHome";
 import {decodeToken, isExpired} from "react-jwt";
 import SuperfriendsBackendClientInstance from "./services/SuperfriendsBackendClient";
+import CardView from "./components/cards/CardView";
 
 class App extends React.Component {
     static propTypes = {
@@ -74,9 +75,10 @@ class App extends React.Component {
                                   component={() => <Home userName={this.props.cookies.get('USERNAME')} userId={this.props.cookies.get('GOOGLEID')} isAdmin={decodeToken(this.props.cookies.get('JWT'))["isAdmin"]}/>}/>
                   <ProtectedRoute  isSignedIn={this.validateLogin()} exact path="/decks" component={ () => <DeckHome isAdmin={ decodeToken(this.props.cookies.get('JWT'))["isAdmin"]} />} />
                   <ProtectedRoute  isSignedIn={this.validateLogin()} exact path="/faq" component={ () => <Faq/>} />
-                    <ProtectedRoute  isSignedIn={this.validateLogin()} exact path="/stats" component={(StatisticsHome)} />
+                  <ProtectedRoute  isSignedIn={this.validateLogin()} exact path="/stats" component={(StatisticsHome)} />
                   <ProtectedRoute isSignedIn={this.validateLogin()} exact path="/deck-builder" component={(DeckBuilder)}/>
-                  <ProtectedRoute isSignedIn={this.validateLogin()} exact path="/lobby"
+                  <ProtectedRoute isSignedIn={this.validateLogin()} exact path="/cards" component={(CardView)}/>
+                    <ProtectedRoute isSignedIn={this.validateLogin()} exact path="/lobby"
                                   component={() => <Lobby loggedUser={this.props.cookies.get('GOOGLEID')} loggedUserImage={this.props.cookies.get('USERIMAGE')} />} />
                     <ProtectedRoute isSignedIn={this.validateLogin()} exact path="/game"
                                     component={() => <Game loggedUser={this.props.cookies.get('GOOGLEID')}/>} />

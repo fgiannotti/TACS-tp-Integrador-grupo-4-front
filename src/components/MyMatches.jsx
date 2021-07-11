@@ -67,6 +67,9 @@ class MyMatches extends Component {
         return (
             <React.Fragment>
                 <Header />
+                <h1>
+                    Seleccioná una partida para ver su historial
+                </h1>
                 <Modal
                     open={this.state.open}
                     onClose={this.handleClose}
