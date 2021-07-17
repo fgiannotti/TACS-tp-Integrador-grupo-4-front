@@ -27,10 +27,8 @@ class StatisticsHome extends React.Component {
         let rankingFound = await this.backClient.getRanking()
         console.log(rankingFound)
         //won_matches, user_id, total_matches
-        rankingFound.sort(this.compareRankings)
-        console.log(rankingFound)
         this.setState({
-            ranking: rankingFound ? rankingFound : []
+            ranking: rankingFound ? rankingFound.sort(this.compareRankings) : []
         })
     }
 

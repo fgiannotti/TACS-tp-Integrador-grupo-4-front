@@ -100,19 +100,3 @@ class Home extends React.Component {
 
 }
 export default withCookies(Home);
-
-/* In case we need to persist connected users in local storage to have them in multiple windows....
-    getUsersFromLocalStorage = () => {
-        let connectedUsers = [{user_name:this.props.cookies.get('USERNAME'),user_id:this.props.cookies.get('GOOGLEID')}]
-        
-        let connectedUsersStr = localStorage.getItem('connectedUsers')
-        if (connectedUsersStr !== null){
-            try {
-                connectedUsers = JSON.parse(connectedUsersStr)
-            }catch(e){
-                console.log(e)
-            }
-        }
-        return connectedUsers
-    }
-*/
